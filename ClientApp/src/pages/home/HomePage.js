@@ -8,8 +8,8 @@ import { FQAList } from "./components/FQAList";
 import { Contact } from "./components/Contact";
 
 // Import data
-import { featuresData } from './constants/data/features';
-import { questionsData } from './constants/data/questions';
+import { featuresData } from './data/features';
+import { questionsData } from './data/questions';
 
 export class HomePage extends Component {
   render() {
