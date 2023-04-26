@@ -2,16 +2,16 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router, Switch, Route as DefaultRoute } from 'react-router-dom'
 
 // Layouts
-import { Layout } from './components/Layout';
+import { Layout } from './pages/Layout';
 import { Auth } from './layouts/auth/Auth';
 import { Home } from './layouts/home/Home';
 
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
-import { HomePage } from './components/home/HomePage';
-import { LoginPage } from './components/auth/Login';
-import { RegisterPage } from './components/auth/Register';
-import { ForgotPassword } from './components/auth/ForgotPassword';
+import { FetchData } from './pages/FetchData';
+import { Counter } from './pages/Counter';
+import { HomePage } from './pages/home/HomePage';
+import { LoginPage } from './pages/auth/Login';
+import { RegisterPage } from './pages/auth/Register';
+import { ForgotPassword } from './pages/auth/ForgotPassword';
 
 
 export default class App extends Component {
