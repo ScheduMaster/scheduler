@@ -5,14 +5,16 @@ import { BrowserRouter as Router, Switch, Route as DefaultRoute } from 'react-ro
 import { Layout } from './pages/Layout';
 import { Auth } from './layouts/auth/Auth';
 import { Home } from './layouts/home/Home';
+import { Application } from './layouts/app/Application';
 
+// Pages
 import { FetchData } from './pages/FetchData';
 import { Counter } from './pages/Counter';
 import { HomePage } from './pages/home/HomePage';
 import { LoginPage } from './pages/auth/Login';
 import { RegisterPage } from './pages/auth/Register';
 import { ForgotPassword } from './pages/auth/ForgotPassword';
-
+import { Empty } from './pages/app/Empty';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -27,6 +29,7 @@ export default class App extends Component {
           <Route path="/auth/login" component={LoginPage} layout={Auth} />
           <Route path="/auth/register" component={RegisterPage} layout={Auth} />
           <Route path="/auth/forgot-password" component={ForgotPassword} layout={Auth} />
+          <Route path="/app" component={Empty} layout={Application} />
         </Switch>
       </Router>
     );
