@@ -5,8 +5,8 @@ import React  from 'react';
 import { Header } from './components/Header'
 
 // Import style
-import './static/css/ud-styles.css';
-import './static/css/lineicons.css'
+import "./static/css/ud-styles.css";
+import "./static/css/lineicons.css";
 
 export class Home extends Component {
   render() {
