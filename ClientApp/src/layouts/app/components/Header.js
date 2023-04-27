@@ -10,12 +10,17 @@ export class Header extends Component {
         return (
             <header className="navbar navbar-expand-md navbar-light d-print-none">
                 <div className="container-xl">
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon" />
+                    </button>
                     {/* Logo component */}
                     <Logo src={this.props.logo.src} name={this.props.logo.name}/>
                     <div className="navbar-nav flex-row order-md-last">
-                        <div className="d-none d-md-flex">
+                        <div className="nav-item d-none d-md-flex me-3">
                             {/* ShortcutList compoent */}
                             <ShortCutList shortcutsData={this.props.shortcutsData}/>
+                        </div>
+                        <div className="d-none d-md-flex">
                             {/* Notification component */}
                             <Notification notifications={this.props.notificationsData}/>
                         </div>
