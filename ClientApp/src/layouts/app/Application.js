@@ -25,7 +25,7 @@ export class Application extends Component {
         const { children } = this.props;
         
         return (
-            <div className="page">
+            <>
                 <Header 
                     shortcutsData={shortcutsData} 
                     notificationsData={notificationsData}
@@ -37,7 +37,7 @@ export class Application extends Component {
                     {children}
                     <Footer footersData={footersData}/>
                 </div>
-            </div>
+            </>
         ) 
     }
 }
