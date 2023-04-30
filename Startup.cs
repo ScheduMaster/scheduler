@@ -1,10 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using System;
+using Application.Data;
+using Microsoft.AspNetCore.Identity;
+using Application.Data.Entities;
+using Microsoft.OpenApi.Models;
 
 namespace scheduler
 {
@@ -21,7 +26,20 @@ namespace scheduler
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddDbContext<DBContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+            
+            // Add Identity
+            services.AddIdentity<User, IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<DBContext>()
+                .AddDefaultTokenProviders();
+
             services.AddControllersWithViews();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -47,6 +65,15 @@ namespace scheduler
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
 
