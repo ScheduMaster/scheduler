@@ -66,6 +66,9 @@ namespace scheduler
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            // Logging middleware
+            app.UseMiddleware<LoggingMiddleware>();
+            
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
