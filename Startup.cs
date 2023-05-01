@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using Application.Data;
 using Microsoft.AspNetCore.Identity;
-using Application.Data.Entities;
 using Microsoft.OpenApi.Models;
+using Application.Models;
+using Application.Services;
 
 namespace scheduler
 {
@@ -34,6 +35,11 @@ namespace scheduler
             services.AddIdentity<User, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<DBContext>()
                 .AddDefaultTokenProviders();
+            
+            // Register Dependence Injection (DI)
+            services.AddScoped<IHashService, HashService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITokenService, TokenService>();
 
             services.AddControllersWithViews();
             services.AddSwaggerGen(c =>
