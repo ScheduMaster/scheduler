@@ -1,8 +1,8 @@
+using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using Application.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Application.Models;
 
 namespace Application.Data
 {
@@ -16,7 +16,9 @@ namespace Application.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new TokenConfiguration());
         }
         public DbSet<User> User { get; set; }
+        public DbSet<AuthToken> AuthToken { get; set; }
     }
 }
