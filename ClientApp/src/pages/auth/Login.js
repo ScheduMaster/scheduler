@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { RegisterOption } from './components/RegisterOption';
 import { LoginWithProvider } from './components/LoginWithProvider';
+import { ErrorList } from './components/ErrorList';
 
 // Services
 import { AuthService } from './services/AuthService';
@@ -99,7 +100,7 @@ export class LoginPage extends Component {
                   <Form.Check type="checkbox" label="Remember me on this device" />
                 </Form.Group>
                 <div className="form-footer">
-                  {/* {error ? <ErrorList errors={error}/> : ''} */}
+                  {error ? <ErrorList errors={error}/> : ''}
                   <Button type="submit" variant="primary" className="w-100">Sign in</Button>
                 </div>
               </Form>
