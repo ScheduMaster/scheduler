@@ -1,15 +1,16 @@
-import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router, Switch, Route as DefaultRoute } from 'react-router-dom'
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
+
+// Services
+import { AuthContextProvider } from './Services/AuthContext';
+import { AppRoute } from './Services/AppRoute';
 
 // Layouts
-import { Layout } from './pages/Layout';
 import { Auth } from './layouts/auth/Auth';
 import { Home } from './layouts/home/Home';
 import { Application } from './layouts/app/Application';
 
 // Pages
-import { FetchData } from './pages/FetchData';
-import { Counter } from './pages/Counter';
 import { HomePage } from './pages/home/HomePage';
 import { LoginPage } from './pages/auth/Login';
 import { RegisterPage } from './pages/auth/Register';
@@ -21,44 +22,17 @@ export default class App extends Component {
 
   render () {
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/" component={HomePage} layout={Home} />
-          <Route path="/counter" component={Counter} layout={Layout} />
-          <Route path="/fetch-data" component={FetchData} layout={Layout} />
-          <Route path="/auth/login" component={LoginPage} layout={Auth} />
-          <Route path="/auth/register" component={RegisterPage} layout={Auth} />
-          <Route path="/auth/forgot-password" component={ForgotPassword} layout={Auth} />
-          <Route path="/app" component={Empty} layout={Application} />
-        </Switch>
-      </Router>
-    );
-  }
-}
-
-class DefaultLayout extends Component {
-  render() {
-    return (
-      <Fragment>
-        {this.props.children}
-      </Fragment>
-    );
-  }
-}
-
-class Route extends Component {
-  render() {
-    const { component: Component, layout: Layout = DefaultLayout, ...rest } =
-      this.props;
-    return (
-      <DefaultRoute
-        {...rest}
-        render={props => (
-          <Layout>
-            <Component {...props} />
-          </Layout>
-        )}
-      />
+      <AuthContextProvider>
+        <Router forceRefresh={true}>
+            <Switch>
+              <AppRoute exact path="/" component={HomePage} layout={Home} />
+              <AppRoute exact path="/app" component={Empty} layout={Application} type="authenticated" />
+              <AppRoute exact path="/auth/login" component={LoginPage} layout={Auth} />
+              <AppRoute exact path="/auth/register" component={RegisterPage} layout={Auth} />
+              <AppRoute exact path="/auth/forgot-password" component={ForgotPassword} layout={Auth} />
+            </Switch>
+        </Router>
+      </AuthContextProvider>
     );
   }
 }
