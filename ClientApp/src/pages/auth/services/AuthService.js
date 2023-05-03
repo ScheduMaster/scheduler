@@ -14,22 +14,27 @@ export class AuthService {
     this.validator.validateLoginPassword(password);
 
     // Call api
-    if (this.validator.isValid()) {
-      const res = await fetch(`${this.baseUrl ?? ''}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password })
-      })
-      .then(response => response.json())
-      .catch(error => { throw new Error(JSON.stringify(error)); });
-
-      return res;
-    } else {
+    if (!this.validator.isValid()) {
       const errors = this.validator.getErrors();
       throw new Error(JSON.stringify(errors));
     }
+    
+    const res = await fetch(`${this.baseUrl ?? ''}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password })
+    });
+    
+    if (!res.ok) {
+      const responseJson = await res.json();
+      throw new Error(JSON.stringify(responseJson));
+    }
+    
+    const data = await res.json();
+    return data;
+    
   }
 
   register = async (firstName, lastName, email, password, confirmPassword, agreePolicy) => {
@@ -43,22 +48,26 @@ export class AuthService {
     this.validator.validateAgreePolicy(agreePolicy);
 
     // Call api
-    if (this.validator.isValid()) {
-      const res = await fetch(`${this.baseUrl ?? ''}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ firstName, lastName, email, password })
-      })
-      .then(response => response.json())
-      .catch(error => { throw new Error(JSON.stringify(error)) });
-
-      return res;
-    } else {
+    if (!this.validator.isValid()) {
       const errors = this.validator.getErrors();
       throw new Error(JSON.stringify(errors));
     }
+
+    const res = await fetch(`${this.baseUrl ?? ''}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ firstName, lastName, email, password })
+    });
+
+    if (!res.ok) {
+      const responseJson = await res.json();
+      throw new Error(JSON.stringify(responseJson));
+    }
+    
+    const data = await res.json();
+    return data;
   }
 
   saveCookies = (data) => {
