@@ -39,11 +39,11 @@ export class RegisterPage extends Component {
 
     try {
       const { firstName, lastName, email, password, confirmPassword, agreePolicy } = this.state;
-      const data = await this.auth.register(firstName, lastName, email, password, confirmPassword, agreePolicy);
+      await this.auth.register(firstName, lastName, email, password, confirmPassword, agreePolicy);
 
-      localStorage.setItem('token', data.token);
       this.setState({ redirectToReferrer: true });
     } catch (error) {
+      console.log(error.message);
       this.setState({ error: error.message });
     }
   }
