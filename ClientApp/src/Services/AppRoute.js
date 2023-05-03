@@ -10,20 +10,24 @@ export class AppRoute extends Component {
     const { component: Component, layout: Layout, path: Path, ...rest } = this.props;
     const { type } = this.props;
 
-    const isLoginPath = Path === "/auth/login";
-
     if (type === 'authenticated') {
-      console.log((!accessToken || !refreshToken) && !isLoginPath);
-      if ((!accessToken || !refreshToken) && !isLoginPath) {
+      console.log((!accessToken || !refreshToken));
+      if (!accessToken && !refreshToken) {
         return <Redirect to="/auth/login" />;
       }
-      if (accessToken && refreshToken) {
+      if (accessToken || refreshToken) {
         return <Route {...rest} render={props => (
           <Layout>
             <Component {...props} />
           </Layout>
         )} />;
       }
+    } else if (type === "non-authenticated") {
+        return <Route {...rest} render={props => (
+          <Layout>
+            <Component {...props} />
+          </Layout>
+        )} />;
     }
   }
 }
