@@ -5,6 +5,9 @@ import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { Navbar } from "./components/Narbar";
 
+// Services
+import { UserService } from "./services/UserService";
+
 // Styles
 import '@tabler/core/dist/css/tabler.min.css';
 
@@ -21,16 +24,38 @@ import { navbarsData } from "./data/navbar";
 import { footersData } from "./data/footer";
 
 export class Application extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { 
+            avatar: {
+                role: "Loading...", 
+                name: "Loading..."
+            }, 
+            loading: true 
+        };
+        this.service = new UserService();
+    }
+    
+    componentDidMount() {
+        this.getAvatarData();
+    }
+
+    async getAvatarData() {
+        const data = await this.service.getInfo();
+        console.log(data);
+        this.setState({ avatar: data, loading: false });
+    }
+
     render () {
         const { children } = this.props;
         
         return (
-            <>
+            <> 
                 <Header 
                     shortcutsData={shortcutsData} 
                     notificationsData={notificationsData}
                     logo={logo}
-                    avatar={avatar}
+                    avatar={this.state.avatar}
                 />
                 <Navbar navbarsData={navbarsData}/>
                 <div className="page-wrapper">

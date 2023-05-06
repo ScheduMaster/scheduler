@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
 // Services
-import { AuthContextProvider } from './Services/AuthContext';
-import { AppRoute } from './Services/AppRoute';
+import { AuthContextProvider } from './services/AuthContext';
+import { AppRoute } from './services/AppRoute';
 
 // Layouts
 import { Auth } from './layouts/auth/Auth';
@@ -25,11 +25,11 @@ export default class App extends Component {
       <AuthContextProvider>
         <Router forceRefresh={true}>
             <Switch>
-              <AppRoute exact path="/" component={HomePage} layout={Home} />
+              <AppRoute exact path="/" component={HomePage} layout={Home} type="non-authenticated"/>
               <AppRoute exact path="/app" component={Empty} layout={Application} type="authenticated" />
-              <AppRoute exact path="/auth/login" component={LoginPage} layout={Auth} />
-              <AppRoute exact path="/auth/register" component={RegisterPage} layout={Auth} />
-              <AppRoute exact path="/auth/forgot-password" component={ForgotPassword} layout={Auth} />
+              <AppRoute exact path="/auth/login" component={LoginPage} layout={Auth} type="non-authenticated"/>
+              <AppRoute exact path="/auth/register" component={RegisterPage} layout={Auth} type="non-authenticated"/>
+              <AppRoute exact path="/auth/forgot-password" component={ForgotPassword} layout={Auth} type="non-authenticated"/>
             </Switch>
         </Router>
       </AuthContextProvider>
