@@ -1,4 +1,4 @@
-using Application.Models;
+using Application.Data.Entities;
 using System.Threading.Tasks;
 
 namespace Application.Services

@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Application.Data;
-using Application.Models;
+using Application.Data.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -191,13 +191,13 @@ namespace Application.Services
             return AccessToken;
         }
 
-        private void RemoveExpiredRefreshTokens()
+        public void RemoveExpiredRefreshTokens()
         {
             IQueryable<AuthToken> ExpiredTokens = _context.AuthToken.Where(rt => rt.ExpiresAt <= DateTime.UtcNow);
             _context.AuthToken.RemoveRange(ExpiredTokens);
         }
 
-        private void RevokeRefreshToken(string token)
+        public void RevokeRefreshToken(string token)
         {
             AuthToken RefreshToken = _context.AuthToken.SingleOrDefault(rt => rt.Token == token);
 

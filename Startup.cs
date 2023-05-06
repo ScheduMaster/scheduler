@@ -9,8 +9,9 @@ using System;
 using Application.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
-using Application.Models;
+using Application.Data.Entities;
 using Application.Services;
+using Application.Middlewares;
 
 namespace scheduler
 {
@@ -74,7 +75,7 @@ namespace scheduler
 
             // Logging middleware
             app.UseMiddleware<LoggingMiddleware>();
-            
+
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -92,6 +93,9 @@ namespace scheduler
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
+
+            // JWT middleware
+            // app.UseMiddleware<JwtMiddleware>();
 
             app.UseSpa(spa =>
             {

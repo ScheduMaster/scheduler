@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 
-namespace Application.Models
+namespace Application.Data.Entities
 {
     public class User : IdentityUser<Guid>
     {

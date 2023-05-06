@@ -1,6 +1,6 @@
 using System;
 
-namespace Application.Models
+namespace Application.Data.Entities
 {
     public enum TokenType
     {

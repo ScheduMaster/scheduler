@@ -1,4 +1,4 @@
-using Application.Models;
+using Application.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +18,10 @@ namespace Application.Services
         User GetUserInfo(string accessToken);
 
         Task<object> GenerateRefeshToken(User user);
+
+        void RemoveExpiredRefreshTokens();
+
+        void RevokeRefreshToken(string token);
     }
 
 }

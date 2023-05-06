@@ -1,10 +1,11 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Application.Data;
-using Application.Models;
+using Application.Data.Entities;
 using Application.Services;
 
 namespace Application.Controllers
@@ -26,7 +27,6 @@ namespace Application.Controllers
             _authService = authService;
         }
 
-        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] User user)
         {
@@ -39,39 +39,51 @@ namespace Application.Controllers
             // Check if the email address is already in use
             if (_context.Users.Any(u => u.Email == user.Email))
             {
-                return Conflict("A user with this email address already exists");
+                return Conflict(new { message = "A user with this email address already exists"});
             }
 
             // Create a new user and add user to database
             await _authService.Register(user);
 
-            return Ok("User registered successfully");
+            return Ok(new { message = "User registered successfully" });
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] User user)
         {
-            // Validate the user using data annotations
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
-
-            // Retrieve the user from the database based on the email address
-            User currentUser = _authService.Login(user.Email, user.Password);
-    
-            // Create a new JWT access/refresh token with a unique ID, email address, and expiration date
-            object AccessToken = _tokenService.GenerateAccessToken(currentUser);
-            object RefreshToken = await _tokenService.GenerateRefeshToken(currentUser);
-
-            // Return the token to the client
-            return Ok(new
+                // Validate the user using data annotations
+                if (!ModelState.IsValid)
                 {
-                    AccessToken,
-                    RefreshToken
+                    return BadRequest(ModelState);
                 }
-            );
+
+                // Retrieve the user from the database based on the email address
+                User currentUser = _authService.Login(user.Email, user.Password);
+                
+                // Create a new JWT access/refresh token with a unique ID, email address, and expiration date
+                object AccessToken = _tokenService.GenerateAccessToken(currentUser);
+                object RefreshToken = await _tokenService.GenerateRefeshToken(currentUser);
+
+                // Return the token to the client
+                return Ok(new
+                    {
+                        AccessToken,
+                        RefreshToken
+                    }
+                );
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Handle the exception by returning an unauthorized response
+                return Unauthorized(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions by returning a bad request response with the error message
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [Authorize]
@@ -83,6 +95,16 @@ namespace Application.Controllers
 
             // Return the new token to the client
             return Ok(RefeshToken);
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout([FromBody] AuthToken Token)
+        {
+            // Revoke the new refesh token
+            _tokenService.RevokeRefreshToken(Token.Token);
+
+            // Return the new token to the client
+            return Ok("User logout successfully");
         }
     }   
 }
