@@ -11,7 +11,6 @@ export class AppRoute extends Component {
     const { type } = this.props;
 
     if (type === 'authenticated') {
-      console.log((!accessToken || !refreshToken));
       if (!accessToken && !refreshToken) {
         return <Redirect to="/auth/login" />;
       }
