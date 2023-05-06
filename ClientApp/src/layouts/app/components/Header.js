@@ -3,6 +3,7 @@ import { Logo } from "./Header/Logo";
 import { Notification } from "./Header/Notification";
 import { ShortCutList } from "./Header/ShortCutList";
 import { Avatar } from "./Header/Avatar";
+import { dropdowns } from "../data/avatar-dropdown";
 
 export class Header extends Component {
     render () {
@@ -28,7 +29,7 @@ export class Header extends Component {
                         <Avatar 
                             name={this.props.avatar.name}
                             role={this.props.avatar.role}
-                            dropdowns={this.props.avatar.dropdowns}
+                            dropdowns={dropdowns}
                         />
                     </div>
                 </div>

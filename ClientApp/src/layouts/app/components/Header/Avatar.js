@@ -1,6 +1,19 @@
 import React, { Component } from "react";
+import { UserService } from "../../services/UserService";
 
 export class Avatar extends Component {
+    constructor(props) {
+        super(props);
+    
+        this.userService = new UserService();
+    }
+
+    handleLogoutClick = async (event) => {
+        event.preventDefault();
+        await this.userService.logout();
+        window.location.href = '/auth/login';
+    }
+
     render () {
         return (
             <div className="nav-item dropdown">
@@ -18,7 +31,7 @@ export class Avatar extends Component {
                         )
                     })}
                     <div className="dropdown-divider"/>
-                    <a href="#" className="dropdown-item">Logout</a>
+                    <a href="#" className="dropdown-item" onClick={this.handleLogoutClick}>Logout</a>
                 </div>
             </div>
         )
