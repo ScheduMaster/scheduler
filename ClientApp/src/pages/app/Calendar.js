@@ -5,11 +5,11 @@ import { TuiCalendar } from "./components/TuiCalendar";
 // Static data
 import { initialCalendars, initialEvents, viewModeOptions } from "./data/calendar";
 
-export class Empty extends Component {
+export class Calendar extends Component {
     render () {
         return (
             <>
-                <PageHeader title="Empty page"/>
+                <PageHeader preTitle="Overview" title="Calendar"/>
                 <div className="page-body">
                     <div className="container-xl">
                         <TuiCalendar 
