@@ -14,12 +14,12 @@ export const navbarsData = [
         dropdownsData: [
             [
                 {
-                    href: "#",
-                    name: "Activity"
+                    href: "/app/scheduler",
+                    name: "Upcoming appointments"
                 },
                 {
-                    href: "#",
-                    name: "Gallery"
+                    href: "/app/new-appointment",
+                    name: "New appointment"
                 }
             ],
             [
@@ -31,14 +31,14 @@ export const navbarsData = [
                     href: "#",
                     name: "Search results"
                 }
-            ]
+            ]   
         ]
     },
-    {
-        title: "New Appointment",
-        icon: "/images/layouts/app/Navbar/form.svg",
-        href: "/app/appointment/new",
-        dropdown: false,
-        dropdownsData: []
-    },
+    // {
+    //     title: "New Appointment",
+    //     icon: "/images/layouts/app/Navbar/form.svg",
+    //     href: "/app/appointment/new",
+    //     dropdown: false,
+    //     dropdownsData: []
+    // },
 ]
