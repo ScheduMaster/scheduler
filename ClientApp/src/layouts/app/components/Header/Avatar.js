@@ -1,20 +1,30 @@
 import React, { Component } from "react";
+import { Redirect } from 'react-router-dom';
 import { UserService } from "../../services/UserService";
 
 export class Avatar extends Component {
     constructor(props) {
         super(props);
     
+        this.state = {
+            redirectToReferrer: false
+        };
         this.userService = new UserService();
     }
 
     handleLogoutClick = async (event) => {
         event.preventDefault();
         await this.userService.logout();
-        window.location.href = '/auth/login';
+        this.setState({ redirectToReferrer: true });
     }
 
     render () {
+        const {  redirectToReferrer } = this.state;
+
+        if (redirectToReferrer) {
+            return <Redirect to="/auth/login" />;
+        }
+
         return (
             <div className="nav-item dropdown">
                 <a href="#" className="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
