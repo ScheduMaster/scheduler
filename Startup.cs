@@ -13,6 +13,11 @@ using Application.Data.Entities;
 using Application.Services;
 using Application.Middlewares;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Threading.Tasks;
+
 namespace scheduler
 {
     public class Startup
@@ -41,6 +46,32 @@ namespace scheduler
             services.AddScoped<IHashService, HashService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddAuthentication(x => {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o => {
+                var Key = Encoding.UTF8.GetBytes(Configuration["Jwt:SecretKey"]);
+                o.SaveToken = true;
+                o.TokenValidationParameters = new TokenValidationParameters {
+                    ValidateIssuer = false, // on production make it true
+                    ValidateAudience = false, // on production make it true
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Key),
+                    ClockSkew = TimeSpan.Zero
+                };
+                o.Events = new JwtBearerEvents {
+                    OnAuthenticationFailed = context => {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("IS-TOKEN-EXPIRED", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+            });
 
             services.AddControllersWithViews();
             services.AddSwaggerGen(c =>
@@ -72,9 +103,13 @@ namespace scheduler
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseAuthentication();
 
             // Logging middleware
             app.UseMiddleware<LoggingMiddleware>();
+
+            // JWT middleware
+            app.UseMiddleware<JwtMiddleware>();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -86,6 +121,7 @@ namespace scheduler
             });
 
             app.UseRouting();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -93,9 +129,6 @@ namespace scheduler
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-
-            // JWT middleware
-            // app.UseMiddleware<JwtMiddleware>();
 
             app.UseSpa(spa =>
             {
