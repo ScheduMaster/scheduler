@@ -1,0 +1,12 @@
+/* Set the background color of the table and pagination components to white */
+.table,
+.pagination {
+  background-color: #fff;
+}
+
+
+/* Set the background color of the active pagination item to black */
+.pagination .active .page-link {
+  background-color: #206bc4;
+  border-color: #206bc4;
+}
