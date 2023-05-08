@@ -1,5 +1,6 @@
 using Application.Data.Entities;
 using System.Threading.Tasks;
+using Application.Models.Requests;
 
 namespace Application.Services
 {
@@ -9,7 +10,7 @@ namespace Application.Services
         User Login(string username, string password);
 
         // Register a new user and return an access token
-        Task Register(User user);
+        Task Register(RegisterRequest Request);
 
         // Update a user's password
         Task<bool> UpdatePassword(User user, string oldPassword, string newPassword);
