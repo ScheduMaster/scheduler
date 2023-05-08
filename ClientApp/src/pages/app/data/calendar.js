@@ -163,3 +163,18 @@ export const viewModeOptions = [
     value: 'day',
   },
 ];
+
+export const entries = [
+  { id: 1, name: 'John Doe', email: 'john.doe@example.com' },
+  { id: 2, name: 'Jane Doe', email: 'jane.doe@example.com' },
+  { id: 3, name: 'Bob Smith', email: 'bob.smith@example.com' },
+  { id: 4, name: 'Alice Johnson', email: 'alice.johnson@example.com' },
+  { id: 5, name: 'Charlie Brown', email: 'charlie.brown@example.com' },
+  { id: 6, name: 'Sally Brown', email: 'sally.brown@example.com' },
+  { id: 7, name: 'Linus van Pelt', email: 'linus.vanpelt@example.com' },
+  { id: 8, name: 'Lucy van Pelt', email: 'lucy.vanpelt@example.com' },
+  { id: 9, name: 'Schroeder', email: 'schroeder@example.com' },
+  { id: 10, name: 'Peppermint Patty', email: 'peppermint.patty@example.com' },
+  { id: 11, name: 'Marcie', email: 'marcie@example.com' },
+  { id: 12, name: 'Franklin', email: 'franklin@example.com' },
+];
