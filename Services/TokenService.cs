@@ -27,13 +27,6 @@ namespace Application.Services
             // Create a new JWT token with a unique ID, email address, and expiration date
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
-            // Create a list of claims for the access token (in this example, just the user's ID and username)
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email)
-            };
-
             // Get key SecretKey from enviroment
             byte[] key = Encoding.ASCII.GetBytes(_config.GetValue<string>("Jwt:SecretKey"));
 
@@ -43,7 +36,8 @@ namespace Application.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email)
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role)
                 }),
                 
                 // RefeshToken will be expired in 7 days
@@ -89,7 +83,8 @@ namespace Application.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email)
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role)
                 }),
 
                 // AccessToken will be expired in 2 hours
@@ -111,7 +106,7 @@ namespace Application.Services
 
             return new
                 {
-                    Token = AccessToken.Token,
+                    AccessToken = AccessToken.Token,
                     ExpiresAt = AccessToken.ExpiresAt
                 };
         }

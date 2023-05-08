@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Data;
+using Application.Models.Requests;
 
 namespace Application.Services 
 {
@@ -37,23 +38,23 @@ namespace Application.Services
             return user;
         }
 
-        public async Task Register(User user) 
+        public async Task Register(RegisterRequest Request) 
         {
             // Hash the password using BCrypt.Net
-            string hashedPassword = _hashService.HashPassword(user.Password);
+            string hashedPassword = _hashService.HashPassword(Request.Password);
 
             // Create a new User object and save it to the database using Entity Framework
-            User newUser = new User
+            User user = new User
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
+                FirstName = Request.FirstName,
+                LastName = Request.LastName,
+                Email = Request.Email,
+                PhoneNumber = Request.PhoneNumber,
                 PasswordHash = hashedPassword
             };
 
             // Add user to database
-            _context.Users.Add(newUser);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
         }
 
