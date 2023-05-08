@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Application.Data;
 using Application.Data.Entities;
 using Application.Services;
+using Application.Models.Requests;
+using Application.Models.Responses;
 
 namespace Application.Controllers
 {
@@ -28,7 +30,7 @@ namespace Application.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] User user)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest Request)
         {
             // Validate the user using data annotations
             if (!ModelState.IsValid)
@@ -37,19 +39,19 @@ namespace Application.Controllers
             }
 
             // Check if the email address is already in use
-            if (_context.Users.Any(u => u.Email == user.Email))
+            if (_context.Users.Any(u => u.Email == Request.Email))
             {
                 return Conflict(new { message = "A user with this email address already exists"});
             }
 
             // Create a new user and add user to database
-            await _authService.Register(user);
+            await _authService.Register(Request);
 
             return Ok(new { message = "User registered successfully" });
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] User user)
+        public async Task<IActionResult> Login([FromBody] LoginRequest Request)
         {
             try
             {
@@ -60,11 +62,11 @@ namespace Application.Controllers
                 }
 
                 // Retrieve the user from the database based on the email address
-                User currentUser = _authService.Login(user.Email, user.Password);
+                User user = _authService.Login(Request.Email, Request.Password);
                 
                 // Create a new JWT access/refresh token with a unique ID, email address, and expiration date
-                object AccessToken = _tokenService.GenerateAccessToken(currentUser);
-                object RefreshToken = await _tokenService.GenerateRefeshToken(currentUser);
+                object AccessToken = _tokenService.GenerateAccessToken(user);
+                object RefreshToken = await _tokenService.GenerateRefeshToken(user);
 
                 // Return the token to the client
                 return Ok(new
@@ -86,25 +88,24 @@ namespace Application.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost("refresh-token")]
-        public IActionResult RefreshToken([FromBody] AuthToken Token)
+        public IActionResult RefreshToken([FromBody] RefreshTokenRequest Request)
         {
             // Refresh the new access token
-            object RefeshToken = _tokenService.RefreshAccessToken(Token.Token);
+            object AccessToken = _tokenService.RefreshAccessToken(Request.RefreshToken);
 
             // Return the new token to the client
-            return Ok(RefeshToken);
+            return Ok(AccessToken);
         }
 
         [HttpPost("logout")]
-        public IActionResult Logout([FromBody] AuthToken Token)
+        public IActionResult Logout([FromBody] LogoutRequest Request)
         {
             // Revoke the new refesh token
-            _tokenService.RevokeRefreshToken(Token.Token);
+            _tokenService.RevokeRefreshToken(Request.RefreshToken);
 
             // Return the new token to the client
-            return Ok("User logout successfully");
+            return Ok(new { message = "User logout successfully" });
         }
     }   
 }
