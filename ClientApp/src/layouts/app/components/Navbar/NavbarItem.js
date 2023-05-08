@@ -16,8 +16,9 @@ export class NavbarItem extends Component {
                         role="button"
                         aria-expanded="false"
                     >
-                        <span className="nav-link-icon d-md-none d-lg-inline-block"></span>
-                            <img src={icon} alt={title}/>
+                        <span className="nav-link-icon d-md-none d-lg-inline-block">
+                            <img src={icon} alt={title} width={20} height={20}/>
+                        </span>
                         <span className="nav-link-title">{title}</span>
                     </a>
                     <DropdownMenu dropdownsData={dropdownsData}/>
@@ -27,8 +28,9 @@ export class NavbarItem extends Component {
           return (
                 <li className={`nav-item ${active ? 'active' : ''}`}>
                     <a className="nav-link" href="./">
-                        <span className="nav-link-icon d-md-none d-lg-inline-block"></span>
-                            <img src={icon} alt={title}/>
+                        <span className="nav-link-icon d-md-none d-lg-inline-block">
+                            <img src={icon} alt={title} width={20} height={20}/>
+                        </span>
                         <span className="nav-link-title">{title}</span>
                     </a>
                 </li>
