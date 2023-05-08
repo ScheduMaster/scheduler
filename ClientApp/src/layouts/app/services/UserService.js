@@ -1,4 +1,5 @@
 import { JwtInterceptor } from '../../../services/JwtInterceptor';
+import Cookies from 'js-cookie';
 
 export class UserService {
     constructor() {
@@ -6,13 +7,24 @@ export class UserService {
     }
 
     logout = async () => {
-      const res = await this.interceptor.post('/api/auth/logout');
+      const res = await this.interceptor.post('/api/auth/logout', { 
+        refreshToken: Cookies.get('refreshToken')
+      },{
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }
+      );
       
       if (!res.ok) {
         const responseJson = await res.json();
         throw new Error(JSON.stringify(responseJson));
       }
-        
+      
+      // Clear cookies
+      Cookies.remove('accessToken');
+      Cookies.remove('refreshToken');
+
       const data = await res.json();
       return data;
     }
