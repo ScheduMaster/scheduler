@@ -12,6 +12,10 @@ namespace Application.Data.Entities
         public string Role { get; set; }
         public DateTime DateOfBirth { get; set; }
         public bool IsActive { get; set; }
+        public string GetUsername()
+        {
+            return $"{LastName} {FirstName}";
+        }
     }
 
 }
