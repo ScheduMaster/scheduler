@@ -15,7 +15,6 @@ import '@tabler/core/dist/css/tabler.min.css';
 import { shortcutsData } from "./data/shortcut";
 import { notificationsData } from "./data/notification";
 import { logo } from "./data/logo";
-import { avatar } from "./data/avatar";
 
 // Data Navbar
 import { navbarsData } from "./data/navbar";
