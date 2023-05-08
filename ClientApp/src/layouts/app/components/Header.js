@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Logo } from "./Header/Logo";
 import { Notification } from "./Header/Notification";
-import { ShortCutList } from "./Header/ShortCutList";
 import { Avatar } from "./Header/Avatar";
 import { dropdowns } from "../data/avatar-dropdown";
+// import { ShortCutList } from "./Header/ShortCutList";
 
 export class Header extends Component {
     render () {
@@ -17,10 +17,10 @@ export class Header extends Component {
                     {/* Logo component */}
                     <Logo src={this.props.logo.src} name={this.props.logo.name}/>
                     <div className="navbar-nav flex-row order-md-last">
-                        <div className="nav-item d-none d-md-flex me-3">
+                        {/* <div className="nav-item d-none d-md-flex me-3"> */}
                             {/* ShortcutList compoent */}
-                            <ShortCutList shortcutsData={this.props.shortcutsData}/>
-                        </div>
+                            {/* <ShortCutList shortcutsData={this.props.shortcutsData}/> */}
+                        {/* </div> */}
                         <div className="d-none d-md-flex">
                             {/* Notification component */}
                             <Notification notifications={this.props.notificationsData}/>
