@@ -19,7 +19,7 @@ export class JwtInterceptor {
     return fetch(url, options).then(async (response) => {
       if (response.status === 401) {
         try {
-          const res = await fetch(`${process.env.REACT_APP_SERVER}/auth/refresh-token`, {
+          const res = await fetch(`${process.env.REACT_APP_SERVER ?? ``}api/auth/refresh-token`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -28,12 +28,14 @@ export class JwtInterceptor {
           });
           const data = await res.json();
 
-          Cookies.set('accessToken', data?.access?.token, { expires: new Date(data?.access?.expires) });
+          Cookies.set('accessToken', data?.accessToken, { expires: new Date(data?.expiresAt) });
+          
+          if (!options.headers) {
+            options.headers = {};
+          }
+          options.headers.Authorization = `bearer ${data?.accessToken}`;
 
-          const newOptions = { ...options };
-          newOptions.headers.Authorization = `bearer ${data?.access?.token}`;
-
-          return this.fetchInterceptor(url, newOptions);
+          return this.fetchInterceptor(url, options);
         } catch (error) {
           return Promise.reject(error);
         }
@@ -61,11 +63,5 @@ export class JwtInterceptor {
 
   delete(url, options = {}) {
     return this.fetchInterceptor(url, { ...options, method: 'DELETE' });
-  }
-
-  logout() {
-    Cookies.remove('accessToken');
-    Cookies.remove('refreshToken');
-    window.location.href = '/login';
   }
 }
