@@ -15,7 +15,8 @@ import { HomePage } from './pages/home/HomePage';
 import { LoginPage } from './pages/auth/Login';
 import { RegisterPage } from './pages/auth/Register';
 import { ForgotPassword } from './pages/auth/ForgotPassword';
-import { Empty } from './pages/app/Empty';
+import { Calendar } from './pages/app/Calendar';
+import { Scheduler } from './pages/app/Scheduler';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -26,10 +27,11 @@ export default class App extends Component {
         <Router forceRefresh={true}>
             <Switch>
               <AppRoute exact path="/" component={HomePage} layout={Home} type="non-authenticated"/>
-              <AppRoute exact path="/app" component={Empty} layout={Application} type="authenticated" />
               <AppRoute exact path="/auth/login" component={LoginPage} layout={Auth} type="non-authenticated"/>
               <AppRoute exact path="/auth/register" component={RegisterPage} layout={Auth} type="non-authenticated"/>
               <AppRoute exact path="/auth/forgot-password" component={ForgotPassword} layout={Auth} type="non-authenticated"/>
+              <AppRoute exact path="/app" component={Calendar} layout={Application} type="authenticated" />
+              <AppRoute exact path="/app/scheduler" component={Scheduler} layout={Application} type="authenticated" />
             </Switch>
         </Router>
       </AuthContextProvider>
