@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Calendar from '@toast-ui/react-calendar';
+import { Dropdown, Button } from "react-bootstrap";
 
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 import 'tui-date-picker/dist/tui-date-picker.css';
@@ -177,39 +178,51 @@ export class TuiCalendar extends Component {
 
     return (
         <>
-            <div>
-              <select onChange={this.onChangeSelect} value={this.state.selectedView}>
-                {viewModeOptions.map((option, index) => (
-                  <option value={option.value} key={index}>
-                    {option.title}
-                  </option>
-                ))}
-              </select>
+            <div className="d-flex align-items-center">
+              <Dropdown>
+                <Dropdown.Toggle variant="light" id="dropdown-viewmode">
+                  {viewModeOptions.find((option) => option.value === this.state.selectedView).title}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  {viewModeOptions.map((option, index) => (
+                    <Dropdown.Item
+                      key={index}
+                      onClick={() => this.onChangeSelect({ target: { value: option.value } })}
+                    >
+                      {option.title}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
               <span>
-                <button
-                  type="button"
-                  className="btn btn-default btn-sm move-today"
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="move-today"
                   data-action="move-today"
                   onClick={this.onClickNavi}
                 >
                   Today
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-default btn-sm move-day"
+                </Button>
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="move-day"
                   data-action="move-prev"
                   onClick={this.onClickNavi}
                 >
                   Prev
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-default btn-sm move-day"
+                </Button>
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="move-day"
                   data-action="move-next"
                   onClick={this.onClickNavi}
                 >
                   Next
-                </button>
+                </Button>
               </span>
               <span className="render-range">{this.state.selectedDateRangeText}</span>
             </div>
