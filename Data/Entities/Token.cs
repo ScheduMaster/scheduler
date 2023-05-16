@@ -15,5 +15,7 @@ namespace Application.Data.Entities
         public DateTime ExpiresAt { get; set; }
         public Guid UserId { get; set; }
         public bool Blacklisted { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

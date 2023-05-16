@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System;
 
 namespace Application.Data.Entities
@@ -12,10 +13,21 @@ namespace Application.Data.Entities
         public string Role { get; set; }
         public DateTime DateOfBirth { get; set; }
         public bool IsActive { get; set; }
+
+        public virtual ICollection<Appointment> Appointments { get; set; }
+        public virtual ICollection<Exchange> ExchangesRequested { get; set; }
+        public virtual ICollection<Exchange> ExchangesRequestor { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
+        public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<Provider> Providers { get; set; }
+        public virtual ICollection<Work> Works { get; set; }
+        public virtual ICollection<Customer> Customers { get; set; }
+        public virtual ICollection<WorkProvider> WorkProviders { get; set; }
+        public virtual ICollection<AuthToken> Tokens { get; set; }
+
         public string GetUsername()
         {
             return $"{LastName} {FirstName}";
         }
     }
-
 }
