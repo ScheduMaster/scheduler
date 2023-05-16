@@ -78,7 +78,12 @@ export class UserService {
     }
 
     getUsers = async () => {
-      const res = await this.interceptor.patch('/api/user/list')
+      const res = await this.interceptor.get('/api/user/list', {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
       
       if (!res.ok) {
         const responseJson = await res.json();
