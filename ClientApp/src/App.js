@@ -18,6 +18,7 @@ import { ForgotPassword } from './pages/auth/ForgotPassword';
 import { Calendar } from './pages/app/Calendar';
 import { Scheduler } from './pages/app/Scheduler';
 import { UpdateUser } from './pages/app/UpdateUser';
+import { Users } from './pages/app/Users';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -34,6 +35,7 @@ export default class App extends Component {
               <AppRoute exact path="/app" component={Calendar} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/scheduler" component={Scheduler} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/profile" component={UpdateUser} layout={Application} type="authenticated" />
+              <AppRoute exact path="/app/user/list" component={Users} layout={Application} type="authenticated" />
             </Switch>
         </Router>
       </AuthContextProvider>
