@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
 // Services
-import { AuthContextProvider } from './services/AuthContext';
-import { AppRoute } from './services/AppRoute';
+import { AuthContextProvider } from './components/AuthContext';
+import { AppRoute } from './components/AppRoute';
 
 // Layouts
 import { Auth } from './layouts/auth/Auth';
@@ -17,6 +17,7 @@ import { RegisterPage } from './pages/auth/Register';
 import { ForgotPassword } from './pages/auth/ForgotPassword';
 import { Calendar } from './pages/app/Calendar';
 import { Scheduler } from './pages/app/Scheduler';
+import { UpdateUser } from './pages/app/UpdateUser';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -32,6 +33,7 @@ export default class App extends Component {
               <AppRoute exact path="/auth/forgot-password" component={ForgotPassword} layout={Auth} type="non-authenticated"/>
               <AppRoute exact path="/app" component={Calendar} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/scheduler" component={Scheduler} layout={Application} type="authenticated" />
+              <AppRoute exact path="/app/profile" component={UpdateUser} layout={Application} type="authenticated" />
             </Switch>
         </Router>
       </AuthContextProvider>
