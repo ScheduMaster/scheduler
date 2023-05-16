@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Models.Requests
 {
-    public class RegisterRequest
+    public class RegisterModel
     {
         [Required]
         public string FirstName { get; set; }
