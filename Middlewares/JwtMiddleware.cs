@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using Application.Services;
-using Application.Data.Entities;
+using System.Security.Claims;
 using System;
 
 namespace Application.Middlewares 
@@ -16,21 +16,23 @@ namespace Application.Middlewares
 
         public async Task Invoke(HttpContext context, ITokenService tokenService)
         {
-            string authorizationHeader = context.Request.Headers["Authorization"].ToString();
-            if(!string.IsNullOrEmpty(authorizationHeader))
+            try
             {
-                // Validation of the Token expiration
-                string token = authorizationHeader.Substring("Bearer ".Length).Trim();
-                User user = tokenService.GetUserInfo(token);
+                // Get the user from the current request
+                ClaimsPrincipal user = context.User;
 
-                if (user != null)
-                {
-                    context.Items["User"] = user;
-                }
+                // Get the user info from the claims
+                string userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                // Set the user ID in the HttpContext items collection
+                context.Items["UserId"] = userId;
+
                 await _next(context);
             }
-
-            await _next(context);
+            catch
+            {
+                await _next(context);
+            }
         }
     }
 }
