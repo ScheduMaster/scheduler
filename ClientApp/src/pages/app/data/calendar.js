@@ -165,16 +165,24 @@ export const viewModeOptions = [
 ];
 
 export const entries = [
-  { id: 1, name: 'John Doe', email: 'john.doe@example.com' },
-  { id: 2, name: 'Jane Doe', email: 'jane.doe@example.com' },
-  { id: 3, name: 'Bob Smith', email: 'bob.smith@example.com' },
-  { id: 4, name: 'Alice Johnson', email: 'alice.johnson@example.com' },
-  { id: 5, name: 'Charlie Brown', email: 'charlie.brown@example.com' },
-  { id: 6, name: 'Sally Brown', email: 'sally.brown@example.com' },
-  { id: 7, name: 'Linus van Pelt', email: 'linus.vanpelt@example.com' },
-  { id: 8, name: 'Lucy van Pelt', email: 'lucy.vanpelt@example.com' },
-  { id: 9, name: 'Schroeder', email: 'schroeder@example.com' },
-  { id: 10, name: 'Peppermint Patty', email: 'peppermint.patty@example.com' },
-  { id: 11, name: 'Marcie', email: 'marcie@example.com' },
-  { id: 12, name: 'Franklin', email: 'franklin@example.com' },
+  { id: 1, client: 'John Doe', title: 'Some thing', location: 'Google meet', start: today, end: end, status: 'Pending' },
+  { id: 2, client: 'Jane Doe', title: 'Some thing', location: 'Google meet', start: addHours(today, 1), end: addHours(today, 1.5), status: 'Ok' },
+  { id: 3, client: 'Bob Smith', title: 'Some thing', location: 'Google meet', start: addHours(today, 2), end: addHours(today, 3), status: 'Pending' },
+  { id: 4, client: 'Alice Johnson', title: 'Some thing', location: 'Google meet', start: addHours(today, 6), end: addHours(today, 8), status: 'Ok' },
+  { id: 5, client: 'Charlie Brown', title: 'Some thing', location: 'Google meet', start: addDate(today, 1), end: addDate(addHours(today, 1), 1), status: 'Ok' },
+  { id: 6, client: 'Sally Brown', title: 'Some thing', location: 'Google meet', start: addDate(today, 2), end: addDate(addHours(today, 1), 3), status: 'Ok' },
+  { id: 7, client: 'Linus van Pelt', title: 'Some thing', location: 'Google meet', start: addDate(today, 4), end: addDate(addHours(today, 1), 4), status: 'Ok' },
+  { id: 8, client: 'Lucy van Pelt', title: 'Some thing', location: 'Google meet', start: addDate(today, 5), end: addDate(addHours(today, 1), 4), status: 'Pending' },
+  { id: 9, client: 'Schroeder', title: 'Some thing', location: 'Google meet', start: addDate(today, 6), end: addDate(addHours(today, 1), 4), status: 'Ok' },
 ];
+
+export const actions = [
+  {
+    href: '#',
+    name: 'Action'
+  },
+  {
+    href: '#',
+    name: 'Another action'
+  }
+]
