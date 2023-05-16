@@ -3,7 +3,7 @@ import { PageHeader } from "./components/PageHeader";
 import { DataTable } from "./components/DataTable";
 
 // Static data
-import { entries } from "./data/calendar";
+import { entries, actions } from "./data/calendar";
 
 export class Scheduler extends Component {
     render () {
@@ -12,7 +12,7 @@ export class Scheduler extends Component {
                 <PageHeader preTitle="Upcoming appointments" title="Scheduler"/>
                 <div className="page-body">
                     <div className="container-xl">
-                        <DataTable entries={entries}/>
+                        <DataTable entries={entries} actions={actions}/>
                     </div>
                 </div>
             </>

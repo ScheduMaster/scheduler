@@ -164,16 +164,17 @@ export const viewModeOptions = [
   },
 ];
 
+export const headers = ['id', 'client', 'title', 'location', 'start', 'end', 'status'];
 export const entries = [
-  { id: 1, client: 'John Doe', title: 'Some thing', location: 'Google meet', start: today, end: end, status: 'Pending' },
-  { id: 2, client: 'Jane Doe', title: 'Some thing', location: 'Google meet', start: addHours(today, 1), end: addHours(today, 1.5), status: 'Ok' },
-  { id: 3, client: 'Bob Smith', title: 'Some thing', location: 'Google meet', start: addHours(today, 2), end: addHours(today, 3), status: 'Pending' },
-  { id: 4, client: 'Alice Johnson', title: 'Some thing', location: 'Google meet', start: addHours(today, 6), end: addHours(today, 8), status: 'Ok' },
-  { id: 5, client: 'Charlie Brown', title: 'Some thing', location: 'Google meet', start: addDate(today, 1), end: addDate(addHours(today, 1), 1), status: 'Ok' },
-  { id: 6, client: 'Sally Brown', title: 'Some thing', location: 'Google meet', start: addDate(today, 2), end: addDate(addHours(today, 1), 3), status: 'Ok' },
-  { id: 7, client: 'Linus van Pelt', title: 'Some thing', location: 'Google meet', start: addDate(today, 4), end: addDate(addHours(today, 1), 4), status: 'Ok' },
-  { id: 8, client: 'Lucy van Pelt', title: 'Some thing', location: 'Google meet', start: addDate(today, 5), end: addDate(addHours(today, 1), 4), status: 'Pending' },
-  { id: 9, client: 'Schroeder', title: 'Some thing', location: 'Google meet', start: addDate(today, 6), end: addDate(addHours(today, 1), 4), status: 'Ok' },
+  { id: 1, client: 'John Doe', title: 'Some thing', location: 'Google meet', start: today.toString(), end: end.toString(), status: 'Pending' },
+  { id: 2, client: 'Jane Doe', title: 'Some thing', location: 'Google meet', start: addHours(today, 1).toString(), end: addHours(today, 1.5).toString(), status: 'Ok' },
+  { id: 3, client: 'Bob Smith', title: 'Some thing', location: 'Google meet', start: addHours(today, 2).toString(), end: addHours(today, 3).toString(), status: 'Pending' },
+  { id: 4, client: 'Alice Johnson', title: 'Some thing', location: 'Google meet', start: addHours(today, 6).toString(), end: addHours(today, 8).toString(), status: 'Ok' },
+  { id: 5, client: 'Charlie Brown', title: 'Some thing', location: 'Google meet', start: addDate(today, 1).toString(), end: addDate(addHours(today, 1), 1).toString(), status: 'Ok' },
+  { id: 6, client: 'Sally Brown', title: 'Some thing', location: 'Google meet', start: addDate(today, 2).toString(), end: addDate(addHours(today, 1), 3).toString(), status: 'Ok' },
+  { id: 7, client: 'Linus van Pelt', title: 'Some thing', location: 'Google meet', start: addDate(today, 4).toString(), end: addDate(addHours(today, 1), 4).toString(), status: 'Ok' },
+  { id: 8, client: 'Lucy van Pelt', title: 'Some thing', location: 'Google meet', start: addDate(today, 5).toString(), end: addDate(addHours(today, 1), 4).toString(), status: 'Pending' },
+  { id: 9, client: 'Schroeder', title: 'Some thing', location: 'Google meet', start: addDate(today, 6).toString(), end: addDate(addHours(today, 1), 4).toString(), status: 'Ok' },
 ];
 
 export const actions = [

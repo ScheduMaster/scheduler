@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Table, Pagination, Dropdown } from 'react-bootstrap';
 import { ActionDropdown } from "./ActionDropdown";
 import '../static/css/data-table.css';
-import { actions } from '../data/calendar';
 
 export class DataTable extends Component {
   constructor(props) {
@@ -31,10 +30,16 @@ export class DataTable extends Component {
   }
 
   render() {
-    const { entries } = this.props;
+    const { entries, actions } = this.props;
+
+    if (entries.length === 0) {
+      return <p>No data available.</p>;
+    }
+
     const { entriesPerPage, activePage } = this.state;
     const pageCount = Math.ceil(entries.length / entriesPerPage);
 
+    const headers = Object.keys(entries[0]);
     const startIndex = (activePage - 1) * entriesPerPage;
     const endIndex = startIndex + entriesPerPage;
     const currentEntries = entries.slice(startIndex, endIndex);
@@ -45,26 +50,18 @@ export class DataTable extends Component {
           <Table bordered hover >
             <thead>
               <tr>
-                <th>NO.</th>
-                <th>Title</th>
-                <th>Client</th>
-                <th>Location</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Status</th>
+                {headers.map((header, index) => (
+                  <th key={index}>{header}</th>
+                ))}
                 <th />
               </tr>
             </thead>
             <tbody>
-              {currentEntries.map(({ id, title, client, location, start, end, status }) => (
-                <tr key={id}>
-                  <td>{id}</td>
-                  <td>{title}</td>
-                  <td>{client}</td>
-                  <td>{location}</td>
-                  <td>{start.toLocaleString()}</td>
-                  <td>{end.toLocaleString()}</td>
-                  <td>{status}</td>
+             {currentEntries.map((row, index) => (
+                <tr key={index}>
+                  {headers.map((header) => (
+                    <td key={header}>{row[header]}</td>
+                  ))}
                   <td className="text-end">
                     <ActionDropdown actions={actions}/>
                   </td>
