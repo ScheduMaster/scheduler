@@ -38,7 +38,7 @@ namespace Application.Services
             return user;
         }
 
-        public async Task Register(RegisterRequest Request) 
+        public async Task Register(RegisterModel Request) 
         {
             // Hash the password using BCrypt.Net
             string hashedPassword = _hashService.HashPassword(Request.Password);
@@ -50,7 +50,8 @@ namespace Application.Services
                 LastName = Request.LastName,
                 Email = Request.Email,
                 PhoneNumber = Request.PhoneNumber,
-                PasswordHash = hashedPassword
+                PasswordHash = hashedPassword,
+                Role = "Client"
             };
 
             // Add user to database
