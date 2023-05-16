@@ -19,7 +19,64 @@ namespace scheduler.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Application.Models.AuthToken", b =>
+            modelBuilder.Entity("Application.Data.Entities.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("CanceledAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("canceled_at");
+
+                    b.Property<Guid?>("CancelerId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id_canceler");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id_customer");
+
+                    b.Property<DateTime>("End")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("end");
+
+                    b.Property<Guid>("ProviderId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id_provider");
+
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("start");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("status");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("WorkId")
+                        .HasColumnType("int")
+                        .HasColumnName("id_work");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CancelerId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ProviderId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WorkId");
+
+                    b.ToTable("appointments");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.AuthToken", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -27,26 +84,204 @@ namespace scheduler.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Blacklisted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("black_listed");
 
                     b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("expires_at");
 
                     b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("token");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("type");
 
                     b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("tokens");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.CorporateCustomer", b =>
+                {
+                    b.Property<Guid>("IdCustomer")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id_customer");
+
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("company_name");
+
+                    b.Property<string>("VatNumber")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("vat_number");
+
+                    b.HasKey("IdCustomer");
+
+                    b.ToTable("corporate_customers");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id_customer");
+
+                    b.Property<Guid?>("userId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.ToTable("TOKEN");
+                    b.HasIndex("userId");
+
+                    b.ToTable("customers");
                 });
 
-            modelBuilder.Entity("Application.Models.User", b =>
+            modelBuilder.Entity("Application.Data.Entities.Exchange", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppointmentRequestedId")
+                        .HasColumnType("int")
+                        .HasColumnName("id_appointment_requested");
+
+                    b.Property<int>("AppointmentRequestorId")
+                        .HasColumnType("int")
+                        .HasColumnName("id_appointment_requestor");
+
+                    b.Property<string>("ExchangeStatus")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("exchange_status");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentRequestedId");
+
+                    b.HasIndex("AppointmentRequestorId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("exchanges");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppointmentId")
+                        .HasColumnType("int")
+                        .HasColumnName("id_appointment");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id_author");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("message");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("messages");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit")
+                        .HasColumnName("is_read");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("text")
+                        .HasColumnName("message");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("url");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id_user");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("notifications");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.Provider", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("providers");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -131,6 +366,85 @@ namespace scheduler.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("USER");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.Work", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Editable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Target")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("works");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.WorkProvider", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("WorkId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "WorkId");
+
+                    b.HasIndex("WorkId");
+
+                    b.ToTable("works_providers");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.WorkingPlan", b =>
+                {
+                    b.Property<Guid>("IdProvider")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Friday")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Monday")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Saturday")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sunday")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Thursday")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tuesday")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Wednesday")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdProvider");
+
+                    b.ToTable("working_plans");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -262,6 +576,201 @@ namespace scheduler.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Application.Data.Entities.Appointment", b =>
+                {
+                    b.HasOne("Application.Data.Entities.User", "Canceler")
+                        .WithMany()
+                        .HasForeignKey("CancelerId")
+                        .HasConstraintName("appointments_users_canceler")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Application.Data.Entities.User", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .HasConstraintName("appointments_users_customer")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Application.Data.Entities.User", "Provider")
+                        .WithMany()
+                        .HasForeignKey("ProviderId")
+                        .HasConstraintName("appointments_users_provider")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Application.Data.Entities.User", null)
+                        .WithMany("Appointments")
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("Application.Data.Entities.Work", "Work")
+                        .WithMany()
+                        .HasForeignKey("WorkId")
+                        .HasConstraintName("appointments_works")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Canceler");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Provider");
+
+                    b.Navigation("Work");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.AuthToken", b =>
+                {
+                    b.HasOne("Application.Data.Entities.User", "User")
+                        .WithMany("Tokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.CorporateCustomer", b =>
+                {
+                    b.HasOne("Application.Data.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("Application.Data.Entities.CorporateCustomer", "IdCustomer")
+                        .HasConstraintName("FK_corporate_customer_user")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.Customer", b =>
+                {
+                    b.HasOne("Application.Data.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("Application.Data.Entities.Customer", "Id")
+                        .HasConstraintName("FK_customer_user")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Application.Data.Entities.User", "user")
+                        .WithMany("Customers")
+                        .HasForeignKey("userId");
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.Exchange", b =>
+                {
+                    b.HasOne("Application.Data.Entities.Appointment", "AppointmentRequested")
+                        .WithMany()
+                        .HasForeignKey("AppointmentRequestedId")
+                        .HasConstraintName("FK_exchange_appointment_requested")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Application.Data.Entities.Appointment", "AppointmentRequestor")
+                        .WithMany()
+                        .HasForeignKey("AppointmentRequestorId")
+                        .HasConstraintName("FK_exchange_appointment_requestor")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Application.Data.Entities.User", null)
+                        .WithMany("ExchangesRequested")
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("Application.Data.Entities.User", null)
+                        .WithMany("ExchangesRequestor")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("AppointmentRequested");
+
+                    b.Navigation("AppointmentRequestor");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.Message", b =>
+                {
+                    b.HasOne("Application.Data.Entities.Appointment", "Appointment")
+                        .WithMany()
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Application.Data.Entities.User", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Application.Data.Entities.User", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Appointment");
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.Notification", b =>
+                {
+                    b.HasOne("Application.Data.Entities.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.Provider", b =>
+                {
+                    b.HasOne("Application.Data.Entities.User", "User")
+                        .WithOne()
+                        .HasForeignKey("Application.Data.Entities.Provider", "UserId")
+                        .HasConstraintName("FK_provider_user")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Application.Data.Entities.User", null)
+                        .WithMany("Providers")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.Work", b =>
+                {
+                    b.HasOne("Application.Data.Entities.User", null)
+                        .WithMany("Works")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.WorkProvider", b =>
+                {
+                    b.HasOne("Application.Data.Entities.User", "User")
+                        .WithMany("WorkProviders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Application.Data.Entities.Work", "Work")
+                        .WithMany("WorkProviders")
+                        .HasForeignKey("WorkId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("Work");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.WorkingPlan", b =>
+                {
+                    b.HasOne("Application.Data.Entities.User", "Provider")
+                        .WithMany()
+                        .HasForeignKey("IdProvider")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Provider");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -273,7 +782,7 @@ namespace scheduler.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Application.Models.User", null)
+                    b.HasOne("Application.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -282,7 +791,7 @@ namespace scheduler.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Application.Models.User", null)
+                    b.HasOne("Application.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -297,7 +806,7 @@ namespace scheduler.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Application.Models.User", null)
+                    b.HasOne("Application.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -306,11 +815,39 @@ namespace scheduler.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Application.Models.User", null)
+                    b.HasOne("Application.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.User", b =>
+                {
+                    b.Navigation("Appointments");
+
+                    b.Navigation("Customers");
+
+                    b.Navigation("ExchangesRequested");
+
+                    b.Navigation("ExchangesRequestor");
+
+                    b.Navigation("Messages");
+
+                    b.Navigation("Notifications");
+
+                    b.Navigation("Providers");
+
+                    b.Navigation("Tokens");
+
+                    b.Navigation("WorkProviders");
+
+                    b.Navigation("Works");
+                });
+
+            modelBuilder.Entity("Application.Data.Entities.Work", b =>
+                {
+                    b.Navigation("WorkProviders");
                 });
 #pragma warning restore 612, 618
         }
