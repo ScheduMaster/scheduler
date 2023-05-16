@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Data;
 using Application.Models.Requests;
+using System.Collections.Generic;
 
 namespace Application.Services 
 {
@@ -172,5 +173,12 @@ namespace Application.Services
             return true;
         }
 
+        public List<User> GetUsers()
+        {
+            // Call the userContext to create the user
+            List<User> users = _context.Users.ToList();
+            
+            return users;
+        }
     }
 }

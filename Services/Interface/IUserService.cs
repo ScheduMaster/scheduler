@@ -1,6 +1,7 @@
 using Application.Data.Entities;
 using System.Threading.Tasks;
 using Application.Models.Requests;
+using System.Collections.Generic;
 using System;
 
 namespace Application.Services
@@ -14,5 +15,6 @@ namespace Application.Services
         Task<User> UpdateUserAsync(User user, UpdateUserModel model);
         Task<User> UpdateUserAsync(User user, UpdateProfileModel model);
         Task<bool> DeleteUserAsync(User user);
+        List<User> GetUsers();
     }
 }

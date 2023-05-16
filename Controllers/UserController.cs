@@ -8,6 +8,7 @@ using Application.Data.Entities;
 using Application.Services;
 using Microsoft.AspNetCore.Http;
 using Application.Models.Requests;
+using System.Collections.Generic;
 
 namespace Application.Controllers
 {
@@ -77,6 +78,31 @@ namespace Application.Controllers
                     user.PhoneNumber,
                     user.Address
                 });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("list")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetUsers()
+        {
+            try
+            {
+                List<User> users = _userService.GetUsers();
+                
+                var result = users.Select(user => new {
+                    user.Id,
+                    user.FirstName,
+                    user.LastName,
+                    user.PhoneNumber,
+                    user.Email,
+                    user.Address
+                }).ToList();
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
