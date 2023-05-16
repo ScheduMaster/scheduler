@@ -5,7 +5,7 @@ export const dropdowns = [
     },
     {
         name: "Profile",
-        href: "#"
+        href: "/app/profile"
     },
     {
         name: "Feedback",
