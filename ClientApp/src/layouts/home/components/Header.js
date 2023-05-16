@@ -21,6 +21,7 @@ export class Header extends Component {
                                 <div className="navbar-collapse">
                                     <ul id="nav" className="navbar-nav mx-auto">
                                         <li className="nav-item"><a className="ud-menu-scroll" href="/">Home</a></li>
+                                        <li className="nav-item"><a className="ud-menu-scroll" href="/app">App</a></li>
                                         <li className="nav-item"><a className="ud-menu-scroll" href="/about">About</a></li>
                                         <li className="nav-item"><a className="ud-menu-scroll" href="/contact">Contact</a></li>
                                     </ul>
