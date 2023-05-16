@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { LoginOption } from './components/LoginOption';
-import { ErrorList } from './components/ErrorList';
+import { ErrorList } from '../../components/ErrorList';
 
 // Services
 import { AuthService } from './services/AuthService';

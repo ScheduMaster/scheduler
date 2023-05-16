@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { RegisterOption } from './components/RegisterOption';
 import { LoginWithProvider } from './components/LoginWithProvider';
-import { ErrorList } from './components/ErrorList';
+import { ErrorList } from '../../components/ErrorList';
 
 // Services
 import { AuthService } from './services/AuthService';
