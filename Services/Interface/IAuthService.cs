@@ -10,7 +10,7 @@ namespace Application.Services
         User Login(string username, string password);
 
         // Register a new user and return an access token
-        Task Register(RegisterRequest Request);
+        Task Register(RegisterModel Request);
 
         // Update a user's password
         Task<bool> UpdatePassword(User user, string oldPassword, string newPassword);
