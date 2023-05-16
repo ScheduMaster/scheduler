@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
-import { UserService } from "../../services/UserService";
+import { UserService } from "../../../../services/UserService";
 
 export class Avatar extends Component {
     constructor(props) {
