@@ -34,11 +34,24 @@ export const navbarsData = [
             ]   
         ]
     },
-    // {
-    //     title: "New Appointment",
-    //     icon: "/images/layouts/app/Navbar/form.svg",
-    //     href: "/app/appointment/new",
-    //     dropdown: false,
-    //     dropdownsData: []
-    // },
+    {
+        title: "User management",
+        icon: "/images/layouts/app/Navbar/users.svg",
+        href: "/app/user",
+        dropdown: true,
+        dropdownsData: [
+            [
+                {
+                    href: "/app/user/list",
+                    name: "Users"
+                }
+            ],
+            [
+                {
+                    href: "/app/user/new",
+                    name: "New user"
+                }
+            ]   
+        ]
+    }
 ]
