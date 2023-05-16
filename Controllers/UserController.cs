@@ -134,20 +134,6 @@ namespace Application.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserModel createUserModel)
-        {
-            // Call the UserService to create the user
-            User user = await _userService.CreateUserAsync(createUserModel);
-
-            // Return the user information
-            return Ok(new {
-                Id = user.Id,
-                Email = user.Email,
-                Role = user.Role
-            });
-        }
-
         [HttpPut("update-password")]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordModel updatePasswordModel)
         {
@@ -227,6 +213,29 @@ namespace Application.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-    }   
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateAccount([FromBody] CreateUserModel createUserModel)
+        {
+            // Call the UserService to create the user
+            try
+            {
+                User user = await _userService.CreateUserAsync(createUserModel);
+
+                // Return the user information
+                return Ok(new {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Role = user.Role
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+    }
+    
 }
 

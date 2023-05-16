@@ -42,7 +42,11 @@ namespace Application.Services
             User createdUser = new User
             {
                 Email = CreateUserModel.Email,
-                Password = hashedPassword,
+                FirstName = CreateUserModel.FirstName,
+                LastName = CreateUserModel.LastName,
+                Address = CreateUserModel.Address,
+                PhoneNumber = CreateUserModel.PhoneNumber,
+                PasswordHash = hashedPassword,
                 Role = CreateUserModel.Role
             };
 
