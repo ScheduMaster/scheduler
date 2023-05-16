@@ -6,7 +6,7 @@ import { Footer } from "./components/Footer";
 import { Navbar } from "./components/Narbar";
 
 // Services
-import { UserService } from "./services/UserService";
+import { UserService } from "../../services/UserService";
 
 // Styles
 import '@tabler/core/dist/css/tabler.min.css';
