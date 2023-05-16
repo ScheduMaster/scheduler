@@ -30,7 +30,7 @@ namespace Application.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest Request)
+        public async Task<IActionResult> Register([FromBody] RegisterModel Request)
         {
             // Validate the user using data annotations
             if (!ModelState.IsValid)
@@ -51,7 +51,7 @@ namespace Application.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest Request)
+        public async Task<IActionResult> Login([FromBody] LoginModel Request)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace Application.Controllers
         }
 
         [HttpPost("refresh-token")]
-        public IActionResult RefreshToken([FromBody] RefreshTokenRequest Request)
+        public IActionResult RefreshToken([FromBody] RefreshTokenModel Request)
         {
             // Refresh the new access token
             object AccessToken = _tokenService.RefreshAccessToken(Request.RefreshToken);
@@ -99,7 +99,7 @@ namespace Application.Controllers
         }
 
         [HttpPost("logout")]
-        public IActionResult Logout([FromBody] LogoutRequest Request)
+        public IActionResult Logout([FromBody] LogoutModel Request)
         {
             // Revoke the new refesh token
             _tokenService.RevokeRefreshToken(Request.RefreshToken);
