@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from "../static/images/logo/logo.svg"
+import logo from "../static/images/logo/calendar.svg"
 
 export class Header extends Component {
     render () {
@@ -10,7 +10,7 @@ export class Header extends Component {
                         <div className="col-lg-12">
                             <nav className="navbar navbar-expand-lg">
                                 <a className="navbar-brand" href="index.html">
-                                    <img src={logo} alt="Logo" />
+                                    <img src={logo} alt="Logo" width={60}/>
                                 </a>
                                 <button className="navbar-toggler">
                                     <span className="toggler-icon"> </span>

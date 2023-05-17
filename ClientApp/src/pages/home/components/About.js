@@ -10,18 +10,16 @@ export class About extends Component {
                         <div className="ud-about-content-wrapper">
                             <div className="ud-about-content">
                                 <span className="tag">About Us</span>
-                                <h2>Brilliant Toolkit to Build Nextgen Website Faster.</h2>
+                                <h2>Use TUI-Calendar UI component to build website faster.</h2>
                                 <p>
-                                    The main ‘thrust’ is to focus on educating attendees on how to best
-                                    protect highly vulnerable business applications with interactive
-                                    panel discussions and roundtables led by subject matter experts.
+                                    The Appointment Scheduler utilizes the Tui Calendar UI component, which 
+                                    provides an intuitive and user-friendly interface for managing appointments.
                                 </p>
                                 <p>
-                                    The main ‘thrust’ is to focus on educating attendees on how to best
-                                    protect highly vulnerable business applications with interactive
-                                    panel.
+                                    By combining ASP.NET and ReactJS, developers can build powerful, 
+                                    scalable web applications that leverage the strengths of both technologies.
                                 </p>
-                                <a href="#" className="ud-main-btn">Learn More</a>
+                                <a href="https://github.com/Blue-Pheasant/scheduler" className="ud-main-btn" rel="nofollow noopener" target="_blank">Learn More</a>
                             </div>
                         </div>
                         <div className="ud-about-image">

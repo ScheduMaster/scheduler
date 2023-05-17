@@ -9,7 +9,7 @@ export class ContactForm extends Component {
                 <Form className="ud-contact-form" action="./" method="get" autoComplete="off">
                     <Form.Group className="ud-form-group">
                         <Form.Label htmlFor="fullName">Full Name*</Form.Label>
-                        <Form.Control name="text" type="email" placeholder="Adam Gelius"/>
+                        <Form.Control name="text" type="email" placeholder="Hoc Tran"/>
                     </Form.Group>
                     <Form.Group className="ud-form-group">
                         <Form.Label htmlFor="email">Email*</Form.Label>
@@ -17,7 +17,7 @@ export class ContactForm extends Component {
                     </Form.Group>
                     <Form.Group className="ud-form-group">
                         <Form.Label htmlFor="phone">Phone*</Form.Label>
-                        <Form.Control type="text" placeholder="+885 1254 5211 552" name="Phone"/>
+                        <Form.Control type="text" placeholder="Phone number" name="Phone"/>
                     </Form.Group>
                     <Form.Group className="ud-form-group">
                         <Form.Label htmlFor="message">Email address</Form.Label>

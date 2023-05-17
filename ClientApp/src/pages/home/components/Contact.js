@@ -23,7 +23,7 @@ export class Contact extends Component {
                                         </div>
                                         <div className="ud-info-meta">
                                             <h5>Our Location</h5>
-                                            <p>401 Broadway, 24th Floor, Orchard Cloud View, London</p>
+                                            <p>Hong Bang University, Tan Binh, Ho Chi Minh</p>
                                         </div>
                                     </div>
                                     <div className="ud-single-info">
@@ -32,8 +32,7 @@ export class Contact extends Component {
                                         </div>
                                         <div className="ud-info-meta">
                                             <h5>How Can We Help?</h5>
-                                            <p>info@yourdomain.com</p>
-                                            <p>contact@yourdomain.com</p>
+                                            <p>hoc1402@gmail.com</p>
                                         </div>
                                     </div>
                                 </div>

@@ -12,8 +12,8 @@ export class FeatureList extends Component {
                                 <span>Features</span>
                                 <h2>Main Features of Play</h2>
                                 <p>
-                                    There are many variations of passages of Lorem Ipsum available but
-                                    the majority have suffered alteration in some form.
+                                    Scheduling, cancelling, and sending invitations, users can efficiently 
+                                    organize their appointments and stay on top of their schedule.
                                 </p>
                             </div>
                         </div>
@@ -24,7 +24,6 @@ export class FeatureList extends Component {
                                 key={index}
                                 title={feature.title}
                                 desc={feature.desc}
-                                link={feature.link}
                             />
                         ))}
                     </div>

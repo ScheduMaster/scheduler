@@ -1,22 +1,22 @@
 export const featuresData = [
     {
-        title: "Free and Open-Source",
-        desc: "Lorem Ipsum is simply dummy text of the printing and industry.",
+        title: "Scheduling",
+        desc: "Schedule an appointment with our team",
         link: "#",
     },
     {
-        title: "Customizable Design",
-        desc: "Lorem Ipsum is simply dummy text of the printing and industry.",
+        title: "Assessment",
+        desc: "Get an assessment of your current situation",
         link: "#",
     },
     {
-        title: "Responsive Layout",
-        desc: "Lorem Ipsum is simply dummy text of the printing and industry.",
+        title: "Notification",
+        desc: "Follow up on your appointment and make recent any necessary notification by SMS, Email",
         link: "#",
     },
     {
-        title: "Responsive Layout",
-        desc: "Lorem Ipsum is simply dummy text of the printing and industry.",
+        title: "Review",
+        desc: "Review your results and make plans for the future",
         link: "#",
-    }
+    },
 ];
