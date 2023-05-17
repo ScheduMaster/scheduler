@@ -3,6 +3,8 @@ import React, { Component } from "react";
 export class ActionDropdown extends Component {
 
   render () {
+    const { id } = this.props;
+
     return (
       <span className="dropdown">
         <button
@@ -15,7 +17,7 @@ export class ActionDropdown extends Component {
         <div className="dropdown-menu dropdown-menu-end">
             {
               this.props.actions.map((action, index) => {
-                return (<a className="dropdown-item" key={index} href={action.href}>{action.name}</a>)
+                return (<a className="dropdown-item" key={index} href={`${action.href}/${id}`}>{action.name}</a>)
               })
             }
         </div>

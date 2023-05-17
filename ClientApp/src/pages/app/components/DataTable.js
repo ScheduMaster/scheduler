@@ -63,7 +63,7 @@ export class DataTable extends Component {
                     <td key={header}>{row[header]}</td>
                   ))}
                   <td className="text-end">
-                    <ActionDropdown actions={actions}/>
+                    <ActionDropdown actions={actions} id={row['id'] ?? ''}/>
                   </td>
                 </tr>
               ))}
