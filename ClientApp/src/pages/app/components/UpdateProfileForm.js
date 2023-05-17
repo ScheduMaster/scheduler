@@ -6,7 +6,7 @@ import { ErrorList } from "../../../components/ErrorList";
 // Services
 import { UserService } from "../../../services/UserService";
 
-export class UpdateUserForm extends Component {
+export class UpdateProfileForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
