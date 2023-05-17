@@ -326,11 +326,11 @@ export const entries = [
 
 export const actions = [
   {
-    href: '#',
-    name: 'Action'
+    href: '/app/user/update',
+    name: 'Update info'
   },
   {
-    href: '#',
-    name: 'Another action'
+    href: '/app/user/reset-password',
+    name: 'Reset password'
   }
 ]
