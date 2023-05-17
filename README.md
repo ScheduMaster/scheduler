@@ -1,5 +1,3 @@
-# Appointment Scheduler
-
 <p align="center">
   <a href="https://github.com/Blue-Pheasant/Odoo-connector">
     <img alt="Appointment schedule" src="./Docs/images/tabler.png" width="100" />
@@ -60,6 +58,47 @@ Install all the dependencies in `package.json`
 
 ```bash
 npm install
+```
+
+### Step 3: Setup enviroment variables
+There is an example of enviroment variables
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+    "Default": "Information",
+    "Microsoft": "Warning",
+    "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=DESKTOP-DQ5FOMQ;Database=scheduler;Trusted_Connection=True;"
+  },
+  "Jwt": {
+    "SecretKey": "thisismyfuckingsecretkey"
+  }
+}
+```
+
+1. `DefaultConnection:` SQL server string conenction
+2. `SecretKey:` SecretKey for JWT decrypt and encrypt
+
+### Step 4: Run project
+
+In the root folder of project (Include `Program.cs` and `Startup.cs`)
+
+1. Build project
+
+```bash
+dotnet build
+```
+
+2. Run project
+
+```bash
+dotnet run
 ```
 
 ## :open_file_folder: Project structure
