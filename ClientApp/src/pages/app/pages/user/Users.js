@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { PageHeader } from "./components/PageHeader";
-import { DataTable } from "./components/DataTable";
-import { Progress } from "../../components/Progress";
+import { PageHeader } from "../../components/PageHeader";
+import { DataTable } from "../../components/DataTable";
+import { Progress } from "../../../../components/Progress";
 
 // Services
-import { UserService } from "../../services/UserService";
+import { UserService } from "../../../../services/UserService";
 
 // Static data
-import { actions } from "./data/calendar";
+import { actions } from "../../data/calendar";
 
 export class Users extends Component {
   constructor(props) {

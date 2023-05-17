@@ -77,6 +77,49 @@ export class UserService {
     return data;
   }
 
+  updateUserInfo = async (userId, firstName, lastName, email, phoneNumber, address, role) => {
+    const res = await this.interceptor.put(`/api/user/profile/${userId}`, {
+      firstName: firstName, 
+      lastName: lastName, 
+      email: email,
+      phoneNumber: phoneNumber,
+      address: address,
+      role: role
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!res.ok) {
+      const responseJson = await res.json();
+      throw new Error(JSON.stringify(responseJson));
+    }
+      
+    const data = await res.json();
+    return data;
+  }
+
+  updateUserPassword = async (userId, passWord) => {
+    const res = await this.interceptor.put(`/api/user/update-password/${userId}`, {
+      passWord: passWord
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!res.ok) {
+      const responseJson = await res.json();
+      throw new Error(JSON.stringify(responseJson));
+    }
+      
+    const data = await res.json();
+    return data;
+  }
+
   getUsers = async () => {
     const res = await this.interceptor.get('/api/user/list', {},
     {
@@ -94,8 +137,13 @@ export class UserService {
     return data;
   }
 
-  getUser = async (email) => {
-    const res = await this.interceptor.patch('/api/user/list', { email: email })
+  getUser = async (userId) => {
+    const res = await this.interceptor.get(`/api/user/view/${userId}`, { }, 
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
     
     if (!res.ok) {
       const responseJson = await res.json();

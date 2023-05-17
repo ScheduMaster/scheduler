@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { PageHeader } from "./components/PageHeader";
-import { UpdateProfileForm } from "./components/UpdateProfileForm";
+import { PageHeader } from "../../components/PageHeader";
+import { UpdateProfileForm } from "../../components/UpdateProfileForm";
 
 export class UpdateProfile extends Component {
     render () {

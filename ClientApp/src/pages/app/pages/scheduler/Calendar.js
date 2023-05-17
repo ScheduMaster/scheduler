@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { PageHeader } from "./components/PageHeader";
-import { TuiCalendar } from "./components/TuiCalendar";
+import { PageHeader } from "../../components/PageHeader";
+import { TuiCalendar } from "../../components/TuiCalendar";
 
 // Static data
-import { initialCalendars, initialEvents, viewModeOptions } from "./data/calendar";
+import { initialCalendars, initialEvents, viewModeOptions } from "../../data/calendar";
 
 export class Calendar extends Component {
     render () {

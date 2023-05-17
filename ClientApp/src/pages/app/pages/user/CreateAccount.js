@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { PageHeader } from "./components/PageHeader";
-import { CreateAccountForm } from "./components/CreateAccountForm";
+import { PageHeader } from "../../components/PageHeader";
+import { CreateAccountForm } from "../../components/CreateAccountForm";
 
 export class CreateAccount extends Component {
     render () {

@@ -15,11 +15,12 @@ import { HomePage } from './pages/home/HomePage';
 import { LoginPage } from './pages/auth/Login';
 import { RegisterPage } from './pages/auth/Register';
 import { ForgotPassword } from './pages/auth/ForgotPassword';
-import { Calendar } from './pages/app/Calendar';
-import { Scheduler } from './pages/app/Scheduler';
-import { UpdateProfile } from './pages/app/UpdateProfile';
-import { CreateAccount } from './pages/app/CreateAccount';
-import { Users } from './pages/app/Users';
+import { Calendar } from './pages/app/pages/scheduler/Calendar';
+import { Scheduler } from './pages/app/pages/scheduler/Scheduler';
+import { UpdateProfile } from './pages/app/pages/profile/UpdateProfile';
+import { CreateAccount } from './pages/app/pages/user/CreateAccount';
+import { Users } from './pages/app/pages/user/Users';
+import { UpdateUserAccount } from './pages/app/pages/user/UpdateUserAccount';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -38,6 +39,7 @@ export default class App extends Component {
               <AppRoute exact path="/app/profile" component={UpdateProfile} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/user/list" component={Users} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/user/new" component={CreateAccount} layout={Application} type="authenticated" />
+              <AppRoute exact path="/app/user/update/:id" component={UpdateUserAccount} layout={Application} type="authenticated" />
             </Switch>
         </Router>
       </AuthContextProvider>
