@@ -21,6 +21,7 @@ import { UpdateProfile } from './pages/app/pages/profile/UpdateProfile';
 import { CreateAccount } from './pages/app/pages/user/CreateAccount';
 import { Users } from './pages/app/pages/user/Users';
 import { UpdateUserAccount } from './pages/app/pages/user/UpdateUserAccount';
+import { ResetUserPassword } from './pages/app/pages/user/ResetUserPassword';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -40,6 +41,7 @@ export default class App extends Component {
               <AppRoute exact path="/app/user/list" component={Users} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/user/new" component={CreateAccount} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/user/update/:id" component={UpdateUserAccount} layout={Application} type="authenticated" />
+              <AppRoute exact path="/app/user/reset-password/:id" component={ResetUserPassword} layout={Application} type="authenticated" />
             </Switch>
         </Router>
       </AuthContextProvider>
