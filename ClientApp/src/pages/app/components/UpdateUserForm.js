@@ -3,7 +3,7 @@ import { UpdateProfileForm } from "./UpdateProfileForm";
 import { withRouter } from 'react-router-dom';
 import { Form, Button, Toast } from 'react-bootstrap';
 import { Progress } from "../../../components/Progress";
-// import { ErrorList } from "../../../components/ErrorList";
+import { ErrorList } from "../../../components/ErrorList";
 
 class UpdateUserForm extends UpdateProfileForm {
   constructor(props) {
@@ -59,12 +59,9 @@ class UpdateUserForm extends UpdateProfileForm {
     // Make API call to update user profile data
     event.preventDefault();
     try {
-      const { email, firstName, lastName, address, phoneNumber, role, passWord } = this.state;
+      const { email, firstName, lastName, address, phoneNumber, role } = this.state;
+      this.setState({ loading: true });
       await this.service.updateUserInfo(this.userId, firstName, lastName, email, phoneNumber, address, role);
-
-      if (passWord) {
-        await this.service.updateUserPassword(this.userId, passWord);
-      }
 
       this.setState({ loading: false });
       this.setState({ showToast: true });
@@ -74,7 +71,7 @@ class UpdateUserForm extends UpdateProfileForm {
   };
 
   render () {
-    const { firstName, lastName, email, address, error, phoneNumber, loading, showToast, passWord, role } = this.state;
+    const { firstName, lastName, email, address, error, phoneNumber, loading, showToast, role } = this.state;
 
     // Display the progress component while loading
     if (loading) {
@@ -97,7 +94,7 @@ class UpdateUserForm extends UpdateProfileForm {
           <Toast.Header>
             <strong className="mr-auto">Success</strong>
           </Toast.Header>
-          <Toast.Body>Profile data successfully updated.</Toast.Body>
+          <Toast.Body>User data successfully updated.</Toast.Body>
         </Toast>
         {!loading && (
           <Form className="card" onSubmit={this.handleFormSubmit}>
@@ -162,17 +159,6 @@ class UpdateUserForm extends UpdateProfileForm {
                 </div>
                 <div className="col-sm-6 col-md-6">
                   <Form.Group className="mb-3">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Phone Number"
-                      value={passWord}
-                      onChange={event => this.setState({ passWord: event.target.value })}
-                    />
-                  </Form.Group>
-                </div>
-                <div className="col-md-12">
-                  <Form.Group className="mb-3">
                     <Form.Label>Address</Form.Label>
                     <Form.Control
                       type="text"
@@ -185,7 +171,7 @@ class UpdateUserForm extends UpdateProfileForm {
               </div>
             </div>
             <div className="card-footer text-end">
-              {/* {error ? <ErrorList errors={error}/> : ''} */}
+              {error ? <ErrorList errors={error}/> : ''}
               <Button variant="primary" type="submit">Update user account</Button>
             </div>
           </Form>
