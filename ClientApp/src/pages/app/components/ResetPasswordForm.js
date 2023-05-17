@@ -106,7 +106,7 @@ class ResetPasswordForm extends UpdateProfileForm {
                       type="text"
                       placeholder="First Name"
                       value={firstName}
-                      onChange={event => this.setState({ firstName: event.target.value })}
+                      readOnly={true}
                     />
                   </Form.Group>
                 </div>
@@ -117,6 +117,7 @@ class ResetPasswordForm extends UpdateProfileForm {
                       type="text"
                       placeholder="Last Name"
                       value={lastName}
+                      readOnly={true}
                     />
                   </Form.Group>
                 </div>
@@ -127,6 +128,7 @@ class ResetPasswordForm extends UpdateProfileForm {
                       type="email"
                       placeholder="Email"
                       value={email}
+                      readOnly={true}
                     />
                   </Form.Group>
                 </div>
@@ -138,6 +140,7 @@ class ResetPasswordForm extends UpdateProfileForm {
                       placeholder="Phone Number"
                       autoComplete="off"
                       value={phoneNumber}
+                      readOnly={true}
                     />
                   </Form.Group>
                 </div>
