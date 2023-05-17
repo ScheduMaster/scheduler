@@ -235,6 +235,36 @@ namespace Application.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("view/{id}")]
+        public IActionResult GetUser(Guid id)
+        {
+            try
+            {
+                // Get the user to be updated
+                User viewUser = _userService.GetUserInfo(id);
+
+                if (viewUser == null)
+                {
+                    return NotFound(new { message = "User not found" });
+                }
+
+                return Ok(new {
+                    viewUser.Id,
+                    viewUser.Email,
+                    viewUser.FirstName,
+                    viewUser.LastName,
+                    viewUser.PhoneNumber,
+                    viewUser.Address,
+                    viewUser.Role
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
     
 }
