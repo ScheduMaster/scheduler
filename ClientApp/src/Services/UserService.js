@@ -78,7 +78,7 @@ export class UserService {
   }
 
   updateUserInfo = async (userId, firstName, lastName, email, phoneNumber, address, role) => {
-    const res = await this.interceptor.put(`/api/user/profile/${userId}`, {
+    const res = await this.interceptor.put(`/api/user/update/${userId}`, {
       firstName: firstName, 
       lastName: lastName, 
       email: email,
@@ -101,9 +101,9 @@ export class UserService {
     return data;
   }
 
-  updateUserPassword = async (userId, passWord) => {
-    const res = await this.interceptor.put(`/api/user/update-password/${userId}`, {
-      passWord: passWord
+  resetUserPassword = async (userId, passWord) => {
+    const res = await this.interceptor.patch(`/api/user/reset-password/${userId}`, {
+      newPassWord: passWord
     },
     {
       headers: {
