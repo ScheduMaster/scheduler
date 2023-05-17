@@ -9,6 +9,10 @@ class ResetPasswordForm extends UpdateProfileForm {
   constructor(props) {
     super(props);
     this.state = {
+      email: '',
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
       loading: false,
       error: '',
       showToast: false,
@@ -16,6 +20,34 @@ class ResetPasswordForm extends UpdateProfileForm {
       passWord: '',
     };
     this.userId = this.props.match.params.id;
+  }
+
+  componentDidMount() {
+    // Call getProfileData to fetch data
+    this.getUserData(this.userId)
+      .then(() => {
+        // Set loading state to false after data is fetched or async operations are completed
+        this.setState({ loading: false });
+      })
+      .catch((error) => {
+        this.setState({ error: error.message });
+        // Set loading state to false if an error occurs
+        this.setState({ loading: false });
+      });
+  }
+
+  async getUserData(userId) {
+    // Make API call to retrieve user profile data
+    const data = await this.service.getUser(userId);
+    console.log(data);
+
+    this.setState({
+      email: data.email ?? this.state.email,
+      firstName: data.firstName ?? this.state.firstName,
+      lastName: data.lastName ?? this.state.lastName,
+      phoneNumber: data.phoneNumber ?? this.state.phoneNumber,
+      role: data.role ?? this.state.role
+    });
   }
 
   handleFormSubmit = async (event) => {
@@ -26,7 +58,7 @@ class ResetPasswordForm extends UpdateProfileForm {
 
       if (passWord) {
         this.setState({ loading: true });
-        await this.service.updateUserPassword(this.userId, passWord);
+        await this.service.resetUserPassword(this.userId, passWord);
       }
 
       this.setState({ loading: false });
@@ -37,7 +69,7 @@ class ResetPasswordForm extends UpdateProfileForm {
   };
 
   render () {
-    const { error, loading, showToast, passWord } = this.state;
+    const { firstName, lastName, email, phoneNumber, error, loading, showToast, passWord } = this.state;
 
     // Display the progress component while loading
     if (loading) {
@@ -67,13 +99,57 @@ class ResetPasswordForm extends UpdateProfileForm {
             <div className="card-body">
               <h3 className="card-title">Update Password</h3>
               <div className="row row-cards">
+              <div className="col-sm-6 col-md-6">
+                  <Form.Group className="mb-3">
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="First Name"
+                      value={firstName}
+                      onChange={event => this.setState({ firstName: event.target.value })}
+                    />
+                  </Form.Group>
+                </div>
+                <div className="col-sm-6 col-md-6">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Last Name"
+                      value={lastName}
+                    />
+                  </Form.Group>
+                </div>
+                <div className="col-sm-6 col-md-6">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder="Email"
+                      value={email}
+                    />
+                  </Form.Group>
+                </div>
+                <div className="col-sm-6 col-md-6">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Phone Number</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Phone Number"
+                      autoComplete="off"
+                      value={phoneNumber}
+                    />
+                  </Form.Group>
+                </div>
                 <div className="col-sm-6 col-md-6">
                   <Form.Group className="mb-3">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                       type="password"
-                      placeholder="Phone Number"
+                      autoComplete="off"
+                      placeholder="New password"
                       value={passWord}
+                      required={true}
                       onChange={event => this.setState({ passWord: event.target.value })}
                     />
                   </Form.Group>

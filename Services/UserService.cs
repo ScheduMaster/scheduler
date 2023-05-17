@@ -75,27 +75,27 @@ namespace Application.Services
         public async Task<User> UpdateUserAsync(User userToUpdate, UpdateUserModel model)
         {
             // Update the user's properties
-            if (!string.IsNullOrEmpty(model.FirstName))
+            if (!string.IsNullOrEmpty(model.FirstName) && userToUpdate.FirstName != model.FirstName)
             {
                 userToUpdate.FirstName = model.FirstName;
             }
 
-            if (!string.IsNullOrEmpty(model.LastName))
+            if (!string.IsNullOrEmpty(model.LastName) && userToUpdate.LastName != model.LastName)
             {
                 userToUpdate.LastName = model.LastName;
             }
 
-            if (!string.IsNullOrEmpty(model.Address))
+            if (!string.IsNullOrEmpty(model.Address) && userToUpdate.Address != model.Address)
             {
                 userToUpdate.Address = model.Address;
             }
 
-            if (!string.IsNullOrEmpty(model.PhoneNumber))
+            if (!string.IsNullOrEmpty(model.PhoneNumber) && userToUpdate.PhoneNumber != model.PhoneNumber)
             {
                 userToUpdate.PhoneNumber = model.PhoneNumber;
             }
 
-            if (!string.IsNullOrEmpty(model.Email))
+            if (!string.IsNullOrEmpty(model.Email) && userToUpdate.Email != model.Email)
             {
                 // Check if the email address is already in use
                 if (_context.Users.Any(u => u.Email == model.Email))
@@ -105,7 +105,7 @@ namespace Application.Services
                 userToUpdate.Email = model.Email;
             }
 
-            if (!string.IsNullOrEmpty(model.Role))
+            if (!string.IsNullOrEmpty(model.Role) && userToUpdate.Role != model.Role)
             {
                 // Check if the role is valid
                 if (model.Role != "Admin" || model.Role != "Client")
@@ -113,12 +113,6 @@ namespace Application.Services
                     throw new UnauthorizedAccessException("This role is not exists");
                 }
                 userToUpdate.Role = model.Role;
-            }
-
-            // Update the user's password if it has been provided
-            if (!string.IsNullOrEmpty(model.NewPassword))
-            {
-                await UpdatePasswordAsync(userToUpdate, model.NewPassword);
             }
 
             // Call the userContext to create the user
@@ -131,30 +125,30 @@ namespace Application.Services
         public async Task<User> UpdateUserAsync(User userToUpdate, UpdateProfileModel model)
         {
             // Update the user's properties
-            if (!string.IsNullOrEmpty(model.FirstName))
+            if (!string.IsNullOrEmpty(model.FirstName) && userToUpdate.FirstName != model.FirstName)
             {
                 userToUpdate.FirstName = model.FirstName;
             }
 
-            if (!string.IsNullOrEmpty(model.LastName))
+            if (!string.IsNullOrEmpty(model.LastName) && userToUpdate.LastName != model.LastName)
             {
                 userToUpdate.LastName = model.LastName;
             }
 
-            if (!string.IsNullOrEmpty(model.Address))
+            if (!string.IsNullOrEmpty(model.Address) && userToUpdate.Address != model.Address)
             {
                 userToUpdate.Address = model.Address;
             }
 
-            if (!string.IsNullOrEmpty(model.PhoneNumber))
+            if (!string.IsNullOrEmpty(model.PhoneNumber) && userToUpdate.PhoneNumber != model.PhoneNumber)
             {
                 userToUpdate.PhoneNumber = model.PhoneNumber;
             }
 
-            if (!string.IsNullOrEmpty(model.Email))
+            if (!string.IsNullOrEmpty(model.Email) && userToUpdate.Email != model.Email)
             {
                 // Check if the email address is already in use
-                if (_context.Users.Any(u => u.Email == model.Email) && (userToUpdate.Email != model.Email))
+                if (_context.Users.Any(u => u.Email == model.Email))
                 {
                     throw new UnauthorizedAccessException("This email address already exists");
                 }

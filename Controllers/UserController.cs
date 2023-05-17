@@ -265,6 +265,31 @@ namespace Application.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPatch("reset-password/{id}")]
+        public async Task<IActionResult> ResetUserPassword(Guid id, [FromBody] ResetPasswordModel model)
+        {
+            try
+            {
+                // Get the user to be updated
+                User resetUser = _userService.GetUserInfo(id);
+
+                if (resetUser == null)
+                {
+                    return NotFound(new { message = "User not found" });
+                }
+
+                // Update the user's password
+                await _userService.UpdatePasswordAsync(resetUser, model.NewPassword);
+
+                return Ok(new { message = "Password updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
     
 }
