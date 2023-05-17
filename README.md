@@ -10,7 +10,24 @@
 
 ![Site Preview](./Docs/images/scheduler.png)
 ## Technology
-The Appointment Scheduler is built using the ReactJS front-end framework and the ASP.NET Core back-end framework. This combination of technologies provides a robust and scalable solution that can handle a large number of users and appointments.
+ASP.NET and ReactJS are two powerful technologies that can be used together to build modern, scalable web applications.
+
+
+<p align="center">
+  <img src="./Docs/images/technology.png" alt="Technology" width="300" height="170">
+</p>
+
+### ASP.NET
+ASP.NET is a web application framework developed by Microsoft that allows developers to build dynamic, data-driven web applications. It provides a variety of features and tools for building web applications, including support for multiple programming languages, built-in security features, and a robust set of libraries and frameworks.
+
+### ReactJS
+ReactJS is a JavaScript library for building user interfaces. It provides a simple and efficient way to create reusable UI components that can be used to build complex, interactive web applications.
+
+ReactJS is widely used in modern web development, and is a popular choice for building dynamic, data-driven web applications.
+
+# Using ASP.NET and ReactJS Together
+By combining ASP.NET and ReactJS, developers can build powerful, scalable web applications that leverage the strengths of both technologies. ASP.NET provides a robust back-end framework for managing application logic and data, while ReactJS provides a flexible and efficient way to build user interfaces and manage application state.
+
 
 ## React UI Component
 The Appointment Scheduler utilizes the Tui Calendar UI component, which provides an intuitive and user-friendly interface for managing appointments. With Tui Calendar, users can easily view their appointments in a calendar format, drag and drop appointments to different time slots, and interact with appointments to view details or make changes.
