@@ -27,6 +27,7 @@ namespace Application.Data
             modelBuilder.ApplyConfiguration(new WorkConfiguration());
             modelBuilder.ApplyConfiguration(new WorkingPlanConfiguration());
             modelBuilder.ApplyConfiguration(new WorksProviderConfiguration());
+            modelBuilder.ApplyConfiguration(new CalendarConfiguration());
         }
 
         public DbSet<AuthToken> AuthToken { get; set; }
@@ -40,5 +41,6 @@ namespace Application.Data
         public DbSet<Work> Work { get; set; }
         public DbSet<WorkingPlan> WorkingPlan { get; set; }
         public DbSet<WorkProvider> WorkProvider { get; set; }
+        public DbSet<Calendar> Calendar { get; set; }
     }
 }
