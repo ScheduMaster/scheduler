@@ -15,7 +15,7 @@ import { HomePage } from './pages/home/HomePage';
 import { LoginPage } from './pages/auth/Login';
 import { RegisterPage } from './pages/auth/Register';
 import { ForgotPassword } from './pages/auth/ForgotPassword';
-import { Calendar } from './pages/app/pages/scheduler/Calendar';
+import { Calendar } from './pages/app/pages/calendar/Calendar';
 import { Scheduler } from './pages/app/pages/scheduler/Scheduler';
 import { UpdateProfile } from './pages/app/pages/profile/UpdateProfile';
 import { CreateAccount } from './pages/app/pages/user/CreateAccount';
