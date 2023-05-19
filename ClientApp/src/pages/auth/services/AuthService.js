@@ -37,7 +37,7 @@ export class AuthService {
     
   }
 
-  register = async (firstName, lastName, email, password, confirmPassword, agreePolicy) => {
+  register = async (firstName, lastName, email, phoneNumber, password, confirmPassword, agreePolicy) => {
     // validate input
     this.validator.clearErrors();
     this.validator.validateFirstName(firstName);
@@ -58,7 +58,7 @@ export class AuthService {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ firstName, lastName, email, password })
+      body: JSON.stringify({ firstName, lastName, email, phoneNumber, password })
     });
 
     if (!res.ok) {

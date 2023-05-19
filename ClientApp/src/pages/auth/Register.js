@@ -15,6 +15,7 @@ export class RegisterPage extends Component {
       firstName: '',
       lastName: '',
       email: '',
+      phoneNumber: '',
       password: '',
       confirmPassword: '',
       agreePolicy: false,
@@ -38,8 +39,8 @@ export class RegisterPage extends Component {
     event.preventDefault();
 
     try {
-      const { firstName, lastName, email, password, confirmPassword, agreePolicy } = this.state;
-      await this.auth.register(firstName, lastName, email, password, confirmPassword, agreePolicy);
+      const { firstName, lastName, email, phoneNumber, password, confirmPassword, agreePolicy } = this.state;
+      await this.auth.register(firstName, lastName, email, phoneNumber, password, confirmPassword, agreePolicy);
 
       this.setState({ redirectToReferrer: true });
     } catch (error) {
@@ -49,7 +50,7 @@ export class RegisterPage extends Component {
   }
 
   render() {
-    const { firstName, lastName, email, password, confirmPassword, agreePolicy, redirectToReferrer, error } = this.state;
+    const { firstName, lastName, email, phoneNumber, password, confirmPassword, agreePolicy, redirectToReferrer, error } = this.state;
     const { from } = this.props.location.state || { from: { pathname: '/auth/login' } };
 
     if (redirectToReferrer) {
@@ -88,6 +89,16 @@ export class RegisterPage extends Component {
                 name="email"
                 placeholder="Enter email" 
                 value={email}
+                onChange={this.handleInputChange}
+              />
+            </div>
+            <div className="mb-3">
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control 
+                type="text"
+                name="phoneNumber"
+                placeholder="Enter Phone Number" 
+                value={phoneNumber}
                 onChange={this.handleInputChange}
               />
             </div>
