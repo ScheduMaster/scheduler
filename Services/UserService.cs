@@ -115,7 +115,7 @@ namespace Application.Services
                 userToUpdate.Role = model.Role;
             }
 
-            // Call the userContext to create the user
+            // Call the userContext to update the user
             _context.Users.Update(userToUpdate);
             await _context.SaveChangesAsync();
 
@@ -155,7 +155,7 @@ namespace Application.Services
                 userToUpdate.Email = model.Email;
             }
 
-            // Call the userContext to create the user
+            // Call the userContext to update the user
             _context.Users.Update(userToUpdate);
             await _context.SaveChangesAsync();
 
@@ -164,7 +164,7 @@ namespace Application.Services
 
         public async Task<bool> DeleteUserAsync(User deleteUser)
         {
-            // Call the userContext to create the user
+            // Call the userContext to delete the user
             _context.Users.Remove(deleteUser);
             await _context.SaveChangesAsync();
             
@@ -173,7 +173,7 @@ namespace Application.Services
 
         public List<User> GetUsers()
         {
-            // Call the userContext to create the user
+            // Call the userContext to get the users
             List<User> users = _context.Users.ToList();
             
             return users;
