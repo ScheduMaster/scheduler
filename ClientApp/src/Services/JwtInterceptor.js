@@ -5,7 +5,7 @@ export class JwtInterceptor {
     this.fetchInterceptor = this.fetchInterceptor.bind(this);
   }
 
-  fetchInterceptor(url, options) {
+  async fetchInterceptor(url, options) {
     let token = Cookies.get("accessToken");
 
     if (token) {

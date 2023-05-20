@@ -27,8 +27,21 @@ export class CalendarService {
     return data;
   }
 
-  deleteCalendar = async () => {
-    return "Deleted Calendar";
+  deleteCalendar = async (calendarId) => {
+    const res = await this.interceptor.delete(`/api/calendar/delete/${calendarId}`, { }, 
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    
+    if (!res.ok) {
+      const responseJson = await res.json();
+      throw new Error(JSON.stringify(responseJson));
+    }
+      
+    const data = await res.json();
+    return data;
   }
 
   getCalendar = async (calendarId) => {
