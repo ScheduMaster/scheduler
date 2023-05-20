@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Table, Pagination, Dropdown } from 'react-bootstrap';
 import { ActionDropdown } from "./ActionDropdown";
+import { Color } from './Color';
+import { checkColor } from "../components/Calendar/utils";
 import '../static/css/data-table.css';
 
 export class DataTable extends Component {
@@ -30,7 +32,7 @@ export class DataTable extends Component {
   }
 
   render() {
-    const { entries, actions } = this.props;
+    const { entries, actions, color } = this.props;
 
     if (entries.length === 0) {
       return <p>No data available.</p>;
@@ -60,7 +62,9 @@ export class DataTable extends Component {
              {currentEntries.map((row, index) => (
                 <tr key={index}>
                   {headers.map((header) => (
-                    <td key={header}>{row[header]}</td>
+                    color 
+                    ? <td key={header}> {checkColor(row[header]) ? <Color value={row[header]}/> : row[header]}  </td>
+                    : <td key={header}>{row[header]}</td>
                   ))}
                   <td className="text-end">
                     <ActionDropdown actions={actions} id={row['id'] ?? ''}/>
