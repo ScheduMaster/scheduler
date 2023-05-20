@@ -38,7 +38,7 @@ namespace Application.Services
 
         public async Task<Calendar> UpdateCalendarAsync(Calendar calendarToUpdate, UpdateCalendarModel model)
         {
-            // Update the user's properties
+            // Update the calendar's properties
             if (!string.IsNullOrEmpty(model.Name) && calendarToUpdate.Name != model.Name)
             {
                 calendarToUpdate.Name = model.Name;
