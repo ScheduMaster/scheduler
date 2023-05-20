@@ -24,6 +24,7 @@ import { UpdateUserAccount } from './pages/app/pages/user/UpdateUserAccount';
 import { ResetUserPassword } from './pages/app/pages/user/ResetUserPassword';
 import { CreateCalendar } from './pages/app/pages/calendar/CreateCalendar';
 import { Calendars } from './pages/app/pages/calendar/Calendars';
+import { UpdateCalendar } from './pages/app/pages/calendar/UpdateCalendar';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -46,6 +47,7 @@ export default class App extends Component {
               <AppRoute exact path="/app/user/reset-password/:id" component={ResetUserPassword} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/calendar/new" component={CreateCalendar} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/calendar/list" component={Calendars} layout={Application} type="authenticated" />
+              <AppRoute exact path="/app/calendar/update/:id" component={UpdateCalendar} layout={Application} type="authenticated" />
             </Switch>
         </Router>
       </AuthContextProvider>
