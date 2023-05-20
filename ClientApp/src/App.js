@@ -25,6 +25,7 @@ import { ResetUserPassword } from './pages/app/pages/user/ResetUserPassword';
 import { CreateCalendar } from './pages/app/pages/calendar/CreateCalendar';
 import { Calendars } from './pages/app/pages/calendar/Calendars';
 import { UpdateCalendar } from './pages/app/pages/calendar/UpdateCalendar';
+import { ViewCalendar } from './pages/app/pages/calendar/ViewCalendar';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -48,6 +49,7 @@ export default class App extends Component {
               <AppRoute exact path="/app/calendar/new" component={CreateCalendar} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/calendar/list" component={Calendars} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/calendar/update/:id" component={UpdateCalendar} layout={Application} type="authenticated" />
+              <AppRoute exact path="/app/calendar/view/:id" component={ViewCalendar} layout={Application} type="authenticated" />
             </Switch>
         </Router>
       </AuthContextProvider>
