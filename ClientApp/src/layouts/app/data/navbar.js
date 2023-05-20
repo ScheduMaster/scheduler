@@ -53,5 +53,25 @@ export const navbarsData = [
                 }
             ]   
         ]
+    },
+    {
+        title: "Calendar management",
+        icon: "/images/layouts/app/Navbar/calendars.svg",
+        href: "/app/calendar",
+        dropdown: true,
+        dropdownsData: [
+            [
+                {
+                    href: "/app/calendar/list",
+                    name: "Calendars"
+                }
+            ],
+            [
+                {
+                    href: "/app/calendar/new",
+                    name: "New calendar"
+                }
+            ]   
+        ]
     }
 ]
