@@ -82,6 +82,95 @@ namespace Application.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateCalendar(int id, [FromBody] UpdateCalendarModel model)
+        {
+            try
+            {
+                // Get the calendar to be updated
+                Calendar calendarToUpdate = _calendarService.GetCalendar(id);
+
+                if (calendarToUpdate == null)
+                {
+                    return NotFound(new { message = "Calendar not found" });
+                }
+
+                // Check if calendar is belong to this user
+                string UserId = (string)HttpContext.Items["UserId"];
+                if (calendarToUpdate.UserId != Guid.Parse(UserId))
+                {
+                    return Unauthorized(new { message = "Invalid permissions" });
+                }
+                 
+                // Call userService to update user
+                await _calendarService.UpdateCalendarAsync(calendarToUpdate, model);
+
+                return Ok(new { message = "Calendar updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteCalendar(int id)
+        {
+            try
+            {
+                // Get the user to be updated
+                Calendar deteleCalendar = _calendarService.GetCalendar(id);
+
+                if (deteleCalendar == null)
+                {
+                    return NotFound(new { message = "Calendar not found" });
+                }
+
+                // Check if calendar is belong to this user
+                string UserId = (string)HttpContext.Items["UserId"];
+                if (deteleCalendar.UserId != Guid.Parse(UserId))
+                {
+                    return Unauthorized(new { message = "Invalid permissions" });
+                }
+
+                // Call calendarService to delete calendar
+                await _calendarService.DeleteCalendarAsync(deteleCalendar);
+
+                return Ok(new { message = "Calendar deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("view/{id}")]
+        public IActionResult GetCalendar(int id)
+        {
+            try
+            {
+                // Get the user to be updated
+                Calendar viewCalendar = _calendarService.GetCalendar(id);
+
+                if (viewCalendar == null)
+                {
+                    return NotFound(new { message = "Calendar not found" });
+                }
+
+                return Ok(new {
+                    viewCalendar.Id,
+                    viewCalendar.Name,
+                    viewCalendar.BackgroundColor,
+                    viewCalendar.BorderColor,
+                    viewCalendar.DragBackgroundColor
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }   
 }
 
