@@ -101,6 +101,14 @@ dotnet build
 dotnet run
 ```
 
+## :rocket: Update project
+
+To update this project after new change of repository, run this command:
+
+```bash
+sh update.sh
+```
+
 ## :open_file_folder: Project structure
 
 A quick look at the folder structure of this project.
