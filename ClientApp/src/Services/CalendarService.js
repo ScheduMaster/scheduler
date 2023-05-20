@@ -1,25 +1,55 @@
+import { JwtInterceptor } from './JwtInterceptor';
+
 export class CalendarService {
-    constructor() {
-        this.interceptor = new JwtInterceptor();
-    }
+  constructor() {
+    this.interceptor = new JwtInterceptor();
+  }
 
-    updateEvent = async () => {
-        return "Updated event";
-    }
+  updateCalendar = async () => {
+    return "Updated Calendar";
+  }
 
-    deleteEvent = async () => {
-        return "Deleted event";
-    }
+  deleteCalendar = async () => {
+    return "Deleted Calendar";
+  }
 
-    createEvent = async () => {
-        return "Cretead event";
-    }
+  createCalendar = async (name, backgroundColor, borderColor, dragBackgroundColor) => {
+    const res = await this.interceptor.post('/api/calendar/create', 
+      { 
+        name: name,
+        backgroundColor: backgroundColor,
+        borderColor: borderColor,
+        dragBackgroundColor: dragBackgroundColor
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
 
-    getEvents = async () => {
-        return "Get all events";
+    if (!res.ok) {
+      const responseJson = await res.json();
+      throw new Error(JSON.stringify(responseJson));
     }
+    
+    const data = await res.json();
+    return data;
+  }
 
-    getEvents = async (id) => {
-        return `Get event has id: ${id}`;
+  getCalendars = async () => {
+    const res = await this.interceptor.get('/api/calendar/list', {},
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!res.ok) {
+      const responseJson = await res.json();
+      throw new Error(JSON.stringify(responseJson));
     }
+      
+    const data = await res.json();
+    return data;
+  }
 }
