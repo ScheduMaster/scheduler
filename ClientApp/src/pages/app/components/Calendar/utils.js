@@ -24,3 +24,8 @@ export function subtractDate(d, steps) {
 
   return date;
 }
+
+export function checkColor(color) {
+  const regex = /^#[0-9a-fA-F]{6}$/;
+  return regex.test(color);
+}
