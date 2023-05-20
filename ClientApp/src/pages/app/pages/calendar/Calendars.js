@@ -49,8 +49,8 @@ export class Calendars extends Component {
           name: 'Update calendar'
         },
         {
-          href: '/app/calendar/delete',
-          name: 'Delete calendar'
+          href: '/app/calendar/view',
+          name: 'View calendar'
         }
       ]
 
