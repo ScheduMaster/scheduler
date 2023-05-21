@@ -11,37 +11,26 @@ namespace Application.Data
             builder.ToTable("appointments");
 
             builder.HasKey(appointment => appointment.Id);
+            builder.Property(appointment => appointment.Name).HasColumnName("name");
+            builder.Property(appointment => appointment.Location).HasColumnName("location");
             builder.Property(appointment => appointment.Start).HasColumnName("start");
             builder.Property(appointment => appointment.End).HasColumnName("end");
             builder.Property(appointment => appointment.CanceledAt).HasColumnName("canceled_at");
             builder.Property(appointment => appointment.Status).HasColumnName("status");
-            builder.Property(appointment => appointment.CancelerId).HasColumnName("id_canceler");
-            builder.Property(appointment => appointment.ProviderId).HasColumnName("id_provider");
-            builder.Property(appointment => appointment.CustomerId).HasColumnName("id_customer");
-            builder.Property(appointment => appointment.WorkId).HasColumnName("id_work");
+            builder.Property(appointment => appointment.Editable).HasColumnName("edit_able");
+            builder.Property(appointment => appointment.UserId).HasColumnName("id_user");
+            builder.Property(appointment => appointment.CalendarId).HasColumnName("id_calendar");
 
-            builder.HasOne(appointment => appointment.Canceler)
+            builder.HasOne(appointment => appointment.Initiator)
                 .WithMany()
-                .HasForeignKey(appointment => appointment.CancelerId)
-                .HasConstraintName("appointments_users_canceler")
+                .HasForeignKey(appointment => appointment.UserId)
+                .HasConstraintName("appointments_users_owner")
                 .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(appointment => appointment.Provider)
+            
+            builder.HasOne(appointment => appointment.Calendar)
                 .WithMany()
-                .HasForeignKey(appointment => appointment.ProviderId)
-                .HasConstraintName("appointments_users_provider")
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(appointment => appointment.Customer)
-                .WithMany()
-                .HasForeignKey(appointment => appointment.CustomerId)
-                .HasConstraintName("appointments_users_customer")
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(appointment => appointment.Work)
-                .WithMany()
-                .HasForeignKey(appointment => appointment.WorkId)
-                .HasConstraintName("appointments_works")
+                .HasForeignKey(appointment => appointment.CalendarId)
+                .HasConstraintName("appointments_calendar_topic")
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }
