@@ -1,6 +1,6 @@
 export const navbarsData = [
     {
-        title: "Home",
+        title: "App",
         icon: "/images/layouts/app/Navbar/home.svg",
         href: "/app",
         dropdown: false,
