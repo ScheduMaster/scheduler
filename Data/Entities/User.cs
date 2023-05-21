@@ -14,16 +14,14 @@ namespace Application.Data.Entities
         public DateTime DateOfBirth { get; set; }
         public bool IsActive { get; set; }
 
-        public virtual ICollection<Appointment> Appointments { get; set; }
-        public virtual ICollection<Exchange> ExchangesRequested { get; set; }
-        public virtual ICollection<Exchange> ExchangesRequestor { get; set; }
-        public virtual ICollection<Notification> Notifications { get; set; }
-        public virtual ICollection<Message> Messages { get; set; }
-        public virtual ICollection<Provider> Providers { get; set; }
-        public virtual ICollection<Work> Works { get; set; }
-        public virtual ICollection<Customer> Customers { get; set; }
-        public virtual ICollection<WorkProvider> WorkProviders { get; set; }
-        public virtual ICollection<AuthToken> Tokens { get; set; }
+        public virtual List<Appointment> Appointments { get; set; }
+        public virtual List<Exchange> ExchangesRequested { get; set; }
+        public virtual List<Exchange> ExchangesRequestor { get; set; }
+        public virtual List<Notification> Notifications { get; set; }
+        public virtual List<Message> Messages { get; set; }
+        public virtual List<Customer> Customers { get; set; }
+        public virtual List<WorkProvider> WorkProviders { get; set; }
+        public virtual List<AuthToken> Tokens { get; set; }
 
         public string GetUsername()
         {
