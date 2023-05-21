@@ -13,17 +13,29 @@ export class AppointmentService {
     return "Deleted event";
   }
 
-  createAppointment = async () => {
+  createAppointment = async (name, calendarId, start, end, editable, attendees) => {
     const res = await this.interceptor.post('/api/appointment/create', 
     {
-
+      name: name,
+      calendarId: calendarId,
+      start: start,
+      end: end,
+      editable: editable,
+      attendees: attendees
     },
     {
       headers: {
         'Content-Type': 'application/json',
       }
     });
-    return "Cretead event";
+    
+    if (!res.ok) {
+      const responseJson = await res.json();
+      throw new Error(JSON.stringify(responseJson));
+    }
+      
+    const data = await res.json();
+    return data;
   }
 
   getAppointments = async () => {
