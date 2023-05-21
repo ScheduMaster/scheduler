@@ -10,23 +10,23 @@ namespace Application.Data
         {
             builder.ToTable("calendars");
 
-            builder.HasKey(c => c.Id);
-            builder.Property(c => c.Id)
+            builder.HasKey(calendar => calendar.Id);
+            builder.Property(calendar => calendar.Id)
                 .HasColumnName("id")
                 .ValueGeneratedOnAdd();
 
-            builder.Property(c => c.UserId)
+            builder.Property(calendar => calendar.UserId)
                 .HasColumnName("user_id")
                 .IsRequired();
 
-            builder.Property(c => c.Name).HasColumnName("name");
-            builder.Property(c => c.BackgroundColor).HasColumnName("background_color");
-            builder.Property(c => c.BorderColor).HasColumnName("border_color");
-            builder.Property(c => c.DragBackgroundColor).HasColumnName("drag_background_color");
+            builder.Property(calendar => calendar.Name).HasColumnName("name");
+            builder.Property(calendar => calendar.BackgroundColor).HasColumnName("background_color");
+            builder.Property(calendar => calendar.BorderColor).HasColumnName("border_color");
+            builder.Property(calendar => calendar.DragBackgroundColor).HasColumnName("drag_background_color");
 
             builder.HasOne<User>()
                 .WithMany()
-                .HasForeignKey(c => c.UserId)
+                .HasForeignKey(calendar => calendar.UserId)
                 .HasConstraintName("FK_calendar_user")
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
