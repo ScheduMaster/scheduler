@@ -18,7 +18,7 @@ export const navbarsData = [
                     name: "Upcoming appointments"
                 },
                 {
-                    href: "/app/new-appointment",
+                    href: "/app/appointment/new",
                     name: "New appointment"
                 }
             ],
