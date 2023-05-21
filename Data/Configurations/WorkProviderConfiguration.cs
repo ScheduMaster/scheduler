@@ -10,16 +10,16 @@ namespace Application.Data
         {
             builder.ToTable("works_providers");
 
-            builder.HasKey(works_provider => new { works_provider.UserId, works_provider.WorkId });
+            builder.HasKey(works_provider => new { works_provider.UserId, works_provider.AppointmentId });
 
             builder.HasOne(works_provider => works_provider.User)
                 .WithMany(user => user.WorkProviders)
                 .HasForeignKey(works_provider => works_provider.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(works_provider => works_provider.Work)
-                .WithMany(work => work.WorkProviders)
-                .HasForeignKey(works_provider => works_provider.WorkId)
+            builder.HasOne(works_provider => works_provider.Appointment)
+                .WithMany(appointment => appointment.Providers)
+                .HasForeignKey(works_provider => works_provider.AppointmentId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }
