@@ -27,7 +27,7 @@ export class NavbarItem extends Component {
         } else {
           return (
                 <li className={`nav-item ${active ? 'active' : ''}`}>
-                    <a className="nav-link" href="./">
+                    <a className="nav-link" href={href}>
                         <span className="nav-link-icon d-md-none d-lg-inline-block">
                             <img src={icon} alt={title} width={20} height={20}/>
                         </span>
