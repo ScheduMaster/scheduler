@@ -8,7 +8,7 @@ namespace Application.Data
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("USER");
+            builder.ToTable("users");
             builder.HasKey(user => user.Id);
             builder.Property(user => user.FirstName);
             builder.Property(user => user.LastName);
