@@ -7,6 +7,7 @@ import 'tui-date-picker/dist/tui-date-picker.css';
 import 'tui-time-picker/dist/tui-time-picker.css';
 import '../static/css/move-button.css';
 
+import { AppointmentService } from '../../../services/AppointmentService';
 import { theme } from './Calendar/Theme';
 
 export class TuiCalendar extends Component {
@@ -28,6 +29,7 @@ export class TuiCalendar extends Component {
     this.onClickTimezonesCollapseBtn = this.onClickTimezonesCollapseBtn.bind(this);
     this.onBeforeUpdateEvent = this.onBeforeUpdateEvent.bind(this);
     this.onBeforeCreateEvent = this.onBeforeCreateEvent.bind(this);
+    this.service = new AppointmentService();
   }
 
   componentDidMount() {
@@ -151,6 +153,12 @@ export class TuiCalendar extends Component {
 
     const targetEvent = updateData.event;
     const changes = { ...updateData.changes };
+
+    if (changes) {
+      this.service
+        .updateAppointment(targetEvent.id, changes)
+        .then(res => console.log(res));
+    }
 
     this.getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes);
   };
