@@ -63,12 +63,12 @@ namespace Application.Services
                 appointmentToUpdate.Name = model.Name;
             }
 
-            if (!string.IsNullOrEmpty(model.Start.ToString()) && appointmentToUpdate.Start != model.Start)
+            if (!(model.Start == DateTime.MinValue) && appointmentToUpdate.Start != model.Start)
             {
                 appointmentToUpdate.Start = model.Start;
             }
 
-            if (!string.IsNullOrEmpty(model.End.ToString()) && appointmentToUpdate.End != model.End)
+            if (!(model.End == DateTime.MinValue) && appointmentToUpdate.End != model.End)
             {
                 appointmentToUpdate.End = model.End;
             }
@@ -76,6 +76,11 @@ namespace Application.Services
             if (!string.IsNullOrEmpty(model.Editable.ToString()) && appointmentToUpdate.Editable != model.Editable)
             {
                 appointmentToUpdate.Editable = model.Editable;
+            }
+
+            if (!(model.CalendarId == 0) && appointmentToUpdate.CalendarId != model.CalendarId)
+            {
+                appointmentToUpdate.CalendarId = model.CalendarId;
             }
 
             // Call the Appointment Context to update the appointment

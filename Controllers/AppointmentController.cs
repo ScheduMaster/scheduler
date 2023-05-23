@@ -86,5 +86,29 @@ namespace Application.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpPatch("update/{id}")]
+        public async Task<IActionResult> UpdateAppointment(int id, [FromBody] UpdateAppointmentModel model)
+        {
+            try
+            {
+                // Get the appointment to be updated
+                Appointment appointmentToUpdate = _appointmentService.GetAppointment(id);
+                
+                if (appointmentToUpdate == null)
+                {
+                    return NotFound(new { message = "Appointment not found" });
+                }
+
+                // Call appointmentService to update appointment
+                await _appointmentService.UpdateAppointmentAsync(appointmentToUpdate, model);
+
+                return Ok(new { message = "Appointment updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }
