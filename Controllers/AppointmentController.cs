@@ -72,6 +72,7 @@ namespace Application.Controllers
                     appointment.Id,
                     Title = appointment.Name,
                     Initiator = appointment.Initiator.GetUsername(),
+                    appointment.Location,
                     appointment.Start,
                     appointment.End,
                     appointment.Status,
