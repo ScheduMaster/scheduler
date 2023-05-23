@@ -24,7 +24,6 @@ namespace Application.Models.Requests
         [Required]
         public DateTime End { get; set; }
 
-        [Required]
         [JsonPropertyName("Editable")]
         [JsonConverter(typeof(StringToBooleanConverter))]
         public bool Editable { get; set; }

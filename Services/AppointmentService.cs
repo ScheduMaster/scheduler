@@ -78,9 +78,9 @@ namespace Application.Services
                 appointmentToUpdate.End = model.End;
             }
 
-            if (!string.IsNullOrEmpty(model.Editable.ToString()) && appointmentToUpdate.Editable != model.Editable)
+            if (model.Editable.HasValue && !model.Editable.Value && appointmentToUpdate.Editable)
             {
-                appointmentToUpdate.Editable = model.Editable;
+                appointmentToUpdate.End = model.End;
             }
 
             if (!(model.CalendarId == 0) && appointmentToUpdate.CalendarId != model.CalendarId)

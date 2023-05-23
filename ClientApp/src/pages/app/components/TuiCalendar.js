@@ -164,6 +164,7 @@ export class TuiCalendar extends Component {
   };
 
   onBeforeCreateEvent = (eventData) => {
+    console.log(eventData);
     const event = {
       calendarId: eventData.calendarId || '',
       id: String(Math.random()),
@@ -177,6 +178,10 @@ export class TuiCalendar extends Component {
       state: eventData.state,
       isPrivate: eventData.isPrivate,
     };
+
+    this.service
+      .createAppointment(event.title, event.calendarId, event.location, event.start.d.d, event.end.d.d, true, [])
+      .then(res => console.log(res));
 
     this.getCalInstance().createEvents([event]);
   };
@@ -248,20 +253,7 @@ export class TuiCalendar extends Component {
                 },
               }}
               theme={theme}
-              timezone={{
-                zones: [
-                  {
-                    timezoneName: 'Asia/Seoul',
-                    displayLabel: 'Seoul',
-                    tooltip: 'UTC+09:00',
-                  },
-                  {
-                    timezoneName: 'Pacific/Guam',
-                    displayLabel: 'Guam',
-                    tooltip: 'UTC+10:00',
-                  },
-                ],
-              }}
+              timezone="Asia/Ho_Chi_Minh"
               useDetailPopup={true}
               useFormPopup={true}
               view={this.state.selectedView}
