@@ -16,6 +16,9 @@ namespace Application.Models.Requests
         public int CalendarId { get; set; }
 
         [Required]
+        public string Location { get; set; }
+
+        [Required]
         public DateTime Start { get; set; }
 
         [Required]
