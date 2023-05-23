@@ -63,6 +63,11 @@ namespace Application.Services
                 appointmentToUpdate.Name = model.Name;
             }
 
+            if (!string.IsNullOrEmpty(model.Location) && appointmentToUpdate.Location != model.Location)
+            {
+                appointmentToUpdate.Location = model.Location;
+            }
+
             if (!(model.Start == DateTime.MinValue) && appointmentToUpdate.Start != model.Start)
             {
                 appointmentToUpdate.Start = model.Start;
