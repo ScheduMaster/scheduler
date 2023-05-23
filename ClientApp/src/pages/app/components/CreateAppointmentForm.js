@@ -14,6 +14,7 @@ export class CreateAppointmentForm extends Component {
     this.state = {
       name: '',
       calendarId: '',
+      location: '',
       start: '',
       end: '',
       editable: false,
@@ -56,8 +57,8 @@ export class CreateAppointmentForm extends Component {
     event.preventDefault();
     try {
       this.setState({ loading: true });
-      const { name, calendarId, start, end, editable, attendees } = this.state;
-      await this.appointment.createAppointment(name, calendarId, start, end, editable, attendees);
+      const { name, calendarId, location, start, end, editable, attendees } = this.state;
+      await this.appointment.createAppointment(name, calendarId, location, start, end, editable, attendees);
 
       this.setState({ 
         loading: false,
@@ -74,7 +75,7 @@ export class CreateAppointmentForm extends Component {
   };
 
   render () {
-    const { name, calendarId, start, end, editable, attendees, error, loading, showToast, redirectToReferrer, calendars } = this.state;
+    const { name, location, calendarId, start, end, editable, attendees, error, loading, showToast, redirectToReferrer, calendars } = this.state;
 
     // Display the progress component while loading
     if (loading) {
@@ -108,7 +109,7 @@ export class CreateAppointmentForm extends Component {
             <div className="card-body">
               <h3 className="card-title">Create Appointment</h3>
               <div className="row row-cards">
-                <div className="col-md-12">
+                <div className="col-md-4">
                   <Form.Group className="mb-3">
                     <Form.Label>Name</Form.Label>
                     <Form.Control
@@ -140,6 +141,17 @@ export class CreateAppointmentForm extends Component {
                         </option>
                       ))}
                     </Form.Select>
+                  </Form.Group>
+                </div>
+                <div className="col-md-4">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Location</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Location"
+                        value={location}
+                        onChange={event => this.setState({ location: event.target.value })}
+                      />
                   </Form.Group>
                 </div>
                 <div className="col-md-4">
