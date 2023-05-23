@@ -9,11 +9,12 @@ export class AppointmentService {
     return "Deleted event";
   }
 
-  createAppointment = async (name, calendarId, start, end, editable, attendees) => {
+  createAppointment = async (name, calendarId, location, start, end, editable, attendees) => {
     const res = await this.interceptor.post('/api/appointment/create', 
     {
       name: name,
       calendarId: calendarId,
+      location: location,
       start: start,
       end: end,
       editable: editable,
@@ -56,6 +57,10 @@ export class AppointmentService {
 
     if (changes.start) {
       updateData.start = changes.start.d.d;
+    }
+
+    if (changes.location) {
+      updateData.location = changes.location;
     }
 
     if (changes.end) {
