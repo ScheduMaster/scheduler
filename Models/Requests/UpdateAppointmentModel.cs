@@ -9,6 +9,7 @@ namespace Application.Models.Requests
     {
         public string Name { get; set; }
         public int CalendarId { get; set; }
+        public string Location { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public Guid UserId { get; set; }
