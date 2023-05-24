@@ -108,7 +108,7 @@ class CalendarDetail extends Component {
                       type="text"
                       placeholder="Name"
                       value={name}
-                      onChange={event => this.setState({ name: event.target.value })}
+                      readOnly={true}
                     />
                   </Form.Group>
                 </div>
