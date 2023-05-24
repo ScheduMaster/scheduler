@@ -107,8 +107,7 @@ namespace Application.Controllers
                     appointment.Start,
                     appointment.End,
                     appointment.Status,
-                    appointment.CalendarId,
-                    IsReadOnly = !appointment.Editable
+                    Calendar = appointment.Calendar.Name
                 }).ToList();
 
                 return Ok(result);

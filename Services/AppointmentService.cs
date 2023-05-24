@@ -120,6 +120,7 @@ namespace Application.Services
             // Call the Appointment Context to get the Appointments
             List<Appointment> appointments = _context.Appointment
                 .Include(appointment => appointment.Initiator) // Eager loading of Initiator entity
+                .Include(appointment => appointment.Calendar) // Eager loading of Calendar entity
                 .Where(appointment => appointment.UserId == userId && appointment.Start > DateTime.Now)
                 .ToList();
 

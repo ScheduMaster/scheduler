@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter, Redirect } from 'react-router-dom';
+import { withRouter, Redirect, Link } from 'react-router-dom';
 import { Form, Button, Toast } from 'react-bootstrap';
 import { Progress } from "../../../components/Progress";
 import { ErrorList } from "../../../components/ErrorList";
@@ -147,9 +147,12 @@ class CalendarDetail extends Component {
                 </div>
               </div>
             </div>
-            <div className="card-footer text-end">
+            <div className="card-footer d-flex justify-content-between">
               {error ? <ErrorList errors={error}/> : ''}
-              <Button variant="primary" type="submit">Delete calendar</Button>
+              <Button className="mx-2" variant="primary" type="submit">Delete calendar</Button>
+              <Link to={`/app/calendar/update/${this.calendarId}`}>
+                <Button className="mx-2" variant="primary">Update calendar</Button>
+              </Link>
             </div>
           </Form>
         )}

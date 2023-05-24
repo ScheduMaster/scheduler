@@ -61,7 +61,7 @@ export class Calendars extends Component {
 
       return (
         <>
-          <PageHeader preTitle="User management" title="Users"/>
+          <PageHeader preTitle="Calendar management" title="Calendars"/>
           <div className="page-body">
             <div className="container-xl">
               <DataTable entries={calendars} actions={actions} color={true}/>
