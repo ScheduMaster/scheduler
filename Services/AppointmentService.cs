@@ -78,9 +78,9 @@ namespace Application.Services
                 appointmentToUpdate.End = model.End;
             }
 
-            if (model.Editable.HasValue && !model.Editable.Value && appointmentToUpdate.Editable)
+            if (model.Editable.HasValue && (model.Editable.Value != appointmentToUpdate.Editable))
             {
-                appointmentToUpdate.End = model.End;
+                appointmentToUpdate.Editable = model.Editable.Value;
             }
 
             if (!(model.CalendarId == 0) && appointmentToUpdate.CalendarId != model.CalendarId)
@@ -130,7 +130,9 @@ namespace Application.Services
         public Appointment GetAppointment(int id)
         {
             // Get the appointment from the database
-            Appointment appointment = _context.Appointment.SingleOrDefault(appointment => appointment.Id == id);
+            Appointment appointment = _context.Appointment
+                .Include(appointment => appointment.Initiator) // Eager loading of Initiator entity
+                .SingleOrDefault(appointment => appointment.Id == id);
 
             // Check if the appointment exists
             if (appointment == null)

@@ -16,8 +16,8 @@ namespace Application.Models.Requests
         public DateTime End { get; set; }
         public Guid UserId { get; set; }
 
-        // [JsonPropertyName("Editable")]
-        // [JsonConverter(typeof(StringToBooleanConverter))]
+        [JsonPropertyName("Editable")]
+        [JsonConverter(typeof(StringToBooleanConverter))]
         public bool? Editable { get; set; }
         public List<User> Attendees { get; set; }
     }

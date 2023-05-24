@@ -107,4 +107,46 @@ export class AppointmentService {
     const data = await res.json();
     return data;
   }
+
+  getAppointment = async (appointmentId) => {
+    const res = await this.interceptor.get(`/api/appointment/view/${appointmentId}`, {},
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!res.ok) {
+      const responseJson = await res.json();
+      throw new Error(JSON.stringify(responseJson));
+    }
+      
+    const data = await res.json();
+    return data;
+  }
+
+  updateAppointmentByFrom = async (appointmentId, title, location, calendarId, start, end, editable) => {
+    const res = await this.interceptor.patch(`/api/appointment/update/${appointmentId}`, 
+    {
+      title: title,
+      location: location,
+      calendarId: calendarId,
+      start: start,
+      end: end,
+      editable: editable
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!res.ok) {
+      const responseJson = await res.json();
+      throw new Error(JSON.stringify(responseJson));
+    }
+      
+    const data = await res.json();
+    return data;
+  }
 }
