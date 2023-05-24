@@ -142,5 +142,37 @@ namespace Application.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpGet("view/{id}")]
+        public IActionResult Viewppointment(int id)
+        {
+            try
+            {
+                // Get the appointment to be viewed
+                Appointment viewAppointment = _appointmentService.GetAppointment(id);
+                
+                if (viewAppointment == null)
+                {
+                    return NotFound(new { message = "Appointment not found" });
+                }
+
+                return Ok(new {
+                    viewAppointment.Id,
+                    Title = viewAppointment.Name,
+                    Initiator = viewAppointment.Initiator.GetUsername(),
+                    viewAppointment.Location,
+                    viewAppointment.Start,
+                    viewAppointment.End,
+                    viewAppointment.Status,
+                    viewAppointment.CalendarId,
+                    IsReadOnly = !viewAppointment.Editable,
+                    viewAppointment.Editable
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }
