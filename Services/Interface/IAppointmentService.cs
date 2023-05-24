@@ -12,6 +12,7 @@ namespace Application.Services
         Task<Appointment> UpdateAppointmentAsync(Appointment appointment, UpdateAppointmentModel model);
         Task<bool> DeleteAppointmentAsync(Appointment appointment);
         List<Appointment> GetAppointments(Guid userId);
+        List<Appointment> GetUpcommingAppointments(Guid userId);
         Appointment GetAppointment(int id);
     }
 

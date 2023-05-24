@@ -115,6 +115,17 @@ namespace Application.Services
             return appointments;
         }
 
+        public List<Appointment> GetUpcommingAppointments(Guid userId)
+        {
+            // Call the Appointment Context to get the Appointments
+            List<Appointment> appointments = _context.Appointment
+                .Include(appointment => appointment.Initiator) // Eager loading of Initiator entity
+                .Where(appointment => appointment.UserId == userId && appointment.Start > DateTime.Now)
+                .ToList();
+
+            return appointments;
+        }
+
 
         public Appointment GetAppointment(int id)
         {

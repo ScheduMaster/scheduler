@@ -88,6 +88,37 @@ namespace Application.Controllers
             }
         }
 
+        [HttpGet("upcomming")]
+        public IActionResult GetUpcommingAppointments()
+        {
+            try
+            {
+                // Get user id from request
+                string UserId = (string)HttpContext.Items["UserId"];
+               
+                // Get all appointments of user from database by _appointmentService
+                List<Appointment> appointments = _appointmentService.GetUpcommingAppointments(Guid.Parse(UserId));
+                
+                var result = appointments.Select(appointment => new {
+                    appointment.Id,
+                    Title = appointment.Name,
+                    Initiator = appointment.Initiator.GetUsername(),
+                    appointment.Location,
+                    appointment.Start,
+                    appointment.End,
+                    appointment.Status,
+                    appointment.CalendarId,
+                    IsReadOnly = !appointment.Editable
+                }).ToList();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [HttpPatch("update/{id}")]
         public async Task<IActionResult> UpdateAppointment(int id, [FromBody] UpdateAppointmentModel model)
         {

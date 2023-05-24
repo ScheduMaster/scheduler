@@ -52,6 +52,23 @@ export class AppointmentService {
     return data;
   }
 
+  getUpcommingAppointments = async () => {
+    const res = await this.interceptor.get('/api/appointment/upcomming', {},
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!res.ok) {
+      const responseJson = await res.json();
+      throw new Error(JSON.stringify(responseJson));
+    }
+      
+    const data = await res.json();
+    return data;
+  }
+
   updateAppointment = async (appointmentId, changes) => {
     const updateData = {};
 

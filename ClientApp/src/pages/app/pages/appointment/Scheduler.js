@@ -33,7 +33,7 @@ export class Scheduler extends Component {
   
   async getAppointmensData() {
     // Make API call to retrieve users data
-    const data = await this.service.getAppointments();
+    const data = await this.service.getUpcommingAppointments();
     console.log(data);
 
     this.setState({
