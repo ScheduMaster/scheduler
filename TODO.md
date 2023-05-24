@@ -1,4 +1,4 @@
--   [] Update upcomming appointment: filter by date start
+-   [x] Update upcomming appointment: filter by date start
 -   [] Connect partner: using invite link
 -   [] Accpet appointment
 -   [] Invite appointment: Apis partner -> push notification -> accpet/reject
