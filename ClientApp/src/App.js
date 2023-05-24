@@ -27,6 +27,8 @@ import { Calendars } from './pages/app/pages/calendar/Calendars';
 import { UpdateCalendar } from './pages/app/pages/calendar/UpdateCalendar';
 import { ViewCalendar } from './pages/app/pages/calendar/ViewCalendar';
 import { CreateAppointment } from './pages/app/pages/appointment/CreateAppointment';
+import { ViewAppointment } from './pages/app/pages/appointment/ViewAppointment';
+import { UpdateAppointment } from './pages/app/pages/appointment/UpdateAppointment';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -52,6 +54,8 @@ export default class App extends Component {
               <AppRoute exact path="/app/calendar/update/:id" component={UpdateCalendar} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/calendar/view/:id" component={ViewCalendar} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/appointment/new" component={CreateAppointment} layout={Application} type="authenticated" />
+              <AppRoute exact path="/app/appointment/view/:id" component={ViewAppointment} layout={Application} type="authenticated" />
+              <AppRoute exact path="/app/appointment/update/:id" component={UpdateAppointment} layout={Application} type="authenticated" />
             </Switch>
         </Router>
       </AuthContextProvider>
