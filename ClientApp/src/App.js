@@ -30,6 +30,7 @@ import { CreateAppointment } from './pages/app/pages/appointment/CreateAppointme
 import { ViewAppointment } from './pages/app/pages/appointment/ViewAppointment';
 import { UpdateAppointment } from './pages/app/pages/appointment/UpdateAppointment';
 import { ManageAppointment } from './pages/app/pages/appointment/ManageAppointment';
+import { AcceptInvitation } from './pages/app/pages/appointment/AcceptInvitation';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -58,6 +59,7 @@ export default class App extends Component {
               <AppRoute exact path="/app/appointment/view/:id" component={ViewAppointment} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/appointment/update/:id" component={UpdateAppointment} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/appointment/list" component={ManageAppointment} layout={Application} type="authenticated" />
+              <AppRoute exact path="/app/invitation/accept/:id" component={AcceptInvitation} layout={Application} type="authenticated" />
             </Switch>
         </Router>
       </AuthContextProvider>
