@@ -14,7 +14,7 @@ export const navbarsData = [
         dropdownsData: [
             [
                 {
-                    href: "/app/scheduler",
+                    href: "/app/appointment/list",
                     name: "Upcoming appointments"
                 },
                 {
