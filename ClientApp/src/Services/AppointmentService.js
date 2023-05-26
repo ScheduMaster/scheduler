@@ -113,29 +113,4 @@ export class AppointmentService {
 
     return data;
   }
-
-  generateInvitation = async (appointmentId) => {
-    const data = await this.interceptor.post(`/api/appointment/generate-invitation`, 
-    {
-      appointmentId: appointmentId
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-
-    return data;
-  }
-
-  getInvitation = async (appointmentId) => {
-    const data = await this.interceptor.get(`/api/appointment/get-invitation/${appointmentId}`, {},
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-
-    return data;
-  }
 }

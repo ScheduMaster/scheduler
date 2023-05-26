@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { AppointmentService } from '../../../services/AppointmentService';
+import { InvitationService } from '../../../services/InvitationService';
 
 export class PopupModel extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ export class PopupModel extends Component {
       loading: false,
       error: false,
     };
-    this.service = new AppointmentService();
+    this.service = new InvitationService();
   }
 
   componentDidMount() {
@@ -86,7 +86,7 @@ export class PopupModel extends Component {
     return (
       <Modal show={showPopup} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal with Input</Modal.Title>
+          <Modal.Title>Appointment Invitation</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {loading ? (
