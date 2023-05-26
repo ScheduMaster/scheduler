@@ -175,5 +175,13 @@ namespace Application.Services
             
             return invitation;
         }
+        public Invitation GetInvitation(Guid invitationId)
+        {
+            Invitation invitation = _context.Invitation
+                .Include(i => i.Appointment)
+                .SingleOrDefault(i => i.Id == invitationId);
+            
+            return invitation;
+        }
     }
 }
