@@ -29,6 +29,7 @@ import { ViewCalendar } from './pages/app/pages/calendar/ViewCalendar';
 import { CreateAppointment } from './pages/app/pages/appointment/CreateAppointment';
 import { ViewAppointment } from './pages/app/pages/appointment/ViewAppointment';
 import { UpdateAppointment } from './pages/app/pages/appointment/UpdateAppointment';
+import { ManageAppointment } from './pages/app/pages/appointment/ManageAppointment';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -43,7 +44,7 @@ export default class App extends Component {
               <AppRoute exact path="/auth/register" component={RegisterPage} layout={Auth} type="non-authenticated"/>
               <AppRoute exact path="/auth/forgot-password" component={ForgotPassword} layout={Auth} type="non-authenticated"/>
               <AppRoute exact path="/app" component={Calendar} layout={Application} type="authenticated" />
-              <AppRoute exact path="/app/scheduler" component={Scheduler} layout={Application} type="authenticated" />
+              {/* <AppRoute exact path="/app/scheduler" component={Scheduler} layout={Application} type="authenticated" /> */}
               <AppRoute exact path="/app/profile" component={UpdateProfile} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/user/list" component={Users} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/user/new" component={CreateAccount} layout={Application} type="authenticated" />
@@ -56,6 +57,7 @@ export default class App extends Component {
               <AppRoute exact path="/app/appointment/new" component={CreateAppointment} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/appointment/view/:id" component={ViewAppointment} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/appointment/update/:id" component={UpdateAppointment} layout={Application} type="authenticated" />
+              <AppRoute exact path="/app/appointment/list" component={ManageAppointment} layout={Application} type="authenticated" />
             </Switch>
         </Router>
       </AuthContextProvider>
