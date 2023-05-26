@@ -14,6 +14,8 @@ namespace Application.Services
         List<Appointment> GetAppointments(Guid userId);
         List<Appointment> GetUpcommingAppointments(Guid userId);
         Appointment GetAppointment(int id);
+        Task<Invitation> CreateInvitation(Appointment appointment, CreateInvitationModel model);
+        Invitation GetInvitation(int appointmentId);
     }
 
 }

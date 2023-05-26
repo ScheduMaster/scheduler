@@ -127,7 +127,6 @@ namespace Application.Services
             return appointments;
         }
 
-
         public Appointment GetAppointment(int id)
         {
             // Get the appointment from the database
@@ -142,6 +141,39 @@ namespace Application.Services
             }
 
             return appointment;
+        }
+
+        public async Task<Invitation> CreateInvitation(Appointment appointment, CreateInvitationModel model)
+        {
+            // Default expire time
+            DateTime expiresAt = appointment.Start;
+
+            if (model.ExpiresAt.HasValue && (model.ExpiresAt.Value != appointment.Start))
+            {
+                expiresAt = model.ExpiresAt.Value;
+            }
+
+            Invitation invitation = new Invitation 
+            {  
+                AppointmentId = appointment.Id,
+                ExpiresAt = expiresAt
+            };
+
+            // Save invitation into database
+            _context.Invitation.Add(invitation);
+            await _context.SaveChangesAsync();;
+
+            // Return invitation
+            return invitation;
+        }
+
+        public Invitation GetInvitation(int appointmentId)
+        {
+            Invitation invitation = _context.Invitation
+                .Include(i => i.Appointment)
+                .SingleOrDefault(i => i.AppointmentId == appointmentId);
+            
+            return invitation;
         }
     }
 }

@@ -155,7 +155,8 @@ namespace Application.Controllers
                     return NotFound(new { message = "Appointment not found" });
                 }
 
-                return Ok(new {
+                return Ok(new 
+                {
                     viewAppointment.Id,
                     Title = viewAppointment.Name,
                     Initiator = viewAppointment.Initiator.GetUsername(),
@@ -166,6 +167,69 @@ namespace Application.Controllers
                     viewAppointment.CalendarId,
                     IsReadOnly = !viewAppointment.Editable,
                     viewAppointment.Editable
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("generate-invitation")]
+        public async Task<IActionResult> GenerateInvitation([FromBody] CreateInvitationModel model)
+        {
+            try
+            {
+                // Get the appointment to be viewed
+                Appointment appointment = _appointmentService.GetAppointment(model.AppointmentId);
+                
+                if (appointment == null)
+                {
+                    return NotFound(new { message = "Appointment not found" });
+                }
+
+                Invitation invitation = await _appointmentService.CreateInvitation(appointment, model);
+                
+                string host = _config.GetValue<string>("Host");
+                string invitationURL = $"{host}/app/appointment/invitation/{invitation.Id}";
+                
+                return Ok(new 
+                {
+                    invitation = invitationURL
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("get-invitation/{id}")]
+        public IActionResult GetInvitation(int id)
+        {
+            try
+            {
+                // Get the appointment to be viewed
+                Appointment appointment = _appointmentService.GetAppointment(id);
+                
+                if (appointment == null)
+                {
+                    return NotFound(new { message = "Appointment not found" });
+                }
+
+                Invitation invitation = _appointmentService.GetInvitation(appointment.Id);
+                
+                if (invitation == null) 
+                {
+                    return NotFound(new { message = "Invitation not found" });
+                }
+
+                string host = _config.GetValue<string>("Host");
+                string invitationURL = $"{host}/app/appointment/invitation/{invitation.Id}";
+                
+                return Ok(new 
+                {
+                    invitation = invitationURL
                 });
             }
             catch (Exception ex)
