@@ -7,7 +7,7 @@ export class UserService {
   }
 
   logout = async () => {
-    const res = await this.interceptor.post('/api/auth/logout', { 
+    const data = await this.interceptor.post('/api/auth/logout', { 
       refreshToken: Cookies.get('refreshToken')
     },
     {
@@ -16,46 +16,27 @@ export class UserService {
       }
     });
     
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-    
     // Clear cookies
     Cookies.remove('accessToken');
     Cookies.remove('refreshToken');
 
-    const data = await res.json();
     return data;
   }
 
   getInfo = async () => {
-    const res = await this.interceptor.get('/api/user/info')
+    const data = await this.interceptor.get('/api/user/info')
 
-    if (!res.ok) {
-      const responseJson = await res.json();
-      console.log(responseJson);
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
     return data;
   }
 
   getProfile = async () => {
-    const res = await this.interceptor.get('/api/user/profile')
+    const data = await this.interceptor.get('/api/user/profile')
     
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
     return data;
   }
 
   updateProfile = async (firstName, lastName, email, phoneNumber, address) => {
-    const res = await this.interceptor.put('/api/user/profile', {
+    const data = await this.interceptor.put('/api/user/profile', {
       firstName: firstName, 
       lastName: lastName, 
       email: email,
@@ -67,18 +48,12 @@ export class UserService {
         'Content-Type': 'application/json',
       }
     });
-    
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
+
     return data;
   }
 
   updateUserInfo = async (userId, firstName, lastName, email, phoneNumber, address, role) => {
-    const res = await this.interceptor.put(`/api/user/update/${userId}`, {
+    const data = await this.interceptor.put(`/api/user/update/${userId}`, {
       firstName: firstName, 
       lastName: lastName, 
       email: email,
@@ -91,18 +66,12 @@ export class UserService {
         'Content-Type': 'application/json',
       }
     });
-    
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
+
     return data;
   }
 
   resetUserPassword = async (userId, passWord) => {
-    const res = await this.interceptor.patch(`/api/user/reset-password/${userId}`, {
+    const data = await this.interceptor.patch(`/api/user/reset-password/${userId}`, {
       newPassWord: passWord
     },
     {
@@ -111,51 +80,33 @@ export class UserService {
       }
     });
     
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
     return data;
   }
 
   getUsers = async () => {
-    const res = await this.interceptor.get('/api/user/list', {},
+    const data = await this.interceptor.get('/api/user/list', {},
     {
       headers: {
         'Content-Type': 'application/json',
       }
     });
     
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
     return data;
   }
 
   getUser = async (userId) => {
-    const res = await this.interceptor.get(`/api/user/view/${userId}`, { }, 
+    const data = await this.interceptor.get(`/api/user/view/${userId}`, { }, 
     {
       headers: {
         'Content-Type': 'application/json',
       }
     })
-    
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
+
     return data;
   }
 
   createUser = async (firstName, lastName, email, passWord, role, address, phoneNumber) => {
-    const res = await this.interceptor.post('/api/user/create', 
+    const data = await this.interceptor.post('/api/user/create', 
     { 
       firstName: firstName,
       lastName: lastName,
@@ -170,13 +121,7 @@ export class UserService {
         'Content-Type': 'application/json',
       }
     });
-    
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
+
     return data;
   }
 }

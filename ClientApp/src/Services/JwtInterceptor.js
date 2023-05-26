@@ -40,7 +40,13 @@ export class JwtInterceptor {
           return Promise.reject(error);
         }
       } else {
-        return response;
+        if (!response.ok) {
+          const responseJson = await response.json();
+          throw new Error(JSON.stringify(responseJson));
+        }
+          
+        const data = await response.json();
+        return data;
       }
     });
   }
