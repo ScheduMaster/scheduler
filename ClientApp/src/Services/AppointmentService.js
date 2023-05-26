@@ -10,7 +10,7 @@ export class AppointmentService {
   }
 
   createAppointment = async (name, calendarId, location, start, end, editable, attendees) => {
-    const res = await this.interceptor.post('/api/appointment/create', 
+    const data = await this.interceptor.post('/api/appointment/create', 
     {
       name: name,
       calendarId: calendarId,
@@ -25,47 +25,29 @@ export class AppointmentService {
         'Content-Type': 'application/json',
       }
     });
-    
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
+
     return data;
   }
 
   getAppointments = async () => {
-    const res = await this.interceptor.get('/api/appointment/list', {},
+    const data = await this.interceptor.get('/api/appointment/list', {},
     {
       headers: {
         'Content-Type': 'application/json',
       }
     });
 
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
     return data;
   }
 
   getUpcommingAppointments = async () => {
-    const res = await this.interceptor.get('/api/appointment/upcomming', {},
+    const data = await this.interceptor.get('/api/appointment/upcomming', {},
     {
       headers: {
         'Content-Type': 'application/json',
       }
     });
 
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
     return data;
   }
 
@@ -92,41 +74,29 @@ export class AppointmentService {
       updateData.calendarId = changes.calendarId;
     }
 
-    const res = await this.interceptor.patch(`/api/appointment/update/${appointmentId}`, updateData,
+    const data = await this.interceptor.patch(`/api/appointment/update/${appointmentId}`, updateData,
     {
       headers: {
         'Content-Type': 'application/json',
       }
     });
 
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
     return data;
   }
 
   getAppointment = async (appointmentId) => {
-    const res = await this.interceptor.get(`/api/appointment/view/${appointmentId}`, {},
+    const data = await this.interceptor.get(`/api/appointment/view/${appointmentId}`, {},
     {
       headers: {
         'Content-Type': 'application/json',
       }
     });
 
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
     return data;
   }
 
   updateAppointmentByFrom = async (appointmentId, title, location, calendarId, start, end, editable) => {
-    const res = await this.interceptor.patch(`/api/appointment/update/${appointmentId}`, 
+    const data = await this.interceptor.patch(`/api/appointment/update/${appointmentId}`, 
     {
       title: title,
       location: location,
@@ -141,12 +111,31 @@ export class AppointmentService {
       }
     });
 
-    if (!res.ok) {
-      const responseJson = await res.json();
-      throw new Error(JSON.stringify(responseJson));
-    }
-      
-    const data = await res.json();
+    return data;
+  }
+
+  generateInvitation = async (appointmentId) => {
+    const data = await this.interceptor.post(`/api/appointment/generate-invitation`, 
+    {
+      appointmentId: appointmentId
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    return data;
+  }
+
+  getInvitation = async (appointmentId) => {
+    const data = await this.interceptor.get(`/api/appointment/get-invitation/${appointmentId}`, {},
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
     return data;
   }
 }
