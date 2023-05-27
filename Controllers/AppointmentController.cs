@@ -57,8 +57,8 @@ namespace Application.Controllers
             }
         }
 
-        [HttpGet("list")]
-        public IActionResult GetAppointments()
+        [HttpPost("list")]
+        public IActionResult GetAllAppointments([FromBody] GetAppointmentModel model)
         {
             try
             {
@@ -66,7 +66,17 @@ namespace Application.Controllers
                 string UserId = (string)HttpContext.Items["UserId"];
                
                 // Get all appointments of user from database by _appointmentService
-                List<Appointment> appointments = _appointmentService.GetAppointments(Guid.Parse(UserId));
+                List<Appointment> appointments = new List<Appointment>();
+
+                // Request to get all appointment include appointment on guest role
+                if (model.All.HasValue && model.All.Value)
+                {
+                    appointments = _appointmentService.GetAllAppointments(Guid.Parse(UserId));
+                }
+                else
+                {
+                    appointments = _appointmentService.GetOwnAppointments(Guid.Parse(UserId));
+                }
                 
                 var result = appointments.Select(appointment => new {
                     appointment.Id,
