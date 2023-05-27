@@ -33,7 +33,6 @@ import { ManageAppointment } from './pages/app/pages/appointment/ManageAppointme
 import { AcceptInvitation } from './pages/app/pages/appointment/AcceptInvitation';
 
 export default class App extends Component {
-  static displayName = App.name;
 
   render () {
     return (

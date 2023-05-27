@@ -81,7 +81,7 @@ export class CreateAppointmentForm extends Component {
   };
 
   render () {
-    const { name, location, calendarId, start, end, editable, attendees, error, loading, showToast, redirectToReferrer, calendars } = this.state;
+    const { name, location, calendarId, start, end, editable, error, loading, showToast, redirectToReferrer, calendars } = this.state;
 
     // Display the progress component while loading
     if (loading) {

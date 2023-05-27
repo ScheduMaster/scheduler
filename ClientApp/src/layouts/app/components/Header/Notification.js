@@ -6,7 +6,7 @@ export class Notification extends Component {
     render () {
         return (
             <div className="nav-item dropdown d-none d-md-flex me-3">
-                <a href="#" className="nav-link px-0" data-bs-toggle="dropdown" tabIndex={-1} aria-label="Show notifications" aria-expanded="false">
+            <a className="nav-link px-0" data-bs-toggle="dropdown" tabIndex={-1} aria-label="Show notifications" aria-expanded="false">
                     <img src={bell} alt="bell" width={20} height={20}/>
                     <span className="badge bg-red" />
                 </a>

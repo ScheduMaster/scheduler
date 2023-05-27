@@ -19,7 +19,7 @@ export class About extends Component {
                       By combining ASP.NET and ReactJS, developers can build powerful, 
                       scalable web applications that leverage the strengths of both technologies.
                   </p>
-                  <a href="https://github.com/Blue-Pheasant/scheduler" className="ud-main-btn" rel="nofollow noopener" target="_blank">Learn More</a>
+                  <a href="https://github.com/Blue-Pheasant/scheduler" className="ud-main-btn" rel="nofollow noopener">Learn More</a>
                 </div>
               </div>
               <div className="ud-about-image">

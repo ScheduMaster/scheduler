@@ -89,7 +89,7 @@ export class LoginPage extends Component {
                       onChange={this.handleInputChange}
                     />
                     <span className="input-group-text">
-                      <a href="#" className="link-secondary" title="Show password" data-bs-toggle="tooltip">
+                      <a className="link-secondary" title="Show password" data-bs-toggle="tooltip">
                         <img src={eye} alt="Show"/>
                       </a>
                     </span>

@@ -39,7 +39,7 @@ export class Hero extends Component {
                                 <img src={material} alt="Material UI" width={40} style={{ margin: '5px' }}/>
                             </div>
                             <div className="ud-hero-image wow fadeInUp" data-wow-delay=".25s">
-                                <img src={hero} alt="hero-image" />
+                                <img src={hero} alt="hero" />
                                 <img
                                     src={shape}
                                     alt="shape"

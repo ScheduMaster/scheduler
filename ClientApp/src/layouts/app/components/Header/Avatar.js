@@ -27,7 +27,7 @@ export class Avatar extends Component {
 
         return (
             <div className="nav-item dropdown">
-                <a href="#" className="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+                <a className="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
                     <span className="avatar avatar-sm" style={{ backgroundImage: "url(/images/layouts/app/Header/avatar.jpg)"}}/>
                     <div className="d-none d-xl-block ps-2">
                         <div>{this.props.name}</div>
@@ -41,7 +41,7 @@ export class Avatar extends Component {
                         )
                     })}
                     <div className="dropdown-divider"/>
-                    <a href="#" className="dropdown-item" onClick={this.handleLogoutClick}>Logout</a>
+                    <a className="dropdown-item" onClick={this.handleLogoutClick}>Logout</a>
                 </div>
             </div>
         )

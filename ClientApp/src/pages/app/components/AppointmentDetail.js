@@ -86,8 +86,8 @@ class AppointmentDetail extends Component {
   };
 
   render () {
-    const { title, location, calendarId, start, end, editable, attendees, calendarInfo,
-      error, loading, showToast, redirectToReferrer, calendars, initiator } = this.state;
+    const { title, location, start, end, editable, calendarInfo,
+      error, loading, showToast, redirectToReferrer, initiator } = this.state;
 
     // Display the progress component while loading
     if (loading) {

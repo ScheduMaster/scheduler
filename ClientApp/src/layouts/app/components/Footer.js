@@ -16,7 +16,7 @@ export class Footer extends Component {
                                     )
                                 })}
                                 <li className="list-inline-item">
-                                    <a href="https://github.com/sponsors/codecalm" target="_blank" className="link-secondary" rel="noopener">
+                                    <a href="https://github.com/sponsors/codecalm" className="link-secondary" rel="noopener">
                                         <img src={sponsor} alt="Sponsor"/>
                                         Sponsor
                                     </a>
