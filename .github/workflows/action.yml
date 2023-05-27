@@ -33,9 +33,12 @@ jobs:
           export CI=false
           npm run build --if-present
       - name: Capture status message
-        if: ${{ job.status == 'success' }}
+        if: ${{ success() }}
         run: echo "FRONT_END_STATUS=Success" >> $GITHUB_ENV
-        else: echo "FRONT_END_STATUS=Fail" >> $GITHUB_ENV
+      - name: Capture status message
+        if: ${{ failure() }}
+        run: echo "FRONT_END_STATUS=Fail" >> $GITHUB_ENV
+
 
   build-back-end:
     runs-on: ubuntu-latest
@@ -55,9 +58,11 @@ jobs:
         run: |
           dotnet build --configuration Release --no-restore
       - name: Capture status message
-        if: ${{ job.status == 'success' }}
+        if: ${{ success() }}
         run: echo "BACK_END_STATUS=Success" >> $GITHUB_ENV
-        else: echo "BACK_END_STATUS=Fail" >> $GITHUB_ENV
+      - name: Capture status message
+        if: ${{ failure() }}
+        run: echo "BACK_END_STATUS=Fail" >> $GITHUB_ENV
 
   telegram-notification:
     runs-on: ubuntu-latest
