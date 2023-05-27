@@ -37,7 +37,7 @@ jobs:
       - name: Capture status message
         id: capture-status
         run: |
-          if [ ${{ success() }} = true ]; then
+          if [ $? -eq 0 ]; then
             echo "::set-output name=status::Success"
           else
             echo "::set-output name=status::Fail"
@@ -69,7 +69,7 @@ jobs:
       - name: Capture status message
         id: capture-status
         run: |
-          if [ ${{ success() }} = true ]; then
+          if [ $? -eq 0 ]; then
             echo "::set-output name=status::Success"
           else
             echo "::set-output name=status::Fail"
