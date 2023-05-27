@@ -1,22 +1,41 @@
-name: Telegram Notification
-description: Send a Telegram notification after push
-author: Blue-phesant
+name: Send Telegram Message
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
 
-inputs:
-  recipients:
-    description: 'Recipients of the notification (comma-separated)'
-    required: true
-  telegram_token:
-    description: 'Telegram Bot Token'
-    required: true
-  message:
-    description: 'Notification message'
-    required: true
+jobs:
+  send_message:
+    runs-on: ubuntu-latest
 
-runs:
-  using: 'node12'
-  main: 'index.js'
-  pre:
     steps:
-      - name: Install Dependencies
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
         run: npm install
+
+      - name: Send Telegram message
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
+        run: |
+          npm run send-telegram-message -- \
+            --token $TELEGRAM_TOKEN \
+            --to $TELEGRAM_TO \
+            --message |
+              echo "**New Commit Pushed**"
+              echo "Repository: ${{ github.repository }}"
+              echo "Branch: ${{ github.ref }}"
+              echo "Commit: [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})"
+              echo "Author: ${{ github.actor }}"
+
