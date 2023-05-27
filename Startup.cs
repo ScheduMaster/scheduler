@@ -49,6 +49,7 @@ namespace scheduler
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICalendarService, CalendarService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<IInvitationService, InvitationService>();
 
             services.AddAuthentication(x => {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
