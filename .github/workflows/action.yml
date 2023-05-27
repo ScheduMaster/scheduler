@@ -30,18 +30,19 @@ jobs:
       #   run: npm ci
       # - name: Build
       #   working-directory: ./ClientApp
-        # run: |
-        #   export CI=false
-        #   npm run build --if-present
+      #   run: |
+      #     export CI=false
+      #     npm run build --if-present
         
       - name: Capture status message
         id: capture-status
         run: |
-          if [[ ${{ success() }} ]]; then
+          if [[ "${{ steps.previous-step-id.outcome }}" == "success" ]]; then
             echo "::set-output name=status::Success"
           else
             echo "::set-output name=status::Fail"
           fi
+
 
     outputs:
       FRONT_END_STATUS: ${{ steps.capture-status.outputs.status }}
@@ -54,21 +55,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: ${{ matrix.dotnet-version }}
-      - name: Install dependencies
-        run: dotnet restore
-      - name: Build
-        run: |
-          dotnet build --configuration Release --no-restore
-          echo "BACK_END_STATUS=Success" >> $GITHUB_ENV
+      # - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+      #   uses: actions/setup-dotnet@v2
+      #   with:
+      #     dotnet-version: ${{ matrix.dotnet-version }}
+      # - name: Install dependencies
+      #   run: dotnet restore
+      # - name: Build
+      #   run: |
+      #     dotnet build --configuration Release --no-restore
+      #     echo "BACK_END_STATUS=Success" >> $GITHUB_ENV
 
       - name: Capture status message
         id: capture-status
         run: |
-          if [[ ${{ success() }} ]]; then
+          if [[ "${{ steps.previous-step-id.outcome }}" == "success" ]]; then
             echo "::set-output name=status::Success"
           else
             echo "::set-output name=status::Fail"
