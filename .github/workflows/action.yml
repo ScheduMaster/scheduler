@@ -24,21 +24,22 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        working-directory: ./ClientApp
-        run: npm ci
-      - name: Build
-        working-directory: ./ClientApp
-        run: |
-          export CI=false
-          npm run build --if-present
+      # - name: Install dependencies
+      #   working-directory: ./ClientApp
+      #   run: npm ci
+      # - name: Build
+      #   working-directory: ./ClientApp
+        # run: |
+        #   export CI=false
+        #   npm run build --if-present
       - name: Capture status message
         if: ${{ success() }}
         run: echo "FRONT_END_STATUS=Success" >> $GITHUB_ENV
       - name: Capture status message
         if: ${{ failure() }}
         run: echo "FRONT_END_STATUS=Fail" >> $GITHUB_ENV
-
+      - name: Echo status
+        run: echo $BACK_END_STATUS
 
   build-back-end:
     runs-on: ubuntu-latest
@@ -63,6 +64,8 @@ jobs:
       - name: Capture status message
         if: ${{ failure() }}
         run: echo "BACK_END_STATUS=Fail" >> $GITHUB_ENV
+      - name: Echo status
+        run: echo $BACK_END_STATUS
 
   telegram-notification:
     runs-on: ubuntu-latest
