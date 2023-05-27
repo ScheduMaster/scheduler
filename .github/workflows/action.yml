@@ -71,6 +71,12 @@ jobs:
         if: ${{ failure() }}
         run: echo "BACK_END_STATUS=Fail" >> $GITHUB_ENV
 
+      - name: Check backend previous status
+        run: echo $BACK_END_STATUS
+      - name: Check frontend previous status
+        run: echo $FRONT_END_STATUS
+      - name: Send Telegram notification
+      
     outputs:
       BACK_END_STATUS: $BACK_END_STATUS
 
