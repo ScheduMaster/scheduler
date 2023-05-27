@@ -54,3 +54,8 @@ body {
   height: 12px;
   margin-right: 2px;
 }
+
+.toastui-calendar-detail-item-indent {
+  text-indent: 0;
+  padding-left: 0;
+}
