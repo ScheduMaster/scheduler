@@ -1,7 +1,7 @@
 -   [x] Update upcomming appointment: filter by date start
 -   [] Connect partner: using invite link
 -   [x] Accpet appointment
--   [] Invite appointment: Apis partner ->  -> accpet/reject
+-   [x] Invite appointment
 -   [x] Generate invite link partner
 -   [x] Display personal scheduler
 -   [x] Display all scheduler
