@@ -154,5 +154,4 @@ class UpdateCalendarForm extends Component {
   }
 }
 
-1
 export default withRouter(UpdateCalendarForm);

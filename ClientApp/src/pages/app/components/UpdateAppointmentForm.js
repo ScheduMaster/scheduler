@@ -235,5 +235,4 @@ class UpdateAppointmentForm extends Component {
   }
 }
 
-1
 export default withRouter(UpdateAppointmentForm);

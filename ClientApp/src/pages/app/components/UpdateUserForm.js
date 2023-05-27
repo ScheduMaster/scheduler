@@ -181,5 +181,4 @@ class UpdateUserForm extends UpdateProfileForm {
   }
 }
 
-1
 export default withRouter(UpdateUserForm);

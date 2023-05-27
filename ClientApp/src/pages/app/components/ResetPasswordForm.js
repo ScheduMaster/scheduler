@@ -170,5 +170,4 @@ class ResetPasswordForm extends UpdateProfileForm {
   }
 }
 
-1
 export default withRouter(ResetPasswordForm);
