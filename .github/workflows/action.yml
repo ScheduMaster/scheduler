@@ -12,71 +12,72 @@ on:
 
 jobs:
   build-front-end:
-  runs-on: ubuntu-latest
-  strategy:
-    matrix:
-      node-version: ['18.x']
-  steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Change directory to front-end
-      working-directory: ./ClientApp
-    - run: npm ci
-    - run: npm run build --if-present
-    - name: Capture status message
-      id: status-message
-      run: echo "::set-output name=status::Front-end build succeeded"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['18.x']
 
-build-back-end:
-  runs-on: ubuntu-latest
-  strategy:
-    matrix:
-      dotnet-version: ['5.0.x']
-  steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ matrix.dotnet-version }}
-    - name: Install dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Capture status message
-      id: status-message
-      run: echo "::set-output name=status::Back-end build succeeded"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Change directory to front-end
+        working-directory: ./ClientApp
+      - run: npm ci
+      - run: npm run build --if-present
+      - name: Capture status message
+        id: status-message
+        run: echo "::set-output name=status::Front-end build succeeded"
+
+  build-back-end:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: ['5.0.x']
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Capture status message
+        id: status-message
+        run: echo "::set-output name=status::Back-end build succeeded"
 
 
   telegram-notification:
-  runs-on: ubuntu-latest
-  needs: [build-front-end, build-back-end]
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+    runs-on: ubuntu-latest
+    needs: [build-front-end, build-back-end]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
-    - name: Install dependencies
-      run: npm install axios
+      - name: Install dependencies
+        run: npm install axios
 
-    - name: Retrieve commit information
-      id: commit-info
-      run: |
-        echo "::set-output name=commitMessage::$(git log --format=%B -n 1 ${{ github.sha }})"
-        echo "::set-output name=commitHash::${{ github.sha }}"
+      - name: Retrieve commit information
+        id: commit-info
+        run: |
+          echo "::set-output name=commitMessage::$(git log --format=%B -n 1 ${{ github.sha }})"
+          echo "::set-output name=commitHash::${{ github.sha }}"
 
-    - name: Send Telegram notification
-      env:
-        TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-        TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
-        FRONT_END_STATUS: ${{ needs.build-front-end.outputs.status }}
-        BACK_END_STATUS: ${{ needs.build-back-end.outputs.status }}
-      run: |
-        node send-telegram-notification.js $GITHUB_REPOSITORY $GITHUB_ACTOR $GITHUB_EVENT_NAME "${{ steps.commit-info.outputs.commitMessage }}" ${{ steps.commit-info.outputs.commitHash }} "${{ env.FRONT_END_STATUS }}" "${{ env.BACK_END_STATUS }}"
+      - name: Send Telegram notification
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
+          FRONT_END_STATUS: ${{ needs.build-front-end.outputs.status }}
+          BACK_END_STATUS: ${{ needs.build-back-end.outputs.status }}
+        run: |
+          node send-telegram-notification.js $GITHUB_REPOSITORY $GITHUB_ACTOR $GITHUB_EVENT_NAME "${{ steps.commit-info.outputs.commitMessage }}" ${{ steps.commit-info.outputs.commitHash }} "${{ env.FRONT_END_STATUS }}" "${{ env.BACK_END_STATUS }}"
 
