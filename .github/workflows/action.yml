@@ -36,12 +36,10 @@ jobs:
         
       - name: Capture status message
         id: capture-status
-        run: |
-          if [[ "${{ steps.previous-step-id.outcome }}" == "success" ]]; then
-            echo "::set-output name=status::Success"
-          else
-            echo "::set-output name=status::Fail"
-          fi
+        if: ${{ success() }}
+        run: echo "::set-output name=status::Success"
+        else:
+          run: echo "::set-output name=status::Fail"
 
 
     outputs:
@@ -68,12 +66,10 @@ jobs:
 
       - name: Capture status message
         id: capture-status
-        run: |
-          if [[ "${{ steps.previous-step-id.outcome }}" == "success" ]]; then
-            echo "::set-output name=status::Success"
-          else
-            echo "::set-output name=status::Fail"
-          fi
+        if: ${{ success() }}
+        run: echo "::set-output name=status::Success"
+        else:
+          run: echo "::set-output name=status::Fail"
 
     outputs:
       BACK_END_STATUS: ${{ steps.capture-status.outputs.status }}
