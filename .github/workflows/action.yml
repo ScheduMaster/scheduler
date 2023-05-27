@@ -94,7 +94,7 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
         run: |
-          echo $FRONT_END_STATUS
-          echo $BACK_END_STATUS
-          node send-telegram-notification.js $GITHUB_REPOSITORY $GITHUB_ACTOR $GITHUB_EVENT_NAME "${{ steps.commit-info.outputs.commitMessage }}" ${{ steps.commit-info.outputs.commitHash }} $FRONT_END_STATUS $BACK_END_STATUS
+          echo ${{ env.FRONT_END_STATUS }}
+          echo ${{ env.BACK_END_STATUS }}
+          node send-telegram-notification.js $GITHUB_REPOSITORY $GITHUB_ACTOR $GITHUB_EVENT_NAME "${{ steps.commit-info.outputs.commitMessage }}" ${{ steps.commit-info.outputs.commitHash }} ${{ env.FRONT_END_STATUS }} ${{ env.BACK_END_STATUS }}
 
