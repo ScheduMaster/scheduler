@@ -23,8 +23,8 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install axios
+        run: npm install axios
 
       - name: Send Telegram notification
         env:
