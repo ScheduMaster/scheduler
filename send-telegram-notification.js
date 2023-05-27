@@ -1,4 +1,5 @@
 const fs = require('fs');
+const fetch = require('node-fetch');
 const { promisify } = require('util');
 const readFileAsync = promisify(fs.readFile);
 
