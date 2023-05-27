@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-function renderTemplate(repository, actor, eventName, commitMessage, commitHash) {
+function renderTemplate(repository, actor, eventName, commitMessage, time) {
   const template = `📢 **GitHub Notification**
   📚 **Repository:** [${repository}](https://github.com/${repository})
   👤 **Author:** ${actor}
@@ -19,7 +19,10 @@ function renderTemplate(repository, actor, eventName, commitMessage, commitHash)
 }
 
 async function sendTelegramMessage(repository, actor, eventName, commitMessage, commitHash) {
-  const message = renderTemplate(repository, actor, eventName, commitMessage, commitHash);
+  const now = new Date();
+  const options = { timeZone: 'Asia/Ho_Chi_Minh' };
+  const formattedTime = now.toLocaleString('en-US', options);
+  const message = renderTemplate(repository, actor, eventName, commitMessage, commitHash, formattedTime);
 
   const requestBody = {
     chat_id: process.env.TELEGRAM_TO,
