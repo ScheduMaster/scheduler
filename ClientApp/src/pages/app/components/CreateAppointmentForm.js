@@ -48,8 +48,14 @@ export class CreateAppointmentForm extends Component {
     console.log(data);
 
     this.setState({
-      calendars: data ?? this.state.calendars
+      calendars: data ?? this.state.calendars,
     });
+
+    if (data && data.length) {
+      this.setState({
+        calendarId: data ? data[0].id : this.state.calendarId
+      });
+    }
   }
 
   handleFormSubmit = async (event) => {
