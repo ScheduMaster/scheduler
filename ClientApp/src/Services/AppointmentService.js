@@ -29,8 +29,17 @@ export class AppointmentService {
     return data;
   }
 
-  getAppointments = async () => {
-    const data = await this.interceptor.get('/api/appointment/list', {},
+  getAppointments = async (isAll) => {
+    const options = { all: true, own: false };
+    if (isAll) {
+      options.all = true;
+      options.own = false;
+    } else {
+      options.all = false;
+      options.own = true;
+    }
+
+    const data = await this.interceptor.post('/api/appointment/list', options,
     {
       headers: {
         'Content-Type': 'application/json',
