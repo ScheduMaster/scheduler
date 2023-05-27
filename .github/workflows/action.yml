@@ -1,6 +1,6 @@
 name: Telegram Notification
 description: Send a Telegram notification after push
-author: Your Name
+author: Blue-phesant
 
 inputs:
   recipients:

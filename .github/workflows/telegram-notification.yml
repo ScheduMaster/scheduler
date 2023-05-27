@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Send Telegram Notification
-        uses: ./.github/actions/telegram-notification
+        uses: ./.github/workflows/telegram-notification
         with:
           recipients: ${{ secrets.TELEGRAM_TO }}
           telegram_token: ${{ secrets.TELEGRAM_TOKEN }}
