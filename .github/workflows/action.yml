@@ -2,7 +2,8 @@ name: Send Telegram Message
 on:
   push:
     branches:
-      - main
+      - master
+      - dev
   pull_request:
     types:
       - opened
