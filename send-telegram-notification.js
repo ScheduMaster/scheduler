@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-function renderTemplate(repository, actor, eventName, commitMessage, time) {
+function renderTemplate(repository, actor, eventName, commitMessage, commitHash, time) {
   const template = `📢 **GitHub Notification**
   📚 **Repository:** [${repository}](https://github.com/${repository})
   👤 **Author:** ${actor}
