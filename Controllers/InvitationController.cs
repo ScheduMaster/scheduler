@@ -23,13 +23,22 @@ namespace Application.Controllers
         private readonly DBContext _context;
         private readonly ICalendarService _calendarService;
         private readonly IAppointmentService _appointmentService;
+        private readonly IInvitationService _invitationService;
 
-        public InvitationController(IConfiguration config, DBContext context, ICalendarService calendarService, IAppointmentService appointmentService)
+        public InvitationController
+        (
+            IConfiguration config, 
+            DBContext context, 
+            ICalendarService calendarService,
+            IAppointmentService appointmentService,
+            IInvitationService invitaitonService
+        )
         {
             _config = config;
             _context = context;
             _calendarService = calendarService;
             _appointmentService = appointmentService;
+            _invitationService = invitaitonService;
         }
 
         [HttpPost("generate")]
@@ -45,7 +54,7 @@ namespace Application.Controllers
                     return NotFound(new { message = "Appointment not found" });
                 }
 
-                Invitation invitation = await _appointmentService.CreateInvitation(appointment, model);
+                Invitation invitation = await _invitationService.CreateInvitation(appointment, model);
                 
                 string host = _config.GetValue<string>("Host");
                 string invitationURL = $"{host}/app/invitation/accept/{invitation.Id}";
@@ -74,7 +83,7 @@ namespace Application.Controllers
                     return NotFound(new { message = "Appointment not found" });
                 }
 
-                Invitation invitation = _appointmentService.GetInvitation(appointment.Id);
+                Invitation invitation = _invitationService.GetInvitation(appointment.Id);
                 
                 if (invitation == null) 
                 {
@@ -101,7 +110,7 @@ namespace Application.Controllers
             try
             {
                 // Get the invitation to be checked
-                Invitation invitation = _appointmentService.GetInvitation(model.InvitationId);
+                Invitation invitation = _invitationService.GetInvitation(model.InvitationId);
                 
                 if (invitation == null)
                 {
@@ -129,7 +138,7 @@ namespace Application.Controllers
                 string UserId = (string)HttpContext.Items["UserId"];
 
                 // Get the invitation to be checked
-                Invitation invitation = _appointmentService.GetInvitation(id);
+                Invitation invitation = _invitationService.GetInvitation(id);
                 
                 if (invitation == null)
                 {
