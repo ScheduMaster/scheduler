@@ -311,6 +311,29 @@ export const viewModeOptions = [
   },
 ];
 
+export const schedules = [
+  {
+    id: 1,
+    title: 'Meeting',
+    category: 'time',
+    dueDateClass: '',
+    start: '2023-06-01T10:30:00',
+    end: '2023-06-01T12:30:00',
+    attendees: [ 'John', 'Jane'],
+  },
+];
+
+export const viewRangeOptions = [
+  {
+    title: 'All events',
+    value: 'all',
+  },
+  {
+    title: 'Own events',
+    value: 'own',
+  }
+];
+
 export const headers = ['id', 'client', 'title', 'location', 'start', 'end', 'status'];
 export const entries = [
   { id: 1, client: 'John Doe', title: 'Some thing', location: 'Google meet', start: today.toString(), end: end.toString(), status: 'Pending' },
