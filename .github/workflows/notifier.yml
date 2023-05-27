@@ -1,4 +1,4 @@
-name: Notifier
+name: Notify Telegram
 
 on:
   push:
@@ -6,16 +6,29 @@ on:
   pull_request:
     branches: [ master ]
 
+
 jobs:
-        
-  notifyTelegram:
-    runs-on: ubuntu-latest
+  build:      
+    runs-on: ubuntu-latest            
     steps:
-    - name: send custom message
+    - uses: actions/checkout@v2    
+    - name: Get info      
+      run: |
+        REPO=$(git config --get remote.origin.url | cut -d'/' -f4)  
+        BRANCH=$(echo ${GITHUB_REF} | cut -d'/' -f3)
+        COMMIT=$(git rev-parse --short HEAD)        
+        echo "::set-output name=repo::$REPO" 
+        echo "::set-output name=branch::$BRANCH"
+        echo "::set-output name=commit::$COMMIT"  
+    - name: Send message   
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
+        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}  
         message: |
-          The ${{ github.event_name }} event triggered final step.
-          echo This event is a pull request that had an assignee removed.
+          A new commit has been pushed to the *${BRANCH} branch*
+          
+          Repository: *${REPO}*  
+          Commit: *[${{steps.get_info.outputs.commit}}](${GITHUB_SERVER_URL}/${REPO}/commit/${{steps.get_info.outputs.commit}})*
+          Author: *${{ github.actor }}*
+        parse_mode: markdownv2
