@@ -30,10 +30,11 @@ jobs:
       - name: Build
         working-directory: ./ClientApp
         run: |
-          npm run build --if-present
           export CI=false
+          npm run build --if-present
+          echo "::set-output name=status::Front-end build succeeded"
       - name: Capture status message
-        id: fe-status-message
+        id: status-message
         run: echo "::set-output name=status::${{ steps.build-front-end.outputs.status }}"
 
   build-back-end:
@@ -53,9 +54,9 @@ jobs:
       - name: Build
         run: |
           dotnet build --configuration Release --no-restore
-          export CI=false
+          echo "::set-output name=status::Back-end build succeeded"
       - name: Capture status message
-        id: be-status-message
+        id: status-message
         run: echo "::set-output name=status::${{ steps.build-back-end.outputs.status }}"
 
   telegram-notification:
