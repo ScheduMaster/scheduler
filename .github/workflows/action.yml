@@ -89,13 +89,15 @@ jobs:
           echo "::set-output name=commitHash::${{ github.sha }}"
 
       - name: Check backend previous status
-        run: echo $BACK_END_STATUS
+        run: echo ${{ env.BACK_END_STATUS }}
       - name: Check frontend previous status
-        run: echo $FRONT_END_STATUS
+        run: echo ${{ env.FRONT_END_STATUS }}
       - name: Send Telegram notification
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
+          FRONT_END_STATUS: ${{ needs.build-front-end.outputs.FRONT_END_STATUS }}
+          BACK_END_STATUS: ${{ needs.build-back-end.outputs.BACK_END_STATUS }}
         run: |
           node send-telegram-notification.js $GITHUB_REPOSITORY $GITHUB_ACTOR $GITHUB_EVENT_NAME "${{ steps.commit-info.outputs.commitMessage }}" ${{ steps.commit-info.outputs.commitHash }} ${{ env.FRONT_END_STATUS }} ${{ env.BACK_END_STATUS }}
 
