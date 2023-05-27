@@ -1,4 +1,4 @@
-name: Continuous Integration 
+name: Continuous Integration
 
 on:
   push:
@@ -18,9 +18,10 @@ jobs:
         node-version: ['18.x']
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
       - name: Change directory to front-end
@@ -37,9 +38,10 @@ jobs:
       matrix:
         dotnet-version: ['5.0.x']
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v2
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
@@ -49,7 +51,6 @@ jobs:
       - name: Capture status message
         id: status-message
         run: echo "::set-output name=status::Back-end build succeeded"
-
 
   telegram-notification:
     runs-on: ubuntu-latest
@@ -80,4 +81,3 @@ jobs:
           BACK_END_STATUS: ${{ needs.build-back-end.outputs.status }}
         run: |
           node send-telegram-notification.js $GITHUB_REPOSITORY $GITHUB_ACTOR $GITHUB_EVENT_NAME "${{ steps.commit-info.outputs.commitMessage }}" ${{ steps.commit-info.outputs.commitHash }} "${{ env.FRONT_END_STATUS }}" "${{ env.BACK_END_STATUS }}"
-
