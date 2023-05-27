@@ -16,3 +16,7 @@ inputs:
 runs:
   using: 'node12'
   main: 'index.js'
+  pre:
+    steps:
+      - name: Install Dependencies
+        run: npm install
