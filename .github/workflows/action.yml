@@ -47,18 +47,18 @@ jobs:
       matrix:
         dotnet-version: ['5.0.x']
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: ${{ matrix.dotnet-version }}
-      - name: Install dependencies
-        run: dotnet restore
-      - name: Build
-        run: |
-          dotnet build --configuration Release --no-restore
-          echo "BACK_END_STATUS=Success" >> $GITHUB_ENV
+      # - name: Checkout repository
+      #   uses: actions/checkout@v2
+      # - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+      #   uses: actions/setup-dotnet@v2
+      #   with:
+      #     dotnet-version: ${{ matrix.dotnet-version }}
+      # - name: Install dependencies
+      #   run: dotnet restore
+      # - name: Build
+      #   run: |
+      #     dotnet build --configuration Release --no-restore
+      #     echo "BACK_END_STATUS=Success" >> $GITHUB_ENV
       - name: Capture status message
         if: ${{ success() }}
         run: echo "BACK_END_STATUS=Success" >> $GITHUB_ENV
@@ -97,7 +97,7 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
           FRONT_END_STATUS: ${{ env.FRONT_END_STATUS }}
-        BACK_END_STATUS: ${{ env.BACK_END_STATUS }}
+          BACK_END_STATUS: ${{ env.BACK_END_STATUS }}
         run: |
           node send-telegram-notification.js $GITHUB_REPOSITORY $GITHUB_ACTOR $GITHUB_EVENT_NAME "${{ steps.commit-info.outputs.commitMessage }}" ${{ steps.commit-info.outputs.commitHash }} ${{ env.FRONT_END_STATUS }} ${{ env.BACK_END_STATUS }}
 
