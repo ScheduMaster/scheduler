@@ -3,8 +3,8 @@
 -   [x] Accpet appointment
 -   [] Invite appointment: Apis partner ->  -> accpet/reject
 -   [x] Generate invite link partner
--   [] Display personal scheduler
--   [] Display all scheduler
+-   [x] Display personal scheduler
+-   [x] Display all scheduler
 -   [] Accept request
 -   [] Reject request
 -   [] Push notification
