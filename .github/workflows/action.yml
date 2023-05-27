@@ -1,0 +1,18 @@
+name: Telegram Notification
+description: Send a Telegram notification after push
+author: Your Name
+
+inputs:
+  recipients:
+    description: 'Recipients of the notification (comma-separated)'
+    required: true
+  telegram_token:
+    description: 'Telegram Bot Token'
+    required: true
+  message:
+    description: 'Notification message'
+    required: true
+
+runs:
+  using: 'node12'
+  main: 'index.js'
