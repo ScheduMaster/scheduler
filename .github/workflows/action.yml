@@ -40,8 +40,6 @@ jobs:
       - name: Capture status message
         if: ${{ failure() }}
         run: echo "FRONT_END_STATUS=Fail" >> $GITHUB_ENV
-      - name: Echo status
-        run: echo $BACK_END_STATUS
 
   build-back-end:
     runs-on: ubuntu-latest
@@ -67,8 +65,6 @@ jobs:
       - name: Capture status message
         if: ${{ failure() }}
         run: echo "BACK_END_STATUS=Fail" >> $GITHUB_ENV
-      - name: Echo status
-        run: echo $BACK_END_STATUS
 
   telegram-notification:
     runs-on: ubuntu-latest
@@ -92,12 +88,14 @@ jobs:
           echo "::set-output name=commitMessage::$(git log --format=%B -n 1 ${{ github.sha }})"
           echo "::set-output name=commitHash::${{ github.sha }}"
 
+      - name: Check backend previous status
+        run: echo $BACK_END_STATUS
+      - name: Check frontend previous status
+        run: echo $FRONT_END_STATUS
       - name: Send Telegram notification
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
         run: |
-          echo "The FRONT_END_STATUS is $FRONT_END_STATUS"
-          echo "The BACK_END_STATUS is $BACK_END_STATUS"
           node send-telegram-notification.js $GITHUB_REPOSITORY $GITHUB_ACTOR $GITHUB_EVENT_NAME "${{ steps.commit-info.outputs.commitMessage }}" ${{ steps.commit-info.outputs.commitHash }} ${{ env.FRONT_END_STATUS }} ${{ env.BACK_END_STATUS }}
 
