@@ -6,7 +6,7 @@ export class InvitationService {
   }
 
   generateInvitation = async (appointmentId) => {
-    const data = await this.interceptor.post(`/api/appointment/generate-invitation`, 
+    const data = await this.interceptor.post(`/api/invitation/generate`, 
     {
       appointmentId: appointmentId
     },

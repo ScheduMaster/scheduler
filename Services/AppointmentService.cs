@@ -175,6 +175,7 @@ namespace Application.Services
             
             return invitation;
         }
+        
         public Invitation GetInvitation(Guid invitationId)
         {
             Invitation invitation = _context.Invitation
@@ -182,6 +183,29 @@ namespace Application.Services
                 .SingleOrDefault(i => i.Id == invitationId);
             
             return invitation;
+        }
+
+        public async Task<bool> AddIntoAppointment(Guid userId, int appointmentId)
+        {
+            // Check if user already in appointment particapation
+            WorkProvider workProvider = _context.WorkProvider
+                .SingleOrDefault(w => w.UserId == userId && w.AppointmentId == appointmentId);
+
+            if (workProvider != null)
+            {
+                return true;
+            }
+
+            // Add all attendees to work provider
+            _context.WorkProvider.Add(new WorkProvider 
+            {
+                UserId = userId,
+                AppointmentId = appointmentId
+            });
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

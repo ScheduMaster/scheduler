@@ -17,6 +17,7 @@ namespace Application.Services
         Task<Invitation> CreateInvitation(Appointment appointment, CreateInvitationModel model);
         Invitation GetInvitation(int appointmentId);
         Invitation GetInvitation(Guid invitationId);
+        Task<bool> AddIntoAppointment(Guid userId, int appointmentId);
     }
 
 }

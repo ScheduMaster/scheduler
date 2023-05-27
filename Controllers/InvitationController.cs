@@ -121,10 +121,13 @@ namespace Application.Controllers
         }
 
         [HttpGet("accept/{id}")]
-        public IActionResult AcceptInvitation(Guid id)
+        public async Task<IActionResult> AcceptInvitation(Guid id)
         {
             try
             {
+                // Get current user from request
+                string UserId = (string)HttpContext.Items["UserId"];
+
                 // Get the invitation to be checked
                 Invitation invitation = _appointmentService.GetInvitation(id);
                 
@@ -134,6 +137,8 @@ namespace Application.Controllers
                 }
                 
                 // Logic to add current user to appointment attendees list
+                await _appointmentService.AddIntoAppointment(Guid.Parse(UserId), invitation.AppointmentId);
+                
                 return Ok(new { message = "Successfully joined the invitation" });
             }
             catch (Exception ex)
