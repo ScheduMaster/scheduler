@@ -1,18 +1,25 @@
 const axios = require('axios');
-const fs = require('fs');
-const { promisify } = require('util');
-const readFileAsync = promisify(fs.readFile);
+
+function renderTemplate(repository, actor, eventName, commitMessage, commitHash) {
+  const template = `📢 **GitHub Notification**
+  📚 **Repository:** [${repository}](https://github.com/${repository})
+  👤 **Author:** ${actor}
+  📅 **Event:** ${eventName}
+  ⏰ **Time:** ${time}
+  
+  📜 **Commit Message:** ${commitMessage}
+  
+  🔗 **Commit Details:**
+  [View Commit](https://github.com/${repository}/commit/${commitHash})
+  
+  🌟Thank you for your contribution! Keep up the great work!🚀
+    Made with ❤️ by Github Bot, Fighting`;
+  
+  return template;
+}
 
 async function sendTelegramMessage(repository, actor, eventName, commitMessage, commitHash) {
-  const markdownTemplate = await readFileAsync('message-template.md', 'utf8');
-
-  const message = markdownTemplate
-    .replace('{{repository}}', repository)
-    .replace('{{actor}}', actor)
-    .replace('{{eventName}}', eventName)
-    .replace('{{time}}', new Date().toISOString())
-    .replace('{{commitMessage}}', commitMessage)
-    .replace('{{commitHash}}', commitHash);
+  const message = renderTemplate(repository, actor, eventName, commitMessage, commitHash);
 
   const requestBody = {
     chat_id: process.env.TELEGRAM_TO,
