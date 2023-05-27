@@ -8,7 +8,7 @@ import { AppointmentService } from "../../../../services/AppointmentService";
 import { CalendarService } from "../../../../services/CalendarService";
 
 // Static data
-import { viewModeOptions } from "../../data/calendar";
+import { viewModeOptions, viewRangeOptions } from "../../data/calendar";
 
 export class Calendar extends Component {
   constructor(props) {
@@ -16,11 +16,13 @@ export class Calendar extends Component {
     this.state = {
       initialCalendars: [],
       initialEvents: [],
+      isAll: true,
       loading: true,
       error: '',
     };
     this.appointment = new AppointmentService();
     this.calendar = new CalendarService();
+    this.updateRenderAppointment = this.updateRenderAppointment.bind(this);
   }
 
   componentDidMount() {
@@ -37,9 +39,33 @@ export class Calendar extends Component {
       });
   }
   
+  // Called automatically after the state isAll updates
+  componentDidUpdate(prevProps, preState) {
+    if (preState.isAll !== this.state.isAll) {
+      this.setState({ selectedView: this.props.view }, this.updateRenderAppointment);
+    }
+  }
+
+  // Update appointment/event data every change range of appointment (all/own)
+  updateRenderAppointment = async () => {
+    const { isAll } = this.state;
+    const appointments = await this.appointment.getAppointments(isAll);
+
+    console.log('updateRenderAppointment: ', isAll);
+    this.setState({
+      initialEvents: appointments ?? this.state.initialEvents
+    });
+  } 
+
+  // Change state isAll from child component
+  onChangeRange = (isAll) => {
+    console.log('Change state isAll from child component: ', isAll)
+    this.setState({ isAll: isAll });
+  }
+
   async fetchData() {
     // Make API call to retrieve appointment and calendar data
-    const appointments = await this.appointment.getAppointments();
+    const appointments = await this.appointment.getAppointments(true);
     const calendars = await this.calendar.getCalendars();
 
     console.group('appointments');
@@ -71,9 +97,12 @@ export class Calendar extends Component {
           <div className="container-xl">
             <TuiCalendar 
               view={"month"}
+              range={"all"}
               initialCalendars={initialCalendars}
               initialEvents={initialEvents}
               viewModeOptions={viewModeOptions}
+              viewRangeOptions={viewRangeOptions}
+              onChangeRange={this.onChangeRange}
             />
           </div>
         </div>

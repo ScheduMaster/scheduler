@@ -15,7 +15,8 @@ export class TuiCalendar extends Component {
     super(props);
     this.state = {
       selectedDateRangeText: '',
-      selectedView: props.view
+      selectedView: props.view,
+      selectedRange: props.range
     };
     this.calendarRef = React.createRef();
     this.getCalInstance = this.getCalInstance.bind(this);
@@ -109,6 +110,14 @@ export class TuiCalendar extends Component {
     this.setState({ selectedView: ev.target.value }, this.updateRenderRangeText);
   }
 
+  onChangeRange(ev) {
+    const selectedValue = ev.target.value;
+    const { selectedRange } = this.state;
+    if (selectedValue != selectedRange) {
+      this.setState({ selectedRange: selectedValue }, this.updateRenderRange(selectedValue));
+    }
+  }
+
   onClickDayName = (res) => {
     console.group('onClickDayName');
     console.log('Date : ', res.date);
@@ -186,12 +195,49 @@ export class TuiCalendar extends Component {
     this.getCalInstance().createEvents([event]);
   };
 
+  updateRenderRange(viewRange) {
+    switch (viewRange) {
+      case 'all': {
+        this.handleChangeRange(true);
+        break;
+      }
+      case 'own': {
+        this.handleChangeRange(false);
+        break;
+      }
+      default:
+        this.handleChangeRange(true);
+        break;
+    }
+  }
+
+  handleChangeRange = (isAll) => {
+    console.log('handleChangeRange: ', isAll)
+    this.props.onChangeRange(isAll);
+  };
+
   render () {
-    const { initialCalendars, initialEvents, viewModeOptions } = this.props;
+    const { initialCalendars, initialEvents, viewModeOptions, viewRangeOptions } = this.props;
 
     return (
         <>
             <div className="d-flex align-items-center">
+            <Dropdown>
+                <Dropdown.Toggle variant="light" id="dropdown-viewmode">
+                  {viewRangeOptions.find((option) => option.value === this.state.selectedRange).title}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  {viewRangeOptions.map((option, index) => (
+                    <Dropdown.Item
+                      key={index}
+                      onClick={() => this.onChangeRange({ target: { value: option.value } })}
+                    >
+                      {option.title}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
               <Dropdown>
                 <Dropdown.Toggle variant="light" id="dropdown-viewmode">
                   {viewModeOptions.find((option) => option.value === this.state.selectedView).title}
