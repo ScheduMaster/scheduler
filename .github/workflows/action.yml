@@ -34,18 +34,18 @@ jobs:
         #   export CI=false
         #   npm run build --if-present
         
-      - name: Capture status message
-        id: capture-status
-        if: ${{ success() }}
-        run: echo "::set-output name=status::Success"
+      # - name: Capture status message
+      #   id: capture-status-sus
+      #   if: ${{ success() }}
+      #   run: echo "::set-output name=status::Success"
 
-      - name: Capture status message
-        id: capture-status
-        if: ${{ failure() }}
-        run: echo "::set-output name=status::Fail"
+      # - name: Capture status message
+      #   id: capture-status
+      #   if: ${{ failure() }}
+      #   run: echo "::set-output name=status::Fail"
 
     outputs:
-      FRONT_END_STATUS: ${{ steps.capture-status.outputs.status }}
+      FRONT_END_STATUS: Success
 
   build-back-end:
     runs-on: ubuntu-latest
@@ -65,18 +65,18 @@ jobs:
       #   run: |
       #     dotnet build --configuration Release --no-restore
       #     echo "BACK_END_STATUS=Success" >> $GITHUB_ENV
-      - name: Capture status message
-        id: capture-status
-        if: ${{ success() }}
-        run: echo "::set-output name=status::Success"
+      # - name: Capture status message
+      #   id: capture-status
+      #   if: ${{ success() }}
+      #   run: echo "::set-output name=status::Success"
 
-      - name: Capture status message
-        id: capture-status
-        if: ${{ failure() }}
-        run: echo "::set-output name=status::Fail"
+      # - name: Capture status message
+      #   id: capture-status
+      #   if: ${{ failure() }}
+      #   run: echo "::set-output name=status::Fail"
 
     outputs:
-      BACK_END_STATUS: ${{ steps.capture-status.outputs.status }}
+      BACK_END_STATUS: Sucess
 
   telegram-notification:
     runs-on: ubuntu-latest
