@@ -112,4 +112,3 @@ jobs:
           BACK_END_STATUS: ${{ needs.build-back-end.outputs.BACK_END_STATUS }}
         run: |
           node send-telegram-notification.js $GITHUB_REPOSITORY $GITHUB_ACTOR $GITHUB_EVENT_NAME "${{ steps.commit-info.outputs.commitMessage }}" ${{ steps.commit-info.outputs.commitHash }} ${{ env.FRONT_END_STATUS }} ${{ env.BACK_END_STATUS }}
-
