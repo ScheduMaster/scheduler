@@ -24,7 +24,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      # - name: Install dependencies
+      - name: Install dependencies
+        run: echo "FRONT_END_STATUS=Success" >> $GITHUB_ENV
       #   working-directory: ./ClientApp
       #   run: npm ci
       # - name: Build
@@ -32,6 +33,7 @@ jobs:
         # run: |
         #   export CI=false
         #   npm run build --if-present
+        
       - name: Capture status message
         if: ${{ success() }}
         run: echo "FRONT_END_STATUS=Success" >> $GITHUB_ENV
@@ -58,6 +60,7 @@ jobs:
       - name: Build
         run: |
           dotnet build --configuration Release --no-restore
+          echo "BACK_END_STATUS=Success" >> $GITHUB_ENV
       - name: Capture status message
         if: ${{ success() }}
         run: echo "BACK_END_STATUS=Success" >> $GITHUB_ENV
@@ -94,7 +97,7 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
         run: |
-          echo ${{ env.FRONT_END_STATUS }}
-          echo ${{ env.BACK_END_STATUS }}
+          echo "The FRONT_END_STATUS is $FRONT_END_STATUS"
+          echo "The BACK_END_STATUS is $BACK_END_STATUS"
           node send-telegram-notification.js $GITHUB_REPOSITORY $GITHUB_ACTOR $GITHUB_EVENT_NAME "${{ steps.commit-info.outputs.commitMessage }}" ${{ steps.commit-info.outputs.commitHash }} ${{ env.FRONT_END_STATUS }} ${{ env.BACK_END_STATUS }}
 
