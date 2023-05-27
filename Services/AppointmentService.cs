@@ -104,25 +104,46 @@ namespace Application.Services
             return true;
         }
 
-        public List<Appointment> GetAppointments(Guid userId)
+        public List<Appointment> GetAllAppointments(Guid userId)
+        {
+            List<Appointment> appointments = _context.Appointment
+                .Include(a => a.Initiator) // Eager loading of Initiator entity
+                .Include(a => a.Calendar) // Eager loading of Calendar entity
+                .Include(a => a.Providers) // Eager loading of Providers collection
+                    .ThenInclude(w => w.User) // Eager loading of User entity for each WorkProvider
+                .Where(a => a.UserId == userId || a.Providers.Any(w => w.UserId == userId))
+                .ToList();
+
+            return appointments;
+        }
+
+        public List<Appointment> GetOwnAppointments(Guid userId)
         {
             // Call the Appointment Context to get the Appointments
             List<Appointment> appointments = _context.Appointment
                 .Include(appointment => appointment.Initiator) // Eager loading of Initiator entity
                 .Where(appointment => appointment.UserId == userId)
                 .ToList();
-
+            
             return appointments;
         }
 
         public List<Appointment> GetUpcommingAppointments(Guid userId)
         {
-            // Call the Appointment Context to get the Appointments
-            List<Appointment> appointments = _context.Appointment
-                .Include(appointment => appointment.Initiator) // Eager loading of Initiator entity
-                .Include(appointment => appointment.Calendar) // Eager loading of Calendar entity
-                .Where(appointment => appointment.UserId == userId && appointment.Start > DateTime.Now)
-                .ToList();
+            List<WorkProvider> workProviders = _context.WorkProvider
+            .Include(w => w.Appointment)
+                .ThenInclude(a => a.Calendar)
+            .Include(w => w.Appointment)
+                .ThenInclude(a => a.Initiator)
+            .Where(w => w.UserId == userId && w.Appointment.End >= DateTime.Now)
+            .OrderBy(w => w.Appointment.Start)
+            .ToList();
+            
+            List<Appointment> appointments = new List<Appointment>();
+            foreach (WorkProvider workProvider in workProviders)
+            {
+                appointments.Add(workProvider.Appointment);
+            }
 
             return appointments;
         }
@@ -141,48 +162,6 @@ namespace Application.Services
             }
 
             return appointment;
-        }
-
-        public async Task<Invitation> CreateInvitation(Appointment appointment, CreateInvitationModel model)
-        {
-            // Default expire time
-            DateTime expiresAt = appointment.Start;
-
-            if (model.ExpiresAt.HasValue && (model.ExpiresAt.Value != appointment.Start))
-            {
-                expiresAt = model.ExpiresAt.Value;
-            }
-
-            Invitation invitation = new Invitation 
-            {  
-                AppointmentId = appointment.Id,
-                ExpiresAt = expiresAt
-            };
-
-            // Save invitation into database
-            _context.Invitation.Add(invitation);
-            await _context.SaveChangesAsync();;
-
-            // Return invitation
-            return invitation;
-        }
-
-        public Invitation GetInvitation(int appointmentId)
-        {
-            Invitation invitation = _context.Invitation
-                .Include(i => i.Appointment)
-                .SingleOrDefault(i => i.AppointmentId == appointmentId);
-            
-            return invitation;
-        }
-        
-        public Invitation GetInvitation(Guid invitationId)
-        {
-            Invitation invitation = _context.Invitation
-                .Include(i => i.Appointment)
-                .SingleOrDefault(i => i.Id == invitationId);
-            
-            return invitation;
         }
 
         public async Task<bool> AddIntoAppointment(Guid userId, int appointmentId)
