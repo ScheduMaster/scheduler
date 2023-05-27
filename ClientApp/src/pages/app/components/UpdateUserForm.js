@@ -19,9 +19,7 @@ class UpdateUserForm extends UpdateProfileForm {
       loading: false,
       error: '',
       showToast: false,
-      redirectToReferrer: false,
-      passWord: '',
-      role: ''
+      redirectToReferrer: false
     };
     this.userId = this.props.match.params.id;
   }

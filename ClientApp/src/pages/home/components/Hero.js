@@ -23,10 +23,10 @@ export class Hero extends Component {
                                 </p>
                                 <ul className="ud-hero-buttons">
                                     <li>
-                                        <a href="/auth/login" rel="nofollow noopener" target="_blank" className="ud-main-btn ud-white-btn">Trial Now</a>
+                                        <a href="/auth/login" rel="nofollow noopener" className="ud-main-btn ud-white-btn">Trial Now</a>
                                     </li>
                                     <li>
-                                        <a href="https://github.com/Blue-Pheasant/scheduler" rel="nofollow noopener" target="_blank" className="ud-main-btn ud-link-btn">
+                                        <a href="https://github.com/Blue-Pheasant/scheduler" rel="nofollow noopener" className="ud-main-btn ud-link-btn">
                                             Learn More<i className="lni lni-arrow-right"></i>
                                         </a>
                                     </li>

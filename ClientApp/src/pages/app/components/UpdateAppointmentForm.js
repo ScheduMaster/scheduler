@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter, Redirect, Link } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { Form, Button, Toast } from 'react-bootstrap';
 import { Progress } from "../../../components/Progress";
 import { ErrorList } from "../../../components/ErrorList";
@@ -97,8 +97,8 @@ class UpdateAppointmentForm extends Component {
   };
 
   render () {
-    const { title, location, calendarId, start, end, editable, attendees, calendarInfo,
-      error, loading, showToast, redirectToReferrer, calendars, initiator } = this.state;
+    const { title, location, calendarId, start, end, editable, error, loading,
+      showToast, redirectToReferrer, calendars, initiator } = this.state;
 
     // Display the progress component while loading
     if (loading) {

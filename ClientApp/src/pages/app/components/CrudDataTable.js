@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Dropdown, Button } from 'react-bootstrap';
-import { ActionDropdown } from "./ActionDropdown";
+import { Table, Pagination, Dropdown } from 'react-bootstrap';
 import { Color } from './Color';
 import { checkColor } from "./Calendar/utils";
 import '../static/css/data-table.css';

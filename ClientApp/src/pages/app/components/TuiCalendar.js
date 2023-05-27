@@ -113,7 +113,7 @@ export class TuiCalendar extends Component {
   onChangeRange(ev) {
     const selectedValue = ev.target.value;
     const { selectedRange } = this.state;
-    if (selectedValue != selectedRange) {
+    if (selectedValue !== selectedRange) {
       this.setState({ selectedRange: selectedValue }, this.updateRenderRange(selectedValue));
     }
   }

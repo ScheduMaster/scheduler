@@ -36,7 +36,7 @@ class HandleAcceptInvitaion extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.accept != this.state.accept) {
+    if (prevState.accept !== this.state.accept) {
       setTimeout(() => {
         this.setState({ showPopup: false, redirectToReferrer: true });
       }, 2000); // 2 seconds timeout
