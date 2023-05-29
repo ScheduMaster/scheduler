@@ -22,6 +22,7 @@ namespace Application.Data.Entities
         public virtual List<Customer> Customers { get; set; }
         public virtual List<WorkProvider> WorkProviders { get; set; }
         public virtual List<AuthToken> Tokens { get; set; }
+        public virtual List<Connection> Connections { get; set; }
 
         public string GetUsername()
         {
