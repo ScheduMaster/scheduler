@@ -124,4 +124,18 @@ export class UserService {
 
     return data;
   }
+
+  searchUsers = async (searchQuery, recordsPerPage, pageNumber) => {
+    const data = await this.interceptor.post(`/api/user/search`, 
+    { 
+      searchQuery, recordsPerPage, pageNumber
+    }, 
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
+    return data;
+  }
 }
