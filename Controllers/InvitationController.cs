@@ -54,7 +54,10 @@ namespace Application.Controllers
                     return NotFound(new { message = "Appointment not found" });
                 }
 
-                Invitation invitation = await _invitationService.CreateInvitation(appointment, model);
+                // Get current user from request
+                string UserId = (string)HttpContext.Items["UserId"];
+
+                Invitation invitation = await _invitationService.CreateInvitation(appointment, model, Guid.Parse(UserId));
                 
                 string host = _config.GetValue<string>("Host");
                 string invitationURL = $"{host}/app/invitation/accept/{invitation.Id}";
@@ -149,6 +152,29 @@ namespace Application.Controllers
                 await _appointmentService.AddIntoAppointment(Guid.Parse(UserId), invitation.AppointmentId);
                 
                 return Ok(new { message = "Successfully joined the invitation" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("send")]
+        public async Task<IActionResult> SendInvitation([FromBody] SendInvitaionModel model)
+        {
+            try
+            {
+                // Get current user from request
+                string UserId = (string)HttpContext.Items["UserId"];
+
+                // Get the invitation to be checked
+                Invitation invitation = await _invitationService.CreateInvitation(model, Guid.Parse(UserId));
+                
+                return Ok(new 
+                { 
+                    Message = "Send invitation successfully",
+                    AppointmentId = invitation.AppointmentId
+                });
             }
             catch (Exception ex)
             {

@@ -20,7 +20,7 @@ namespace Application.Services
             _calendarService = calendarService;
         }
 
-        public async Task<Invitation> CreateInvitation(Appointment appointment, CreateInvitationModel model)
+        public async Task<Invitation> CreateInvitation(Appointment appointment, CreateInvitationModel model, Guid userId)
         {
             // Default expire time
             DateTime expiresAt = appointment.Start;
@@ -33,6 +33,8 @@ namespace Application.Services
             Invitation invitation = new Invitation 
             {  
                 AppointmentId = appointment.Id,
+                PartnerId = model.PartnerId,
+                UserId = userId,
                 ExpiresAt = expiresAt
             };
 
@@ -59,6 +61,35 @@ namespace Application.Services
                 .Include(i => i.Appointment)
                 .SingleOrDefault(i => i.Id == invitationId);
             
+            return invitation;
+        }
+
+        public async Task<Invitation> CreateInvitation(SendInvitaionModel model, Guid userId)
+        {
+            // Get appointment data from database
+            Appointment appointment = _context.Appointment.SingleOrDefault(a => a.Id == model.AppointmentId);
+
+            // Default expire time
+            DateTime expiresAt = appointment.Start;
+
+            if (model.ExpiresAt.HasValue && (model.ExpiresAt.Value != appointment.Start))
+            {
+                expiresAt = model.ExpiresAt.Value;
+            }
+
+            Invitation invitation = new Invitation 
+            {  
+                AppointmentId = appointment.Id,
+                PartnerId = model.PartnerId,
+                UserId = userId,
+                ExpiresAt = expiresAt
+            };
+
+            // Save invitation into database
+            _context.Invitation.Add(invitation);
+            await _context.SaveChangesAsync();;
+
+            // Return invitation
             return invitation;
         }
     }

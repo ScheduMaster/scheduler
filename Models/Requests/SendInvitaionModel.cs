@@ -3,11 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Models.Requests
 {
-    public class CreateInvitationModel
+    public class SendInvitaionModel
     {
         [Required]
-        public int AppointmentId { get; set; }
         public Guid PartnerId { get; set; }
+        [Required]
+        public int AppointmentId { get; set; }
+        public string Message { get; set; }
         public DateTime? ExpiresAt { get; set; }
     }
 }
