@@ -51,6 +51,7 @@ namespace scheduler
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IInvitationService, InvitationService>();
             services.AddScoped<IDetectService, DetectService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             services.AddAuthentication(x => {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
