@@ -145,6 +145,42 @@ namespace scheduler.Data.Migrations
                     b.ToTable("calendars");
                 });
 
+            modelBuilder.Entity("Application.Data.Entities.Connection", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("ConnectionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("connection_date");
+
+                    b.Property<Guid>("FisrtUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("first_user_id");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("message");
+
+                    b.Property<Guid>("SecondUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("second_user_id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FisrtUserId");
+
+                    b.HasIndex("SecondUserId");
+
+                    b.ToTable("connections");
+                });
+
             modelBuilder.Entity("Application.Data.Entities.Customer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -214,6 +250,18 @@ namespace scheduler.Data.Migrations
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("datetime2")
                         .HasColumnName("expires_at");
+
+                    b.Property<Guid>("PartnerId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("partner_id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("status");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id");
 
@@ -573,6 +621,27 @@ namespace scheduler.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Application.Data.Entities.Connection", b =>
+                {
+                    b.HasOne("Application.Data.Entities.User", "FirstUser")
+                        .WithMany("Connections")
+                        .HasForeignKey("FisrtUserId")
+                        .HasConstraintName("FK_connection_first_user")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Application.Data.Entities.User", "SecondUser")
+                        .WithMany()
+                        .HasForeignKey("SecondUserId")
+                        .HasConstraintName("FK_connection_second_user")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("FirstUser");
+
+                    b.Navigation("SecondUser");
+                });
+
             modelBuilder.Entity("Application.Data.Entities.Customer", b =>
                 {
                     b.HasOne("Application.Data.Entities.User", "user")
@@ -734,6 +803,8 @@ namespace scheduler.Data.Migrations
             modelBuilder.Entity("Application.Data.Entities.User", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("Connections");
 
                     b.Navigation("Customers");
 

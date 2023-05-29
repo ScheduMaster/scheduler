@@ -183,6 +183,32 @@ namespace scheduler.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "connections",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    first_user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    second_user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
+                    message = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    connection_date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_connections", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_connection_first_user",
+                        column: x => x.first_user_id,
+                        principalTable: "users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_connection_second_user",
+                        column: x => x.second_user_id,
+                        principalTable: "users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Customer",
                 columns: table => new
                 {
@@ -324,6 +350,27 @@ namespace scheduler.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "invitations",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    partner_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    appointment_id = table.Column<int>(type: "int", nullable: false),
+                    expires_at = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_invitations", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_invitations_appointments_appointment_id",
+                        column: x => x.appointment_id,
+                        principalTable: "appointments",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "messages",
                 columns: table => new
                 {
@@ -426,6 +473,16 @@ namespace scheduler.Data.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_connections_first_user_id",
+                table: "connections",
+                column: "first_user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_connections_second_user_id",
+                table: "connections",
+                column: "second_user_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Customer_userId",
                 table: "Customer",
                 column: "userId");
@@ -449,6 +506,11 @@ namespace scheduler.Data.Migrations
                 name: "IX_exchanges_UserId1",
                 table: "exchanges",
                 column: "UserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_invitations_appointment_id",
+                table: "invitations",
+                column: "appointment_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_messages_id_appointment",
@@ -511,10 +573,16 @@ namespace scheduler.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "connections");
+
+            migrationBuilder.DropTable(
                 name: "Customer");
 
             migrationBuilder.DropTable(
                 name: "exchanges");
+
+            migrationBuilder.DropTable(
+                name: "invitations");
 
             migrationBuilder.DropTable(
                 name: "messages");
