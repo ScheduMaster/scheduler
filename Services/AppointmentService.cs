@@ -153,6 +153,8 @@ namespace Application.Services
             // Get the appointment from the database
             Appointment appointment = _context.Appointment
                 .Include(appointment => appointment.Initiator) // Eager loading of Initiator entity
+                .Include(appointment => appointment.Providers)
+                    .ThenInclude(workProvider => workProvider.User)
                 .SingleOrDefault(appointment => appointment.Id == id);
 
             // Check if the appointment exists
