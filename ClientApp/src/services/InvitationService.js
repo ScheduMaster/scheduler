@@ -54,4 +54,18 @@ export class InvitationService {
 
     return data;
   }
+
+  sendInvitation = async (userId, appointmentId) => {
+    const data = await this.interceptor.post(`/api/invitation/send`, 
+    {
+      userId, appointmentId
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    return data;
+  }
 }
