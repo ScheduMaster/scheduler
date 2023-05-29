@@ -1,12 +1,19 @@
 import React, { Component } from "react";
 import { withRouter, Redirect } from 'react-router-dom';
-import { Form, Button, Toast } from 'react-bootstrap';
+import { Form, Button, Toast, InputGroup } from 'react-bootstrap';
 import { Progress } from "../../../components/Progress";
 import { ErrorList } from "../../../components/ErrorList";
+import { SearchUserPopup } from "./SearchUserPopup";
+import TagsInput from 'react-tagsinput'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 // Services
 import { AppointmentService } from "../../../services/AppointmentService";
 import { CalendarService } from "../../../services/CalendarService";
+
+// Style css
+import "../static/css/react-tagsinput.css"
 
 class UpdateAppointmentForm extends Component {
   constructor(props) {
@@ -28,7 +35,12 @@ class UpdateAppointmentForm extends Component {
       calendars: [],
       loading: false,
       error: '',
-      showToast: false,
+      toast: {
+        show: false,
+        message: '',
+        title: ''
+      },
+      showPopup: false,
       redirectToReferrer: false
     };
     this.appointmentId = this.props.match.params.id;
@@ -54,6 +66,7 @@ class UpdateAppointmentForm extends Component {
     try {
       const appointment = await this.appointment.getAppointment(appointmentId);
 
+      const attendees = appointment.attendees.map(attendee => attendee.name);
       this.setState({
         title: appointment.title ?? this.state.title,
         initiator: appointment.initiator ?? this.state.initiator,
@@ -61,9 +74,11 @@ class UpdateAppointmentForm extends Component {
         calendarId: appointment.calendarId ?? this.state.calendarId,
         editable: appointment.editable ?? this.state.editable,
         start: appointment.start ?? this.state.start,
-        end: appointment.end ?? this.state.end
+        end: appointment.end ?? this.state.end,
+        attendees: attendees ?? this.state.attendees
       });
-  
+      
+      console.log(appointment.attendees);
       const calendar = await this.calendar.getCalendar(appointment.calendarId);
       const calendars = await this.calendar.getCalendars();
 
@@ -88,7 +103,11 @@ class UpdateAppointmentForm extends Component {
       console.log(data);
       this.setState({ 
         loading: false,
-        showToast: true,
+        toast: { 
+          show: true,
+          title: 'Success',
+          message: 'Appoitment data successfully updated.'
+        },
         redirectToReferrer: true
       });
     } catch (error) {
@@ -96,9 +115,45 @@ class UpdateAppointmentForm extends Component {
     }
   };
 
+  handleCloseToast = () => {
+    this.setState({ toast: {
+      show: false,
+      title: '',
+      message: ''
+    }});
+  };
+
+  onClosePopup = () => {
+    this.setState({ showPopup: false });
+  };
+
+  onSuccess = (message) => {
+    this.setState({ toast: {
+      show: true,
+      title: "Success",
+      message: message
+    }});
+  };
+
+  onFail = (message) => {
+    this.setState({ toast: {
+      show: true,
+      title: "Fail",
+      message: message
+    }});
+  };
+
+  handleChange = (attendees) => {
+    this.setState({ attendees });
+  }
+  
+  handleOpenPopup = () => {
+    this.setState({ showPopup: true });
+  }
+
   render () {
     const { title, location, calendarId, start, end, editable, error, loading,
-      showToast, redirectToReferrer, calendars, initiator } = this.state;
+      toast, redirectToReferrer, calendars, initiator, showPopup, attendees } = this.state;
 
     // Display the progress component while loading
     if (loading) {
@@ -112,7 +167,7 @@ class UpdateAppointmentForm extends Component {
     return (
       <>
         <Toast 
-          show={showToast}
+          show={toast.show}
           autohide={true}
           onClose={this.handleCloseToast} 
           delay={2000}
@@ -123,112 +178,137 @@ class UpdateAppointmentForm extends Component {
           }}
         >
           <Toast.Header>
-            <strong className="mr-auto">Success</strong>
+            <strong className="mr-auto">{toast.title}</strong>
           </Toast.Header>
-          <Toast.Body>Appoitment data successfully updated.</Toast.Body>
+          <Toast.Body>{toast.message}</Toast.Body>
         </Toast>
         {!loading && (
-        <Form className="card" onSubmit={this.handleFormSubmit}>
-          <div className="card-body">
-            <h3 className="card-title">View Appointment</h3>
-            <div className="row row-cards">
-              <div className="col-md-4">
-                <Form.Group className="mb-3">
-                  <Form.Label>Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Name"
-                    value={title}
-                    onChange={event => this.setState({ title: event.target.value })}
-                  />
-                </Form.Group>
-              </div>
-              <div className="col-md-4">
-                <Form.Group className="mb-3">
-                  <Form.Label>Calendar</Form.Label>
-                  <Form.Select
-                      className="form-select tomselected ts-hidden-accessible"
-                      value={calendarId}
-                      onChange={event => this.setState({ calendarId: event.target.value })}
-                    >
-                      {calendars.map((calendar, index) => (
-                        <option 
-                          value={calendar.id} 
-                          key={index}
-                          style={{ 
-                            color: calendar.backgroundColor,
-                            fontWeight: 'bold'
-                          }}
-                        >
-                          {calendar.name}
-                        </option>
-                      ))}
-                  </Form.Select>
-                </Form.Group>
-              </div>
-              <div className="col-md-4">
-                <Form.Group className="mb-3">
-                  <Form.Label>Editable</Form.Label>
-                  <Form.Select
-                      value={editable}
-                      onChange={event => this.setState({ editable: event.target.value })}
-                    >
-                    <option value={true}>Yes</option>
-                    <option value={false}>No</option>
-                  </Form.Select>
-                </Form.Group>
-              </div>
-              <div className="col-md-6">
-                <Form.Group className="mb-3">
-                  <Form.Label>Initiator</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Initiator"
-                    value={initiator}
-                    onChange={event => this.setState({ initiator: event.target.value })}
-                  />
-                </Form.Group>
-              </div>
-              <div className="col-md-6">
-                <Form.Group className="mb-3">
-                  <Form.Label>Location</Form.Label>
+        <>
+          <SearchUserPopup 
+            showPopup={showPopup} 
+            onClosePopup={this.onClosePopup} 
+            onAppointment={this.appointmentId}
+            onSuccess={this.onSuccess}
+            onFail={this.onFail}
+          />
+          <Form className="card" onSubmit={this.handleFormSubmit}>
+            <div className="card-body">
+              <h3 className="card-title">View Appointment</h3>
+              <div className="row row-cards">
+                <div className="col-md-4">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Name</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Location"
-                      value={location}
-                      onChange={event => this.setState({ location: event.target.value })}
+                      placeholder="Name"
+                      value={title}
+                      onChange={event => this.setState({ title: event.target.value })}
                     />
-                </Form.Group>
-              </div>
-              <div className="col-md-6">
-                <Form.Group className="mb-3">
-                  <Form.Label>Start</Form.Label>
-                  <Form.Control
-                    type="datetime-local"
-                    placeholder="Start"
-                    value={start}
-                    onChange={event => this.setState({ start: event.target.value })}
-                  />
-                </Form.Group>
-              </div>
-              <div className="col-md-6">
-                <Form.Group className="mb-3">
-                  <Form.Label>End</Form.Label>
-                  <Form.Control
-                    type="datetime-local"
-                    placeholder="End"
-                    value={end}
-                    onChange={event => this.setState({ end: event.target.value })}
-                  />
-                </Form.Group>
+                  </Form.Group>
+                </div>
+                <div className="col-md-4">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Calendar</Form.Label>
+                    <Form.Select
+                        className="form-select tomselected ts-hidden-accessible"
+                        value={calendarId}
+                        onChange={event => this.setState({ calendarId: event.target.value })}
+                      >
+                        {calendars.map((calendar, index) => (
+                          <option 
+                            value={calendar.id} 
+                            key={index}
+                            style={{ 
+                              color: calendar.backgroundColor,
+                              fontWeight: 'bold'
+                            }}
+                          >
+                            {calendar.name}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </div>
+                <div className="col-md-4">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Editable</Form.Label>
+                    <Form.Select
+                        value={editable}
+                        onChange={event => this.setState({ editable: event.target.value })}
+                      >
+                      <option value={true}>Yes</option>
+                      <option value={false}>No</option>
+                    </Form.Select>
+                  </Form.Group>
+                </div>
+                <div className="col-md-6">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Initiator</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Initiator"
+                      value={initiator}
+                      onChange={event => this.setState({ initiator: event.target.value })}
+                    />
+                  </Form.Group>
+                </div>
+                <div className="col-md-6">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Location</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Location"
+                        value={location}
+                        onChange={event => this.setState({ location: event.target.value })}
+                      />
+                  </Form.Group>
+                </div>
+                <div className="col-md-6">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Start</Form.Label>
+                    <Form.Control
+                      type="datetime-local"
+                      placeholder="Start"
+                      value={start}
+                      onChange={event => this.setState({ start: event.target.value })}
+                    />
+                  </Form.Group>
+                </div>
+                <div className="col-md-6">
+                  <Form.Group className="mb-3">
+                    <Form.Label>End</Form.Label>
+                    <Form.Control
+                      type="datetime-local"
+                      placeholder="End"
+                      value={end}
+                      onChange={event => this.setState({ end: event.target.value })}
+                    />
+                  </Form.Group>
+                </div>
+                <div className="col-md-12">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Attendees</Form.Label>
+                    <InputGroup>
+                      <TagsInput
+                        className="form-control"
+                        value={attendees}
+                        onChange={this.handleChange}
+                        placeholder="Enter attendees"
+                      />
+                      <Button variant="outline-primary" onClick={this.handleOpenPopup}>
+                        <FontAwesomeIcon icon={faPlus} />
+                      </Button>
+                    </InputGroup>
+                  </Form.Group>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="card-footer text-end">
-            {error ? <ErrorList errors={error}/> : ''}
-            <Button variant="primary" type="submit">Update appointment</Button>
-          </div>
-        </Form>
+            <div className="card-footer text-end">
+              {error ? <ErrorList errors={error}/> : ''}
+              <Button variant="primary" type="submit">Update appointment</Button>
+            </div>
+          </Form>
+        </>
         )}
       </>
     );
