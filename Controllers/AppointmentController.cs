@@ -157,6 +157,9 @@ namespace Application.Controllers
         {
             try
             {
+                // Current user
+                string UserId = (string)HttpContext.Items["UserId"];
+
                 // Get the appointment to be viewed
                 Appointment viewAppointment = _appointmentService.GetAppointment(id);
                 
@@ -164,6 +167,17 @@ namespace Application.Controllers
                 {
                     return NotFound(new { message = "Appointment not found" });
                 }
+
+                var attendees = viewAppointment.Providers
+                    .Select(provider => new
+                    {
+                        name = provider.User.GetUsername(),
+                        email = provider.User.Email,
+                        userId = provider.User.Id
+                    }).ToList();;
+                
+                // Remove current user from attendees
+                attendees.RemoveAll(attendee => attendee.userId == Guid.Parse(UserId));
 
                 return Ok(new 
                 {
@@ -176,7 +190,8 @@ namespace Application.Controllers
                     viewAppointment.Status,
                     viewAppointment.CalendarId,
                     IsReadOnly = !viewAppointment.Editable,
-                    viewAppointment.Editable
+                    viewAppointment.Editable,
+                    Attendees = attendees
                 });
             }
             catch (Exception ex)
