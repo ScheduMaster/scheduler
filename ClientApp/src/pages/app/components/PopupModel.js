@@ -36,6 +36,7 @@ export class PopupModel extends Component {
         this.setState({
           invitation: data.invitation ?? this.state.invitation,
           loading: false,
+          error: false,
         });
       })
       .catch((error) => {
