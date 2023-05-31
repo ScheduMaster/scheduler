@@ -12,6 +12,8 @@ namespace Application.Services
         Task<Invitation> CreateInvitation(SendInvitaionModel model, Guid UserId);
         Invitation GetInvitation(int appointmentId);
         Invitation GetInvitation(Guid invitationId);
+        string GetInvitationUrl(Guid invitationId);
+        Task GenerateInvitation(int appointmentId, Guid ownerId, Guid partnerId);
     }
 
 }

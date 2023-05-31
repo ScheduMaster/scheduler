@@ -12,22 +12,23 @@ namespace Application.Services
     public class AppointmentService : IAppointmentService
     {
         private readonly DBContext _context;
-        private readonly ICalendarService _calendarService;
+        private readonly IInvitationService _invitationService;
 
-        public AppointmentService(DBContext context, ICalendarService calendarService)
+        public AppointmentService(DBContext context, IInvitationService invitationService)
         {
             _context = context;
-            _calendarService = calendarService;
+            _invitationService = invitationService;
         }
 
-        public async Task<Appointment> CreateAppointment(Guid UserId, CreateAppointmentModel model)
+        public async Task<Appointment> CreateAppointment(Guid userId, CreateAppointmentModel model)
         {
             // Create a new Appointment model with the data from the CreateAppointmentModel
             Appointment createdAppointment = new Appointment 
             {
-                UserId = UserId,
+                UserId = userId,
                 Name = model.Name,
                 Start = model.Start,
+                Location = model.Location,
                 End = model.End,
                 CalendarId = model.CalendarId,
                 Editable = model.Editable
@@ -37,17 +38,17 @@ namespace Application.Services
             _context.Appointment.Add(createdAppointment);
             await _context.SaveChangesAsync();
 
-            // Add current user to attendees list
-            model.Attendees.Add(new User { Id = UserId });
-
-            // Add all attendees to work provider
-            foreach (User attendee in model.Attendees)
+            // Add current user to WorkProvider
+            _context.WorkProvider.Add(new WorkProvider 
             {
-                _context.WorkProvider.Add(new WorkProvider 
-                {
-                    UserId = attendee.Id,
-                    AppointmentId = createdAppointment.Id
-                });
+                UserId = userId,
+                AppointmentId = createdAppointment.Id
+            });
+
+            // Send invitation to all attendees
+            foreach (Guid attendee in model.Attendees)
+            {
+                await _invitationService.GenerateInvitation(createdAppointment.Id, userId, attendee);
             }
 
             await _context.SaveChangesAsync();
@@ -55,7 +56,7 @@ namespace Application.Services
             return createdAppointment;
         }
 
-        public async Task<Appointment> UpdateAppointmentAsync(Appointment appointmentToUpdate, UpdateAppointmentModel model)
+        public async Task<Appointment> UpdateAppointmentAsync(Appointment appointmentToUpdate, UpdateAppointmentModel model, Guid userId)
         {
             // Update the appointment's properties
             if (!string.IsNullOrEmpty(model.Name) && appointmentToUpdate.Name != model.Name)
@@ -86,6 +87,31 @@ namespace Application.Services
             if (!(model.CalendarId == 0) && appointmentToUpdate.CalendarId != model.CalendarId)
             {
                 appointmentToUpdate.CalendarId = model.CalendarId;
+            }
+
+            // Update attendees && check the difference between number of providers and attendees 
+            if (!(model.Attendees.Count > 0) && appointmentToUpdate.Providers.Count != model.Attendees.Count)
+            {
+                // Get the list of providers with different UserIds compared to userIds list
+                List<WorkProvider> differentAttendees = appointmentToUpdate.Providers.Where(provider => !model.Attendees.Contains(provider.UserId)).ToList();
+                
+                // Remove inititor of appointment from differentAttendees list
+                differentAttendees.RemoveAll(da => da.UserId == userId);
+
+                foreach (WorkProvider workProvider in differentAttendees)
+                {
+                    // Case 1: Attendee was removed: attendee is not in model.Attendees
+                    if (!model.Attendees.Any(attendee => attendee == workProvider.UserId))
+                    {
+                        _context.WorkProvider.Remove(workProvider);
+                    }
+
+                    // Case 2: Attendee was added: attendee is not in appointmentToUpdate.Providers
+                    if (!appointmentToUpdate.Providers.Any(provider => provider.UserId == workProvider.UserId))
+                    {
+                        await _invitationService.GenerateInvitation(workProvider.AppointmentId, userId, workProvider.UserId);
+                    }
+                }
             }
 
             // Call the Appointment Context to update the appointment

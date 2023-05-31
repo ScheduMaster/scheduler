@@ -24,6 +24,8 @@ namespace Application.Controllers
         private readonly ICalendarService _calendarService;
         private readonly IAppointmentService _appointmentService;
         private readonly IInvitationService _invitationService;
+        private readonly INotificationService _notificationService;
+        private readonly IUserService _userService;
 
         public InvitationController
         (
@@ -31,7 +33,9 @@ namespace Application.Controllers
             DBContext context, 
             ICalendarService calendarService,
             IAppointmentService appointmentService,
-            IInvitationService invitaitonService
+            IInvitationService invitaitonService,
+            INotificationService notificationService,
+            IUserService userService
         )
         {
             _config = config;
@@ -39,6 +43,8 @@ namespace Application.Controllers
             _calendarService = calendarService;
             _appointmentService = appointmentService;
             _invitationService = invitaitonService;
+            _notificationService = notificationService;
+            _userService = userService;
         }
 
         [HttpPost("generate")]
@@ -139,6 +145,7 @@ namespace Application.Controllers
             {
                 // Get current user from request
                 string UserId = (string)HttpContext.Items["UserId"];
+                User user = _userService.GetUserInfo(Guid.Parse(UserId));
 
                 // Get the invitation to be checked
                 Invitation invitation = _invitationService.GetInvitation(id);
@@ -151,6 +158,11 @@ namespace Application.Controllers
                 // Logic to add current user to appointment attendees list
                 await _appointmentService.AddIntoAppointment(Guid.Parse(UserId), invitation.AppointmentId);
                 
+                // Create notification to partner
+                string title = $"{user.FirstName} has joined";
+                string message = $"{user.GetUsername()} he has accepted your meeting invitation at {DateTime.Now}";
+                await _notificationService.CreateNotification(invitation, title, message);
+
                 return Ok(new { message = "Successfully joined the invitation" });
             }
             catch (Exception ex)
@@ -167,7 +179,18 @@ namespace Application.Controllers
                 // Get current user from request
                 string UserId = (string)HttpContext.Items["UserId"];
 
-                // Get the invitation to be checked
+                // Check if it contains a pending invitation request
+                Invitation previousInvitation = _invitationService.GetInvitation(model.AppointmentId); 
+                if (previousInvitation != null)
+                {
+                    return Ok(new 
+                    { 
+                        Message = "Invitation has already sent before.",
+                        AppointmentId = previousInvitation.AppointmentId
+                    });
+                }
+
+                // Create the new invitation
                 Invitation invitation = await _invitationService.CreateInvitation(model, Guid.Parse(UserId));
                 
                 return Ok(new 

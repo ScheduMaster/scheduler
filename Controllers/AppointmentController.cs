@@ -8,9 +8,8 @@ using Application.Data;
 using Application.Data.Entities;
 using Application.Services;
 using Application.Models.Requests;
-using Application.Models.Responses;
 using System.Collections.Generic;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Controllers
 {
@@ -133,6 +132,9 @@ namespace Application.Controllers
         {
             try
             {
+                // Current user
+                string UserId = (string)HttpContext.Items["UserId"];
+
                 // Get the appointment to be updated
                 Appointment appointmentToUpdate = _appointmentService.GetAppointment(id);
                 
@@ -142,7 +144,7 @@ namespace Application.Controllers
                 }
 
                 // Call appointmentService to update appointment
-                await _appointmentService.UpdateAppointmentAsync(appointmentToUpdate, model);
+                await _appointmentService.UpdateAppointmentAsync(appointmentToUpdate, model, Guid.Parse(UserId));
 
                 return Ok(new { message = "Appointment updated successfully" });
             }
@@ -179,6 +181,19 @@ namespace Application.Controllers
                 // Remove current user from attendees
                 attendees.RemoveAll(attendee => attendee.userId == Guid.Parse(UserId));
 
+                // Get guests who have not responded to invitations
+                List<Invitation> unconfirmedInvitations = _context.Invitation
+                    .Include(i => i.Partner)
+                    .Where(i => i.AppointmentId == id && i.Status == Status.PENDING)
+                    .ToList();
+
+                var PendingResponses = unconfirmedInvitations.Select(invitation => new
+                {
+                    name = invitation.Partner.GetUsername(),
+                    email = invitation.Partner.Email,
+                    userId = invitation.PartnerId
+                });
+
                 return Ok(new 
                 {
                     viewAppointment.Id,
@@ -191,7 +206,8 @@ namespace Application.Controllers
                     viewAppointment.CalendarId,
                     IsReadOnly = !viewAppointment.Editable,
                     viewAppointment.Editable,
-                    Attendees = attendees
+                    Attendees = attendees,
+                    PendingResponses = PendingResponses
                 });
             }
             catch (Exception ex)

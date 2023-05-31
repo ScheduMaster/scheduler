@@ -14,5 +14,6 @@ namespace Application.Data.Entities
         public Status Status { get; set; }
 
         public virtual Appointment Appointment { get; set; }
+        public virtual User Partner { get; set; }
     }
 }
