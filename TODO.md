@@ -5,6 +5,7 @@
 -   [x] Generate invite link partner
 -   [x] Display personal scheduler
 -   [x] Display all scheduler
+-   [x] Prevent over loop when using jwtintercepter
 -   [] Accept request
 -   [] Reject request
 -   [] Push notification
