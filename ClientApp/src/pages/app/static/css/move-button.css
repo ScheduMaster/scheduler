@@ -6,7 +6,6 @@ body {
 
 /**  custom bootstrap - start */
 .btn {
-  border-radius: 25px;
   border-color: #ddd;
 }
 
@@ -58,4 +57,32 @@ body {
 .toastui-calendar-detail-item-indent {
   text-indent: 0;
   padding-left: 0;
+}
+
+.navbar-nav .nav-item {
+  position: relative;
+  padding: 0px 0px;
+}
+
+.navbar .navbar-nav .nav-link .badge {
+  position: absolute;
+  top: 1rem;
+  right: 0.375rem;
+  transform: translate(50%,-50%);
+}
+
+.navbar.navbar-expand-md.navbar-light.d-print-none {
+  max-height: 25px;
+}
+
+.d-flex.align-items-center {
+  margin-bottom: 0.5rem;
+}
+
+.d-flex.align-items-center .dropdown {
+  margin-right: 0.3rem;
+}
+
+.d-flex.align-items-center .move-today.btn.btn-default.btn-sm {
+  margin-right: 0.3rem;
 }
