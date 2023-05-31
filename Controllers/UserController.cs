@@ -306,6 +306,7 @@ namespace Application.Controllers
                 List<User> users = await _userService.SearchUsers(model.SearchQuery, model.RecordsPerPage, model.PageNumber);
 
                 var result = users.Select(user => new {
+                    user.Id,
                     user.FirstName,
                     user.LastName,
                     user.PhoneNumber,
