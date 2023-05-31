@@ -58,6 +58,9 @@ export class SearchUserPopup extends Component {
           users: data ?? this.state.users,
           searchStatus: 'done'
         });
+        if (data && data.length > 0) {
+          this.setState({ targetUser: data[0].id });
+        }
       })
       .catch((error) => {
         this.setState({
@@ -70,53 +73,35 @@ export class SearchUserPopup extends Component {
 
   handleInvite = () => {
     const { targetUser } = this.state;
-    const { onAppointment } = this.props;
     this.setState({ inviteStatus: 'inviting' });
 
-    this.invitationService
-      .sendInvitation(targetUser, onAppointment)
-      .then((data) => {
-        this.setState({
-          message: data.message ?? this.state.message,
-          inviteStatus: 'done'
-        });
-        this.handleSuccess(this.state.message);
-      })
-      .catch((error) => {
-        this.setState({
-          inviteStatus: 'done',
-          message: error.message
-        });
-        this.handleFail(this.state.message);
-      });
+    this.props.onInviteAttendee(targetUser);
+    this.setState({ inviteStatus: 'done' }); 
   };
 
+  handleSelectUser = (event) => {
+    this.setState({ targetUser: event.target.value });
+    console.log(this.state.targetUser);
+  };
+
+  handleClear = () => {
+    this.setState({ 
+      inviteStatus: 'init',
+      searchStatus: 'init',
+      searchQuery: ''
+    }); 
+  };
+  
   handleClose = () => {
     this.props.onClosePopup();
   };
-
-  handleSuccess = (message) => {
-    this.props.onSuccess(message);
-  };
-
-  handleFail = (message) => {
-    this.props.onFail(message);
-  };
-
-  handleSignalMessage = () => {
-    this.props.onSuccess();
-  }
 
   handleInputChange = (event) => {
     this.setState({ searchQuery: event.target.value });
   };
 
-  handlePagination = (event) => {
-    
-  };
-
   render() {
-    const { searchQuery, targetUser, loading, users, searchStatus, inviteStatus, error } = this.state;
+    const { searchQuery, targetUser, users, searchStatus, inviteStatus, error } = this.state;
     const { showPopup } = this.props;
 
     return (
@@ -151,7 +136,7 @@ export class SearchUserPopup extends Component {
                     <>
                     <Form.Select
                       value={targetUser}
-                      onChange={event => this.setState({ targetUser: event.target.value })}
+                      onChange={this.handleSelectUser}
                     >
                       {
                         users.map((user, index) => (
@@ -169,15 +154,21 @@ export class SearchUserPopup extends Component {
           {error ? <ErrorList errors={error}/> : ''}
           {
             searchStatus === "done" 
-              ? <Button variant="primary" onClick={this.handleInvite}>
-                  {
-                    inviteStatus === "init" 
-                      ? "Invite to appointment"
-                      :  inviteStatus === "inviting"
-                        ?  "Sending invitation"
-                        : "Invited"
-                  }
-                </Button>
+              ? 
+                <>
+                  <Button variant="warning" onClick={this.handleClear}>
+                    Clear
+                  </Button>
+                  <Button variant="primary" onClick={this.handleInvite}>
+                    {
+                      inviteStatus === "init" 
+                        ? "Invite to appointment"
+                        :  inviteStatus === "inviting"
+                          ?  "Sending invitation"
+                          : "Invited"
+                    }
+                  </Button>
+                </>
               : <></>
           }
           <Button variant="secondary" onClick={this.handleClose}>Close</Button>
