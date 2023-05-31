@@ -28,7 +28,7 @@ async function sendTelegramMessage(repository, actor, eventName, commitMessage, 
   const options = { timeZone: 'Asia/Ho_Chi_Minh' };
   const formattedTime = now.toLocaleString('en-US', options);
   const message = renderTemplate(repository, actor, eventName, 
-    commitMessage, commitHash, feStatus, beStatus, formattedTime);
+    commitMessage, commitHash, feStatus ?? 'Fail', beStatus ?? 'Fail', formattedTime);
 
     const recipients = process.env.TELEGRAM_TO.split(',');
 

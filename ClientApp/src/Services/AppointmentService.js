@@ -104,7 +104,8 @@ export class AppointmentService {
     return data;
   }
 
-  updateAppointmentByFrom = async (appointmentId, title, location, calendarId, start, end, editable) => {
+  updateAppointmentByFrom = async (appointmentId, title, location,
+    calendarId, start, end, editable, attendees) => {
     const data = await this.interceptor.patch(`/api/appointment/update/${appointmentId}`, 
     {
       title: title,
@@ -112,7 +113,8 @@ export class AppointmentService {
       calendarId: calendarId,
       start: start,
       end: end,
-      editable: editable
+      editable: editable,
+      attendees: attendees
     },
     {
       headers: {
