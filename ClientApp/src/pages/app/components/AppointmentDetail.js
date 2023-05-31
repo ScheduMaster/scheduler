@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import { withRouter, Redirect, Link } from 'react-router-dom';
-import { Form, Button, Toast } from 'react-bootstrap';
+import { Form, Button, Toast, InputGroup } from 'react-bootstrap';
 import { Progress } from "../../../components/Progress";
 import { ErrorList } from "../../../components/ErrorList";
+import TagsInput from 'react-tagsinput';
 
 // Services
 import { AppointmentService } from "../../../services/AppointmentService";
 import { CalendarService } from "../../../services/CalendarService";
+
+// Style css
+import "../static/css/react-tagsinput.css"
 
 class AppointmentDetail extends Component {
   constructor(props) {
@@ -24,6 +28,7 @@ class AppointmentDetail extends Component {
       end: '',
       editable: false,
       attendees: [],
+      pendingResponses: [],
       loading: false,
       error: '',
       showToast: false,
@@ -51,6 +56,9 @@ class AppointmentDetail extends Component {
   async getAppoingmentData(appointmentId) {
     try {
       const appointment = await this.appointment.getAppointment(appointmentId);
+      const attendees = appointment.attendees.map(attendee => attendee.name);
+      const pendingResponses = appointment.pendingResponses.map(pendingResponse => pendingResponse.name);
+
       this.setState({
         title: appointment.title ?? this.state.title,
         initiator: appointment.initiator ?? this.state.initiator,
@@ -58,7 +66,9 @@ class AppointmentDetail extends Component {
         calendarId: appointment.calendarId ?? this.state.calendarId,
         editable: appointment.editable ?? this.state.editable,
         start: appointment.start ?? this.state.start,
-        end: appointment.end ?? this.state.end
+        end: appointment.end ?? this.state.end,
+        attendees: attendees ?? this.state.attendees,
+        pendingResponses: pendingResponses ?? this.state.pendingResponses
       });
   
       const calendar = await this.calendar.getCalendar(appointment.calendarId);
@@ -86,8 +96,8 @@ class AppointmentDetail extends Component {
   };
 
   render () {
-    const { title, location, start, end, editable, calendarInfo,
-      error, loading, showToast, redirectToReferrer, initiator } = this.state;
+    const { title, location, start, end, editable, calendarInfo, attendees,
+      pendingResponses, error, loading, showToast, redirectToReferrer, initiator } = this.state;
 
     // Display the progress component while loading
     if (loading) {
@@ -196,6 +206,28 @@ class AppointmentDetail extends Component {
                     value={end}
                     readOnly={true}
                   />
+                </Form.Group>
+              </div>
+              <div className="col-md-12">
+                <Form.Group className="mb-3">
+                  <Form.Label>Attendees</Form.Label>
+                  <InputGroup>
+                    <TagsInput
+                      className="form-control attendees"
+                      value={attendees}
+                    />
+                  </InputGroup>
+                </Form.Group>
+              </div>
+              <div className="col-md-12">
+                <Form.Group className="mb-3">
+                  <Form.Label>Pending responses</Form.Label>
+                  <InputGroup>
+                    <TagsInput
+                      className="form-control pendings"
+                      value={pendingResponses}
+                    />
+                  </InputGroup>
                 </Form.Group>
               </div>
             </div>
