@@ -15,10 +15,11 @@ namespace Application.Services
         private readonly IConfiguration _config;
         private readonly ICalendarService _calendarService;
 
-        public InvitationService(DBContext context, ICalendarService calendarService)
+        public InvitationService(DBContext context, ICalendarService calendarService, IConfiguration config)
         {
             _context = context;
             _calendarService = calendarService;
+            _config = config;
         }
 
         public async Task<Invitation> CreateInvitation(Appointment appointment, CreateInvitationModel model, Guid userId)
@@ -51,6 +52,7 @@ namespace Application.Services
         {
             Invitation invitation = _context.Invitation
                 .Include(i => i.Appointment)
+                    .ThenInclude(a => a.Initiator)
                 .SingleOrDefault(i => i.AppointmentId == appointmentId);
             
             return invitation;
@@ -60,6 +62,7 @@ namespace Application.Services
         {
             Invitation invitation = _context.Invitation
                 .Include(i => i.Appointment)
+                    .ThenInclude(a => a.Initiator)
                 .SingleOrDefault(i => i.Id == invitationId);
             
             return invitation;
@@ -105,7 +108,15 @@ namespace Application.Services
             return invitationURL;
         }
 
-        public async Task GenerateInvitation(int appointmentId, Guid ownerId, Guid partnerId)
+        public string GetInvitationUrl(Invitation invitation)
+        {
+            string host = _config.GetValue<string>("Host");
+            string invitationURL = $"{host}/app/invitation/accept/{invitation.Id}";
+            
+            return invitationURL;
+        }
+
+        public async Task<Invitation> GenerateInvitation(int appointmentId, Guid ownerId, Guid partnerId)
         {
             // Find if it contains an before invitation (status: pending/reject)
             Invitation previousInvitation = _context.Invitation
@@ -126,10 +137,13 @@ namespace Application.Services
                         ExpiresAt = previousInvitation.Appointment.Start,
                         Status = Status.PENDING
                     };
-                    await _context.Invitation.AddAsync(newInvitation);
-                }
 
-                return;
+                    // Save into database
+                    await _context.Invitation.AddAsync(newInvitation);
+                    await _context.SaveChangesAsync();
+
+                    return newInvitation;
+                }
             }
 
             // Create new invitation
@@ -137,7 +151,7 @@ namespace Application.Services
             User owner = _context.Users.SingleOrDefault(u => u.Id == ownerId);
             string message = $"You have been invited to a meeting by {owner.GetUsername()}";
 
-            await CreateInvitation(
+            return await CreateInvitation(
                 new SendInvitaionModel {
                     PartnerId = partnerId,
                     AppointmentId = appointmentId,
@@ -146,6 +160,15 @@ namespace Application.Services
                 },
                 ownerId
             );
+        }
+
+        public async Task<Invitation> UpdateStatus(Invitation invitation, Status status)
+        {
+            invitation.Status = status;
+            _context.Invitation.Update(invitation);
+            await _context.SaveChangesAsync();
+            
+            return invitation;
         }
     }
 }

@@ -86,7 +86,8 @@ namespace Application.Controllers
                     appointment.End,
                     appointment.Status,
                     appointment.CalendarId,
-                    IsReadOnly = !appointment.Editable
+                    IsReadOnly = !appointment.Editable,
+                    attendees = appointment.Providers.Select(provider => provider.User.GetUsername()).ToList()
                 }).ToList();
 
                 return Ok(result);
@@ -179,7 +180,7 @@ namespace Application.Controllers
                     }).ToList();;
                 
                 // Remove current user from attendees
-                attendees.RemoveAll(attendee => attendee.userId == Guid.Parse(UserId));
+                // attendees.RemoveAll(attendee => attendee.userId == Guid.Parse(UserId));
 
                 // Get guests who have not responded to invitations
                 List<Invitation> unconfirmedInvitations = _context.Invitation
@@ -208,6 +209,38 @@ namespace Application.Controllers
                     viewAppointment.Editable,
                     Attendees = attendees,
                     PendingResponses = PendingResponses
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("check/{id}")]
+        public IActionResult CheckUserInAppointment(int id)
+        {
+            try
+            {
+                // Current user
+                string UserId = (string)HttpContext.Items["UserId"];
+
+                // Get the appointment to be checked
+                Appointment appointmentToCheck = _appointmentService.GetAppointment(id);
+                
+                if (appointmentToCheck == null)
+                {
+                    return NotFound(new { message = "Appointment not found" });
+                }
+
+                // Call appointmentService to update appointment
+                bool isInAppointment = _appointmentService.CheckUserInAppointment(Guid.Parse(UserId), appointmentToCheck);
+                bool isInitiator = appointmentToCheck.UserId == Guid.Parse(UserId);
+
+                return Ok(new 
+                { 
+                    isInAppointment = isInAppointment,
+                    isInitiator = isInitiator
                 });
             }
             catch (Exception ex)

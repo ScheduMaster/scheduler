@@ -13,7 +13,9 @@ namespace Application.Services
         Invitation GetInvitation(int appointmentId);
         Invitation GetInvitation(Guid invitationId);
         string GetInvitationUrl(Guid invitationId);
-        Task GenerateInvitation(int appointmentId, Guid ownerId, Guid partnerId);
+        string GetInvitationUrl(Invitation invitation);
+        Task<Invitation> GenerateInvitation(int appointmentId, Guid ownerId, Guid partnerId);
+        Task<Invitation> UpdateStatus(Invitation invitation, Status status);
     }
 
 }

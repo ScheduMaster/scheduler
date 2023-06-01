@@ -129,7 +129,11 @@ namespace Application.Controllers
                 return Ok(new 
                 { 
                     Message = "This is a valid invitation",
-                    AppointmentId = invitation.AppointmentId
+                    AppointmentId = invitation.AppointmentId,
+                    Name = invitation.Appointment.Name,
+                    Inititor = invitation.Appointment.Initiator.GetUsername(),
+                    Start = invitation.Appointment.Start,
+                    End = invitation.Appointment.End
                 });
             }
             catch (Exception ex)
@@ -155,13 +159,25 @@ namespace Application.Controllers
                     return NotFound(new { message = "Invitation not found" });
                 }
                 
+                // Update IsRead status of notification
+                await _notificationService.UpdateNotification(invitation, true, Guid.Parse(UserId));
+
+                // Check if current user is the inititor of appointment
+                if (user.Id == invitation.UserId)
+                {
+                    return Ok(new { message = "You are already in this appointment." });
+                }
+
                 // Logic to add current user to appointment attendees list
                 await _appointmentService.AddIntoAppointment(Guid.Parse(UserId), invitation.AppointmentId);
                 
-                // Create notification to partner
+                // Update status of invitation from pending to accepted
+                await _invitationService.UpdateStatus(invitation, Status.ACCEPTED);
+
+                // Create notification to inititor
                 string title = $"{user.FirstName} has joined";
-                string message = $"{user.GetUsername()} he has accepted your meeting invitation at {DateTime.Now}";
-                await _notificationService.CreateNotification(invitation, title, message);
+                string message = $"{user.GetUsername()} has accepted your meeting invitation at {DateTime.Now}";
+                _notificationService.CreateNotification(invitation, title, message);
 
                 return Ok(new { message = "Successfully joined the invitation" });
             }
@@ -178,6 +194,7 @@ namespace Application.Controllers
             {
                 // Get current user from request
                 string UserId = (string)HttpContext.Items["UserId"];
+                User user = _userService.GetUserInfo(Guid.Parse(UserId));
 
                 // Check if it contains a pending invitation request
                 Invitation previousInvitation = _invitationService.GetInvitation(model.AppointmentId); 
@@ -193,6 +210,11 @@ namespace Application.Controllers
                 // Create the new invitation
                 Invitation invitation = await _invitationService.CreateInvitation(model, Guid.Parse(UserId));
                 
+                // Create notification to partner
+                string title = $"{user.FirstName} has invited you";
+                string message = $"{user.GetUsername()} has invited you to the meeting at {DateTime.Now}";
+                _notificationService.CreateNotification(invitation, title, message);
+
                 return Ok(new 
                 { 
                     Message = "Send invitation successfully",

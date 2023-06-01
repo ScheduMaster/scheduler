@@ -92,4 +92,9 @@ export class AppointmentService {
 
     return data;
   }
+
+  isInAppointment = async (appointmentId) => {
+    const data = await this.interceptor.get(`/api/appointment/check/${appointmentId}`, {}, {});
+    return data;
+  }
 }

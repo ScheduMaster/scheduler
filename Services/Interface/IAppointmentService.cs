@@ -16,6 +16,7 @@ namespace Application.Services
         List<Appointment> GetUpcommingAppointments(Guid userId);
         Appointment GetAppointment(int id);
         Task<bool> AddIntoAppointment(Guid userId, int appointmentId);
+        bool CheckUserInAppointment(Guid userId, Appointment appointment);
     }
 
 }
