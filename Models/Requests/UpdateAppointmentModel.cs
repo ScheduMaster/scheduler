@@ -19,6 +19,6 @@ namespace Application.Models.Requests
         [JsonPropertyName("Editable")]
         [JsonConverter(typeof(StringToBooleanConverter))]
         public bool? Editable { get; set; }
-        public List<User> Attendees { get; set; }
+        public List<Guid> Attendees { get; set; }
     }
 }

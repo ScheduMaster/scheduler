@@ -13,15 +13,20 @@ namespace Application.Services
     {
         private readonly DBContext _context;
         private readonly IInvitationService _invitationService;
+        private readonly INotificationService _notificationService;
 
-        public AppointmentService(DBContext context, IInvitationService invitationService)
+        public AppointmentService(DBContext context, IInvitationService invitationService, INotificationService notificationService)
         {
             _context = context;
             _invitationService = invitationService;
+            _notificationService = notificationService;
         }
 
         public async Task<Appointment> CreateAppointment(Guid userId, CreateAppointmentModel model)
         {
+            // Get user
+            User user = _context.Users.SingleOrDefault(u => u.Id == userId);
+
             // Create a new Appointment model with the data from the CreateAppointmentModel
             Appointment createdAppointment = new Appointment 
             {
@@ -44,14 +49,19 @@ namespace Application.Services
                 UserId = userId,
                 AppointmentId = createdAppointment.Id
             });
-
+            await _context.SaveChangesAsync();
+            
             // Send invitation to all attendees
             foreach (Guid attendee in model.Attendees)
             {
-                await _invitationService.GenerateInvitation(createdAppointment.Id, userId, attendee);
+                // Generate invitation
+                Invitation invitation = await _invitationService.GenerateInvitation(createdAppointment.Id, userId, attendee);
+                
+                // Create notification to partner
+                string title = $"{user.FirstName} has invited you";
+                string message = $"{user.GetUsername()} has invited you to the meeting at {DateTime.Now}";
+                _notificationService.CreateNotification(invitation, title, message);
             }
-
-            await _context.SaveChangesAsync();
 
             return createdAppointment;
         }
@@ -147,7 +157,10 @@ namespace Application.Services
         {
             // Call the Appointment Context to get the Appointments
             List<Appointment> appointments = _context.Appointment
-                .Include(appointment => appointment.Initiator) // Eager loading of Initiator entity
+                .Include(a => a.Initiator) // Eager loading of Initiator entity
+                .Include(a => a.Calendar) // Eager loading of Calendar entity
+                .Include(a => a.Providers) // Eager loading of Providers collection
+                    .ThenInclude(w => w.User) // Eager loading of User entity for each WorkProvider
                 .Where(appointment => appointment.UserId == userId)
                 .ToList();
             
@@ -211,6 +224,16 @@ namespace Application.Services
             });
 
             await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public bool CheckUserInAppointment(Guid userId, Appointment appointment)
+        {
+            if (!appointment.Providers.Any(provider => provider.UserId == userId))
+            {
+               return false;
+            }
 
             return true;
         }

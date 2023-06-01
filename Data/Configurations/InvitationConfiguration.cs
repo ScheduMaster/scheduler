@@ -23,6 +23,11 @@ namespace Application.Data
                 .WithMany()
                 .HasForeignKey(invitation => invitation.AppointmentId)
                 .OnDelete(DeleteBehavior.NoAction);
+            
+            builder.HasOne(appointment => appointment.Partner)
+                .WithMany()
+                .HasForeignKey(appointment => appointment.PartnerId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
