@@ -219,17 +219,21 @@ class AppointmentDetail extends Component {
                   </InputGroup>
                 </Form.Group>
               </div>
-              <div className="col-md-12">
-                <Form.Group className="mb-3">
-                  <Form.Label>Pending responses</Form.Label>
-                  <InputGroup>
-                    <TagsInput
-                      className="form-control pendings"
-                      value={pendingResponses}
-                    />
-                  </InputGroup>
-                </Form.Group>
-              </div>
+              {
+                pendingResponses.length > 0
+                 ? <div className="col-md-12">
+                      <Form.Group className="mb-3">
+                        <Form.Label>Pending responses</Form.Label>
+                        <InputGroup>
+                          <TagsInput
+                            className="form-control pendings"
+                            value={pendingResponses}
+                          />
+                        </InputGroup>
+                      </Form.Group>
+                    </div>
+                  : <></>
+              }
             </div>
           </div>
           <div className="card-footer d-flex justify-content-between">
