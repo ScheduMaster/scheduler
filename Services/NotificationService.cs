@@ -28,11 +28,11 @@ namespace Application.Services
             return notifications;
         }
 
-        public async Task<Notification> CreateNotification(Invitation invitation, string title, string message)
+        public Notification CreateNotification(Invitation invitation, string title, string message)
         {
             // Get invitation url
-            string invitationURL = _invitationService.GetInvitationUrl(invitation.Id);
-            
+            string invitationURL = _invitationService.GetInvitationUrl(invitation);
+
             // Create new notification
             Notification notification = new Notification
             {
@@ -46,6 +46,19 @@ namespace Application.Services
 
             // Save into database
             _context.Notification.Add(notification);
+            _context.SaveChangesAsync();
+
+            return notification;
+        }
+
+        public async Task<Notification> UpdateNotification(Invitation invitation, bool IsRead, Guid userId)
+        {
+            string invitationURL = _invitationService.GetInvitationUrl(invitation);
+            Notification notification = _context.Notification
+                .SingleOrDefault(n => n.Url == invitationURL && n.UserId == userId);
+            notification.IsRead = true;
+
+            _context.Notification.Update(notification);
             await _context.SaveChangesAsync();
 
             return notification;
