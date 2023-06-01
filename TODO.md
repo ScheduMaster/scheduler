@@ -6,7 +6,12 @@
 -   [x] Display personal scheduler
 -   [x] Display all scheduler
 -   [x] Prevent over loop when using jwtintercepter
--   [] Accept request
+-   [] Prevent remove inititor when update appointment
+-   [x] Prevent add one person two times in create appointment
+-   [] Auto redirect after click an invitation url if user is inititor
+-   [] Remove pending reponse when update appointment
+-   [x] Accept request
 -   [] Reject request
--   [] Push notification
+-   [x] Push notification to guest
+-   [x] Push notification to inititor
 ---

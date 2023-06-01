@@ -31,6 +31,8 @@ export class Notification extends Component {
                       <NotificationContent 
                         title={notification.title} 
                         content={notification.message}
+                        isRead={notification.isRead}
+                        url={notification.url}
                         key={index}
                       />
                   ))
