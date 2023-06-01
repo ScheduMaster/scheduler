@@ -245,8 +245,8 @@ namespace Application.Services
             int recordsToSkip = (pageNumber - 1) * recordsPerPage;
 
             // Apply pagination
-            query = query.Skip(recordsToSkip).Take(recordsPerPage).OrderBy(u => u.FirstName);
-
+            query = query.OrderBy(u => u.FirstName).Skip(recordsToSkip).Take(recordsPerPage);
+  
             // Execute the query and retrieve the users
             List<User> users = await query.ToListAsync();
             if (users.Count == 0)
