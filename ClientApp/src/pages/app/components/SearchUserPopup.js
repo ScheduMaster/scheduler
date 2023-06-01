@@ -93,6 +93,7 @@ export class SearchUserPopup extends Component {
   };
   
   handleClose = () => {
+    this.handleClear();
     this.props.onClosePopup();
   };
 

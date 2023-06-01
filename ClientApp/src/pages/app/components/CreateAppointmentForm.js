@@ -97,29 +97,32 @@ export class CreateAppointmentForm extends Component {
   };
 
   handleCloseToast = () => {
-    this.setState({ showToast: false })
+    this.setState({ toast: {
+      show: false,
+      title: "",
+      message: ""
+    }});
   };
 
-  handleChange = (attendeeIdList) => {
-    let { attendeeNameList, attendees } = this.state;
-    
+  handleChange = (attendeeNameList) => {
+    let { attendeeIdList, attendees } = this.state;
+
     // Update state
-    this.setState({ attendeeIdList });
+    this.setState({ attendeeNameList: attendeeNameList });
 
     // Update attendeeNameList and attendees
-    if (attendeeIdList.length == 0) {
+    if (attendeeNameList.length == 0) {
       this.setState({
         attendees: [],
         attendeeNameList: []
       });
     } else {
-      attendees = attendees.filter(attendee => !attendeeIdList.includes(attendee.userId));
-      attendeeNameList = attendees.map(attendee => attendee.name);
-      console.log(attendees);
-      console.log(attendeeNameList);
+      attendees = attendees.filter(attendee => !attendeeNameList.includes(attendee.name));
+      attendeeIdList = attendees.map(attendee => attendee.userId);
+ 
       this.setState({ 
         attendees: attendees,
-        attendeeNameList: attendeeNameList
+        attendeeIdList: attendeeIdList
       });
     }
   }
@@ -134,6 +137,20 @@ export class CreateAppointmentForm extends Component {
 
   onInviteAttendee = (userId) => {
     let { attendees, attendeeIdList } = this.state;
+    
+    // Check if user has already in attendeeIdList
+    if (attendeeIdList.includes(userId)) {
+      this.setState({ 
+        toast: {
+          show: true,
+          title: "Fail",
+          message: "You added this user before."
+        }
+      });
+
+      return;
+    }
+
     this.user
       .getUser(userId)
       .then((data) => {
@@ -172,7 +189,7 @@ export class CreateAppointmentForm extends Component {
 
   render () {
     const { name, location, calendarId, start, end, editable, error, loading, 
-      attendeeNameList, showToast, redirectToReferrer, calendars, showPopup } = this.state;
+      attendeeNameList, toast, redirectToReferrer, calendars, showPopup } = this.state;
 
     // Display the progress component while loading
     if (loading) {
@@ -185,8 +202,9 @@ export class CreateAppointmentForm extends Component {
 
     return (
       <>
-        <Toast 
-          show={showToast}
+        <Toast
+          bg={toast.title === "Fail" ? "danger" : "default"}
+          show={toast.show}
           autohide={true}
           onClose={this.handleCloseToast} 
           delay={2000}
@@ -197,9 +215,9 @@ export class CreateAppointmentForm extends Component {
           }}
         >
           <Toast.Header>
-            <strong className="mr-auto">Success</strong>
+            <strong className="mr-auto">{toast.title}</strong>
           </Toast.Header>
-          <Toast.Body>Appointment successfully created.</Toast.Body>
+          <Toast.Body>{toast.message}</Toast.Body>
         </Toast>
         {!loading && (
           <>
