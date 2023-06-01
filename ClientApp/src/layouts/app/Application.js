@@ -7,13 +7,14 @@ import { Navbar } from "./components/Narbar";
 
 // Services
 import { UserService } from "../../services/UserService";
+import { NotificationService } from "../../services/NotificationService";
 
 // Styles
 import '@tabler/core/dist/css/tabler.min.css';
 
 // Data Header
 import { shortcutsData } from "./data/shortcut";
-import { notificationsData } from "./data/notification";
+// import { notificationsData } from "./data/notification";
 import { logo } from "./data/logo";
 
 // Data Navbar
@@ -23,45 +24,63 @@ import { navbarsData } from "./data/navbar";
 import { footersData } from "./data/footer";
 
 export class Application extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { 
-            avatar: {
-                role: "Loading...", 
-                name: "Loading..."
-            }, 
-            loading: true 
-        };
-        this.service = new UserService();
-    }
-    
-    componentDidMount() {
-        this.getAvatarData();
-    }
+  constructor(props) {
+    super(props);
+    this.state = { 
+      avatar: {
+        role: "Loading...", 
+        name: "Loading..."
+      },
+      notifications: [],
+      loading: false 
+    };
+    this.user = new UserService();
+    this.notification = new NotificationService();
+  }
+  
+  async componentDidMount() {
+    this.setState({ loading: true });
 
-    async getAvatarData() {
-        const data = await this.service.getInfo();
-        console.log(data);
-        this.setState({ avatar: data, loading: false });
+    try {
+      await this.getAvatarData();
+      await this.getNotification();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.setState({ loading: false });
     }
+  }
+  
+  async getAvatarData() {
+    const data = await this.user.getInfo();
+    this.setState({ avatar: data });
+  }
+  
+  async getNotification() {
+    const data = await this.notification.getNotification();
+    console.log(data);
+    this.setState({ notifications: data });
+  }
+  
 
-    render () {
-        const { children } = this.props;
-        
-        return (
-            <> 
-                <Header 
-                    shortcutsData={shortcutsData} 
-                    notificationsData={notificationsData}
-                    logo={logo}
-                    avatar={this.state.avatar}
-                />
-                <Navbar navbarsData={navbarsData}/>
-                <div className="page-wrapper">
-                    {children}
-                    <Footer footersData={footersData}/>
-                </div>
-            </>
-        ) 
-    }
+  render () {
+    const { children } = this.props;
+    const { notifications, avatar } = this.state;
+
+    return (
+      <> 
+        <Header 
+          shortcutsData={shortcutsData} 
+          notificationsData={notifications}
+          logo={logo}
+          avatar={avatar}
+        />
+        <Navbar navbarsData={navbarsData}/>
+        <div className="page-wrapper">
+          {children}
+          <Footer footersData={footersData}/>
+        </div>
+      </>
+    ) 
+  }
 }

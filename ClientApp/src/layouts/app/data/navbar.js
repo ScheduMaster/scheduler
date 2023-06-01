@@ -16,20 +16,12 @@ export const navbarsData = [
                 {
                     href: "/app/appointment/list",
                     name: "Upcoming appointments"
-                },
-                {
-                    href: "/app/appointment/new",
-                    name: "New appointment"
                 }
             ],
             [
                 {
-                    href: "#",
-                    name: "Invoice"
-                },
-                {
-                    href: "#",
-                    name: "Search results"
+                    href: "/app/appointment/new",
+                    name: "New appointment"
                 }
             ]   
         ]
