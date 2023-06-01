@@ -19,12 +19,7 @@ export class AppointmentService {
       end: end,
       editable: editable,
       attendees: attendees
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    }, {});
 
     return data;
   }
@@ -39,24 +34,12 @@ export class AppointmentService {
       options.own = true;
     }
 
-    const data = await this.interceptor.post('/api/appointment/list', options,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-
+    const data = await this.interceptor.post('/api/appointment/list', options, {});
     return data;
   }
 
   getUpcommingAppointments = async () => {
-    const data = await this.interceptor.get('/api/appointment/upcomming', {},
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-
+    const data = await this.interceptor.get('/api/appointment/upcomming', {}, {});
     return data;
   }
 
@@ -83,23 +66,13 @@ export class AppointmentService {
       updateData.calendarId = changes.calendarId;
     }
 
-    const data = await this.interceptor.patch(`/api/appointment/update/${appointmentId}`, updateData,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    const data = await this.interceptor.patch(`/api/appointment/update/${appointmentId}`, updateData, {});
 
     return data;
   }
 
   getAppointment = async (appointmentId) => {
-    const data = await this.interceptor.get(`/api/appointment/view/${appointmentId}`, {},
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    const data = await this.interceptor.get(`/api/appointment/view/${appointmentId}`, {}, {});
 
     return data;
   }
@@ -115,12 +88,7 @@ export class AppointmentService {
       end: end,
       editable: editable,
       attendees: attendees
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    }, {});
 
     return data;
   }

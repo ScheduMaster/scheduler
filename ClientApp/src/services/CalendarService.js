@@ -11,35 +11,18 @@ export class CalendarService {
       backgroundColor: backgroundColor, 
       borderColor: borderColor,
       dragBackgroundColor: dragBackgroundColor
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    }, {});
     
     return data;
   }
 
   deleteCalendar = async (calendarId) => {
-    const data = await this.interceptor.delete(`/api/calendar/delete/${calendarId}`, { }, 
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    
+    const data = await this.interceptor.delete(`/api/calendar/delete/${calendarId}`, {}, {});
     return data;
   }
 
   getCalendar = async (calendarId) => {
-    const data = await this.interceptor.get(`/api/calendar/view/${calendarId}`, { }, 
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    
+    const data = await this.interceptor.get(`/api/calendar/view/${calendarId}`, {}, {}); 
     return data;
   }
 
@@ -50,24 +33,13 @@ export class CalendarService {
         backgroundColor: backgroundColor,
         borderColor: borderColor,
         dragBackgroundColor: dragBackgroundColor
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-
+      }, {});
+      
     return data;
   }
 
   getCalendars = async () => {
-    const data = await this.interceptor.get('/api/calendar/list', {},
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    
+    const data = await this.interceptor.get('/api/calendar/list', {}, {});
     return data;
   }
 }

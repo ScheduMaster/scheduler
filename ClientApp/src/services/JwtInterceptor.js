@@ -13,6 +13,7 @@ export class JwtInterceptor {
     if (token) {
       options.headers = {
         ...options.headers,
+        'Content-Type': 'application/json',
         Authorization: `bearer ${token}`,
       };
     }

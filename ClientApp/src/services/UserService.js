@@ -9,12 +9,7 @@ export class UserService {
   logout = async () => {
     const data = await this.interceptor.post('/api/auth/logout', { 
       refreshToken: Cookies.get('refreshToken')
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    }, {});
     
     // Clear cookies
     Cookies.remove('accessToken');
@@ -25,13 +20,11 @@ export class UserService {
 
   getInfo = async () => {
     const data = await this.interceptor.get('/api/user/info')
-
     return data;
   }
 
   getProfile = async () => {
     const data = await this.interceptor.get('/api/user/profile')
-    
     return data;
   }
 
@@ -42,12 +35,7 @@ export class UserService {
       email: email,
       phoneNumber: phoneNumber,
       address: address
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    }, {});
 
     return data;
   }
@@ -60,48 +48,23 @@ export class UserService {
       phoneNumber: phoneNumber,
       address: address,
       role: role
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    }, {});
 
     return data;
   }
 
   resetUserPassword = async (userId, passWord) => {
-    const data = await this.interceptor.patch(`/api/user/reset-password/${userId}`, {
-      newPassWord: passWord
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    
+    const data = await this.interceptor.patch(`/api/user/reset-password/${userId}`, { newPassWord: passWord }, {});
     return data;
   }
 
   getUsers = async () => {
-    const data = await this.interceptor.get('/api/user/list', {},
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    
+    const data = await this.interceptor.get('/api/user/list', {}, {});
     return data;
   }
 
   getUser = async (userId) => {
-    const data = await this.interceptor.get(`/api/user/view/${userId}`, { }, 
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-
+    const data = await this.interceptor.get(`/api/user/view/${userId}`, {}, {});
     return data;
   }
 
@@ -115,12 +78,7 @@ export class UserService {
       role: role,
       address: address,
       phoneNumber: phoneNumber
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    }, {});
 
     return data;
   }
@@ -129,12 +87,7 @@ export class UserService {
     const data = await this.interceptor.post(`/api/user/search`, 
     { 
       searchQuery, recordsPerPage, pageNumber
-    }, 
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
+    }, {});
 
     return data;
   }
