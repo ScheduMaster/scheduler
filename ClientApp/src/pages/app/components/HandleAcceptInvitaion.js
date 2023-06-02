@@ -29,22 +29,15 @@ class HandleAcceptInvitaion extends Component {
     this.appointment = new AppointmentService();
   }
   
-  componentDidMount() {
-    // Call getProfileData to fetch data
-    this.checkInvitation()
-      .then(() => {
-        // Set loading state to false after data is fetched or async operations are completed
-        this.setState({ loading: false });
-      })
-      .catch((error) => {
-        console.log(error);
-        this.setState({ error: error.message });
-        // Set loading state to false if an error occurs
-        this.setState({ loading: false });
-      })
-      .finally(() => {
-        this.setState({ showPopup: true });
-      });
+  async componentDidMount() {
+    try {
+      this.checkInvitation().then(() => this.setState({ showPopup: true }));
+    } catch (error) {
+      console.log(error);
+      this.setState({ error: error.message });
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -57,9 +50,7 @@ class HandleAcceptInvitaion extends Component {
   
   async checkUserInAppointment(appointmentId) {
     const data = await this.appointment.isInAppointment(appointmentId);
-    if (data.isInAppointment && !data.isInitiator) {
-      window.location.href = `/app/appointment/view/${appointmentId}`;
-    } else {
+    if (data.isInAppointment || data.isInitiator) {
       await this.invitation.acceptInvitation(this.invitationId);
       window.location.href = `/app/appointment/view/${appointmentId}`;
     }
@@ -67,19 +58,22 @@ class HandleAcceptInvitaion extends Component {
 
   async checkInvitation() {
     // Make API call to retrieve invitation data
+    const { message, appointmentId, name, inititor, start, end } = this.state;
+
+    // Check invitation and fetch data
     const data = await this.invitation.checkInvitation(this.invitationId);
-    this.checkUserInAppointment(data.appointmentId)
-      .then(() => {
-        const { message, appointmentId, name, inititor, start, end } = this.state;
-        this.setState({
-          message: data.message ?? message,
-          appointmentId: data.appointmentId ?? appointmentId,
-          name: data.name ?? name,
-          inititor: data.inititor ?? inititor,
-          start: data.start ?? start,
-          end: data.end ?? end
-        });
-      });
+
+    // Check if user is in attendance list -> redirect to view
+    await this.checkUserInAppointment(data.appointmentId)
+
+    this.setState({
+      message: data.message ?? message,
+      appointmentId: data.appointmentId ?? appointmentId,
+      name: data.name ?? name,
+      inititor: data.inititor ?? inititor,
+      start: data.start ?? start,
+      end: data.end ?? end
+    });
   }
 
   handleAccept = async () => {
