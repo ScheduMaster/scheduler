@@ -67,7 +67,7 @@ namespace Application.Services
             return createdAppointment;
         }
 
-        public async Task<Appointment> UpdateAppointmentAsync(Appointment appointmentToUpdate, UpdateAppointmentModel model, Guid userId)
+        public async Task<Appointment> UpdateAppointmentAsync(Appointment appointmentToUpdate, UpdateAppointmentModel model, Guid initiatorId)
         {
             // Update the appointment's properties
             if (!string.IsNullOrEmpty(model.Name) && appointmentToUpdate.Name != model.Name)
@@ -104,35 +104,61 @@ namespace Application.Services
             // If null -> update on calendar otherwise update on form 
             if (model.Attendees != null)
             {
-                // Update attendees && check the difference between number of providers and attendees 
-                if (!(model.Attendees.Count > 0) && appointmentToUpdate.Providers.Count != model.Attendees.Count)
+                // Update attendees && check the difference between the number of providers and attendees 
+                if (model.Attendees.Count > 0 && appointmentToUpdate.Providers.Count != model.Attendees.Count)
                 {
-                    // Get the list of providers with different UserIds compared to userIds list
-                    List<WorkProvider> differentAttendees = appointmentToUpdate.Providers.Where(provider => !model.Attendees.Contains(provider.UserId)).ToList();
-                    
-                    // Remove inititor of appointment from differentAttendees list
-                    differentAttendees.RemoveAll(da => da.UserId == userId);
+                    // Get the list of previous attendance 
+                    List<Guid> previousAttendances = appointmentToUpdate.Providers
+                        .Select(wp => wp.UserId)
+                        .ToList();
 
-                    foreach (WorkProvider workProvider in differentAttendees)
+                    // The differences
+                    List<Guid> differentAttendees = model.Attendees.Except(previousAttendances).ToList();
+
+                    // Remove initiator of the appointment from differentAttendees list
+                    differentAttendees.RemoveAll(attendance => attendance == initiatorId);
+
+                    // Initiator
+                    User initiator = appointmentToUpdate.Initiator;
+
+                    // Loop to update
+                    foreach (Guid attendee in differentAttendees)
                     {
                         // Case 1: Attendee was removed: attendee is not in model.Attendees
-                        if (!model.Attendees.Any(attendee => attendee == workProvider.UserId))
+                        if (!model.Attendees.Contains(attendee))
                         {
-                            _context.WorkProvider.Remove(workProvider);
+                            // Get provider
+                            WorkProvider workProvider = _context.WorkProvider
+                                .FirstOrDefault(w => w.AppointmentId == appointmentToUpdate.Id && w.UserId == attendee);
+
+                            if (workProvider != null)
+                            {
+                                _context.WorkProvider.Remove(workProvider);
+                            }
                         }
 
                         // Case 2: Attendee was added: attendee is not in appointmentToUpdate.Providers
-                        if (!appointmentToUpdate.Providers.Any(provider => provider.UserId == workProvider.UserId))
+                        if (!appointmentToUpdate.Providers.Any(provider => provider.UserId == attendee))
                         {
-                            await _invitationService.GenerateInvitation(workProvider.AppointmentId, userId, workProvider.UserId);
+                            // Generate invitation
+                            Invitation invitation = await _invitationService.GenerateInvitation(appointmentToUpdate.Id, initiatorId, attendee);
+
+                            // Create notification to partner
+                            string title = $"{initiator.FirstName} has invited you";
+                            string message = $"{initiator.GetUsername()} has invited you to the meeting at {appointmentToUpdate.Start}";
+
+                            _notificationService.CreateNotification(invitation, title, message);
                         }
                     }
                 }
             }
 
             // Call the Appointment Context to update the appointment
-            _context.Appointment.Update(appointmentToUpdate);
-            await _context.SaveChangesAsync();
+            if (_context.ChangeTracker.Entries<Appointment>().Any(e => e.Entity == appointmentToUpdate && e.State != EntityState.Unchanged))
+            {
+                _context.Appointment.Update(appointmentToUpdate);
+                await _context.SaveChangesAsync();
+            }
 
             return appointmentToUpdate;
         }

@@ -11,6 +11,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 // Services
 import { AppointmentService } from "../../../services/AppointmentService";
 import { CalendarService } from "../../../services/CalendarService";
+import { UserService } from "../../../services/UserService";
 
 // Style css
 import "../static/css/react-tagsinput.css"
@@ -32,7 +33,10 @@ class UpdateAppointmentForm extends Component {
       end: '',
       editable: false,
       attendees: [],
+      attendeeIdList: [],
+      attendeeNameList: [],
       calendars: [],
+      pendingResponses: [],
       loading: false,
       error: '',
       toast: {
@@ -46,6 +50,7 @@ class UpdateAppointmentForm extends Component {
     this.appointmentId = this.props.match.params.id;
     this.appointment = new AppointmentService();
     this.calendar = new CalendarService();
+    this.user = new UserService();
   }
   
   componentDidMount() {
@@ -66,7 +71,10 @@ class UpdateAppointmentForm extends Component {
     try {
       const appointment = await this.appointment.getAppointment(appointmentId);
 
-      const attendees = appointment.attendees.map(attendee => attendee.name);
+      const attendeeIdList = appointment.attendees.map(attendee => attendee.userId);
+      const attendeeNameList = appointment.attendees.map(attendee => attendee.name);
+      const pendingResponses = appointment.pendingResponses.map(pendingResponse => pendingResponse.name);
+      
       this.setState({
         title: appointment.title ?? this.state.title,
         initiator: appointment.initiator ?? this.state.initiator,
@@ -75,10 +83,12 @@ class UpdateAppointmentForm extends Component {
         editable: appointment.editable ?? this.state.editable,
         start: appointment.start ?? this.state.start,
         end: appointment.end ?? this.state.end,
-        attendees: attendees ?? this.state.attendees
+        attendees: appointment.attendees ?? this.state.attendees,
+        attendeeIdList: attendeeIdList ?? this.state.attendeeIdList,
+        attendeeNameList: attendeeNameList ?? this.state.attendeeNameList,
+        pendingResponses: pendingResponses ?? this.state.pendingResponses
       });
-      
-      console.log(appointment.attendees);
+
       const calendar = await this.calendar.getCalendar(appointment.calendarId);
       const calendars = await this.calendar.getCalendars();
 
@@ -95,24 +105,25 @@ class UpdateAppointmentForm extends Component {
   handleFormSubmit = async (event) => {
     // Make API call to update appointment data
     event.preventDefault();
-    try {
       this.setState({ loading: true });
-      const { title, location, calendarId, start, end, editable } = this.state;
-      const data = await this.appointment.updateAppointmentByFrom(this.appointmentId, title, location, calendarId, start, end, editable);
-
-      console.log(data);
-      this.setState({ 
-        loading: false,
-        toast: { 
-          show: true,
-          title: 'Success',
-          message: 'Appoitment data successfully updated.'
-        },
-        redirectToReferrer: true
+      const { title, location, calendarId, start, end, editable, attendeeIdList } = this.state;
+      this.appointment
+        .updateAppointmentByFrom(this.appointmentId, title, location, calendarId, start, end, editable, attendeeIdList)
+        .then((data) => {
+          console.log(data);
+          this.setState({ 
+            loading: false,
+            toast: { 
+              show: true,
+              title: 'Success',
+              message: data.message
+            },
+            redirectToReferrer: true
+          });
+      })
+      .catch((error) => {
+        this.setState({ error: error.message });
       });
-    } catch (error) {
-      this.setState({ error: error.message });
-    }
   };
 
   handleCloseToast = () => {
@@ -127,24 +138,64 @@ class UpdateAppointmentForm extends Component {
     this.setState({ showPopup: false });
   };
 
-  onSuccess = (message) => {
-    this.setState({ toast: {
-      show: true,
-      title: "Success",
-      message: message
-    }});
+  onInviteAttendee = (userId) => {
+    let { attendees, attendeeIdList } = this.state;
+
+    // Check if user has already in attendeeIdList
+    if (attendeeIdList.includes(userId)) {
+      this.setState({ 
+        toast: {
+          show: true,
+          title: "Fail",
+          message: "You invited this user before."
+        }
+      });
+
+      return;
+    }
+
+    this.user
+      .getUser(userId)
+      .then((data) => {
+        const updatedAttendees = [...attendees, {
+          userId: userId,
+          name: `${data.firstName} ${data.lastName}`,
+          email: data.email
+        }];
+        const updatedAttendeeIdList = [...attendeeIdList, userId];
+        const updatedAttendeeNameList = updatedAttendees.map(attendee => attendee.name);
+
+        // Update state
+        this.setState({ 
+          attendees: updatedAttendees,
+          attendeeIdList: updatedAttendeeIdList,
+          attendeeNameList: updatedAttendeeNameList,
+          toast: {
+            show: true,
+            title: "Success",
+            message: "You have successfully added a new attendee."
+          }
+        });
+      })
+      .catch((error) => {
+        this.setState({ 
+          error: error.message,
+          toast: {
+            show: true,
+            title: "Fail",
+            message: "You added this user before."
+          }
+        });
+      });
   };
 
-  onFail = (message) => {
-    this.setState({ toast: {
-      show: true,
-      title: "Fail",
-      message: message
-    }});
-  };
-
-  handleChange = (attendees) => {
+  handleChangeAttendees = (attendees) => {
+    console.log(attendees);
     this.setState({ attendees });
+  }
+
+  handleChangePendingResponse = (pendingResponses) => {
+    this.setState({ pendingResponses });
   }
   
   handleOpenPopup = () => {
@@ -152,8 +203,8 @@ class UpdateAppointmentForm extends Component {
   }
 
   render () {
-    const { title, location, calendarId, start, end, editable, error, loading,
-      toast, redirectToReferrer, calendars, initiator, showPopup, attendees } = this.state;
+    const { title, location, calendarId, start, end, editable, error, loading, attendeeNameList,
+      toast, redirectToReferrer, calendars, initiator, showPopup, pendingResponses } = this.state;
 
     // Display the progress component while loading
     if (loading) {
@@ -167,14 +218,16 @@ class UpdateAppointmentForm extends Component {
     return (
       <>
         <Toast 
+          bg={toast.title === "Fail" ? "warning" : "default"}
           show={toast.show}
-          autohide={true}
-          onClose={this.handleCloseToast} 
-          delay={2000}
+          autohide={true}  
+          onClose={this.handleCloseToast}
+          delay={2000}    
           style={{
-            position: 'absolute',
-            top: 0,
-            right: 0
+            position: 'fixed',
+            top: '1rem',
+            right: '1rem',
+            zIndex: 2 
           }}
         >
           <Toast.Header>
@@ -186,12 +239,10 @@ class UpdateAppointmentForm extends Component {
         <>
           <SearchUserPopup 
             showPopup={showPopup} 
-            onClosePopup={this.onClosePopup} 
-            onAppointment={this.appointmentId}
-            onSuccess={this.onSuccess}
-            onFail={this.onFail}
+            onClosePopup={this.onClosePopup}
+            onInviteAttendee={this.onInviteAttendee}
           />
-          <Form className="card" onSubmit={this.handleFormSubmit}>
+          <Form className="card" onSubmit={this.handleFormSubmit} style={{ zIndex: 1 }}>
             <div className="card-body">
               <h3 className="card-title">View Appointment</h3>
               <div className="row row-cards">
@@ -290,10 +341,9 @@ class UpdateAppointmentForm extends Component {
                     <Form.Label>Attendees</Form.Label>
                     <InputGroup>
                       <TagsInput
-                        className="form-control"
-                        value={attendees}
-                        onChange={this.handleChange}
-                        placeholder="Enter attendees"
+                        className="form-control attendees"
+                        value={attendeeNameList}
+                        onChange={this.handleChangeAttendees}
                       />
                       <Button variant="outline-primary" onClick={this.handleOpenPopup}>
                         <FontAwesomeIcon icon={faPlus} />
@@ -301,6 +351,22 @@ class UpdateAppointmentForm extends Component {
                     </InputGroup>
                   </Form.Group>
                 </div>
+                {
+                  pendingResponses.length > 0
+                    ? <div className="col-md-12">
+                        <Form.Group className="mb-3">
+                          <Form.Label>Pending responses</Form.Label>
+                          <InputGroup>
+                            <TagsInput
+                              className="form-control pendings"
+                              value={pendingResponses}
+                              onChange={this.handleChangePendingResponse}
+                            />
+                          </InputGroup>
+                        </Form.Group>
+                      </div>
+                    : <></>
+                }
               </div>
             </div>
             <div className="card-footer text-end">
