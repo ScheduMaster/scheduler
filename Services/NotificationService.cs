@@ -36,7 +36,7 @@ namespace Application.Services
             // Create new notification
             Notification notification = new Notification
             {
-                UserId = invitation.UserId,
+                UserId = invitation.PartnerId,
                 Title = title,
                 Message = message,
                 Url = invitationURL,
