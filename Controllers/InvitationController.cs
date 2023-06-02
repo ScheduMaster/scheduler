@@ -177,7 +177,7 @@ namespace Application.Controllers
                 // Create notification to inititor
                 string title = $"{user.FirstName} has joined";
                 string message = $"{user.GetUsername()} has accepted your meeting invitation at {DateTime.Now}";
-                _notificationService.CreateNotification(invitation, title, message, user.Id);
+                _notificationService.CreateNotification(invitation, title, message, invitation.UserId);
 
                 return Ok(new { message = "Successfully joined the invitation" });
             }
