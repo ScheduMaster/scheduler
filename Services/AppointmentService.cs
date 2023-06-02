@@ -35,6 +35,7 @@ namespace Application.Services
                 Start = model.Start,
                 Location = model.Location,
                 End = model.End,
+                Status = true,
                 CalendarId = model.CalendarId,
                 Editable = model.Editable
             };
@@ -99,27 +100,32 @@ namespace Application.Services
                 appointmentToUpdate.CalendarId = model.CalendarId;
             }
 
-            // Update attendees && check the difference between number of providers and attendees 
-            if (!(model.Attendees.Count > 0) && appointmentToUpdate.Providers.Count != model.Attendees.Count)
+            // Check if the array model.Attendees is empty. 
+            // If null -> update on calendar otherwise update on form 
+            if (model.Attendees != null)
             {
-                // Get the list of providers with different UserIds compared to userIds list
-                List<WorkProvider> differentAttendees = appointmentToUpdate.Providers.Where(provider => !model.Attendees.Contains(provider.UserId)).ToList();
-                
-                // Remove inititor of appointment from differentAttendees list
-                differentAttendees.RemoveAll(da => da.UserId == userId);
-
-                foreach (WorkProvider workProvider in differentAttendees)
+                // Update attendees && check the difference between number of providers and attendees 
+                if (!(model.Attendees.Count > 0) && appointmentToUpdate.Providers.Count != model.Attendees.Count)
                 {
-                    // Case 1: Attendee was removed: attendee is not in model.Attendees
-                    if (!model.Attendees.Any(attendee => attendee == workProvider.UserId))
-                    {
-                        _context.WorkProvider.Remove(workProvider);
-                    }
+                    // Get the list of providers with different UserIds compared to userIds list
+                    List<WorkProvider> differentAttendees = appointmentToUpdate.Providers.Where(provider => !model.Attendees.Contains(provider.UserId)).ToList();
+                    
+                    // Remove inititor of appointment from differentAttendees list
+                    differentAttendees.RemoveAll(da => da.UserId == userId);
 
-                    // Case 2: Attendee was added: attendee is not in appointmentToUpdate.Providers
-                    if (!appointmentToUpdate.Providers.Any(provider => provider.UserId == workProvider.UserId))
+                    foreach (WorkProvider workProvider in differentAttendees)
                     {
-                        await _invitationService.GenerateInvitation(workProvider.AppointmentId, userId, workProvider.UserId);
+                        // Case 1: Attendee was removed: attendee is not in model.Attendees
+                        if (!model.Attendees.Any(attendee => attendee == workProvider.UserId))
+                        {
+                            _context.WorkProvider.Remove(workProvider);
+                        }
+
+                        // Case 2: Attendee was added: attendee is not in appointmentToUpdate.Providers
+                        if (!appointmentToUpdate.Providers.Any(provider => provider.UserId == workProvider.UserId))
+                        {
+                            await _invitationService.GenerateInvitation(workProvider.AppointmentId, userId, workProvider.UserId);
+                        }
                     }
                 }
             }
@@ -133,8 +139,9 @@ namespace Application.Services
 
         public async Task<bool> DeleteAppointmentAsync(Appointment deleteAppointment)
         {
-            // Call the userContext to delete the user
-            _context.Appointment.Remove(deleteAppointment);
+            // Call the userContext to delete the appointment -> change status to false
+            deleteAppointment.Status = false;
+            _context.Appointment.Update(deleteAppointment);
             await _context.SaveChangesAsync();
             
             return true;
@@ -147,7 +154,7 @@ namespace Application.Services
                 .Include(a => a.Calendar) // Eager loading of Calendar entity
                 .Include(a => a.Providers) // Eager loading of Providers collection
                     .ThenInclude(w => w.User) // Eager loading of User entity for each WorkProvider
-                .Where(a => a.UserId == userId || a.Providers.Any(w => w.UserId == userId))
+                .Where(a => a.Status && (a.UserId == userId || a.Providers.Any(w => w.UserId == userId)))
                 .ToList();
 
             return appointments;
@@ -161,7 +168,7 @@ namespace Application.Services
                 .Include(a => a.Calendar) // Eager loading of Calendar entity
                 .Include(a => a.Providers) // Eager loading of Providers collection
                     .ThenInclude(w => w.User) // Eager loading of User entity for each WorkProvider
-                .Where(appointment => appointment.UserId == userId)
+                .Where(appointment => appointment.Status && appointment.UserId == userId)
                 .ToList();
             
             return appointments;
@@ -174,7 +181,9 @@ namespace Application.Services
                 .ThenInclude(a => a.Calendar)
             .Include(w => w.Appointment)
                 .ThenInclude(a => a.Initiator)
-            .Where(w => w.UserId == userId && w.Appointment.End >= DateTime.Now)
+            .Where(w => w.UserId == userId 
+                && w.Appointment.Status 
+                && w.Appointment.End >= DateTime.Now)
             .OrderBy(w => w.Appointment.Start)
             .ToList();
             
@@ -209,7 +218,10 @@ namespace Application.Services
         {
             // Check if user already in appointment particapation
             WorkProvider workProvider = _context.WorkProvider
-                .SingleOrDefault(w => w.UserId == userId && w.AppointmentId == appointmentId);
+                .Include(w => w.Appointment)
+                .SingleOrDefault(w => w.UserId == userId 
+                    && w.AppointmentId == appointmentId
+                    && w.Appointment.Status);
 
             if (workProvider != null)
             {

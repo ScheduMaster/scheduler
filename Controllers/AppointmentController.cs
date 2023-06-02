@@ -84,7 +84,6 @@ namespace Application.Controllers
                     appointment.Location,
                     appointment.Start,
                     appointment.End,
-                    appointment.Status,
                     appointment.CalendarId,
                     IsReadOnly = !appointment.Editable,
                     attendees = appointment.Providers.Select(provider => provider.User.GetUsername()).ToList()
@@ -116,7 +115,6 @@ namespace Application.Controllers
                     appointment.Location,
                     appointment.Start,
                     appointment.End,
-                    appointment.Status,
                     Calendar = appointment.Calendar.Name
                 }).ToList();
 
@@ -203,7 +201,6 @@ namespace Application.Controllers
                     viewAppointment.Location,
                     viewAppointment.Start,
                     viewAppointment.End,
-                    viewAppointment.Status,
                     viewAppointment.CalendarId,
                     IsReadOnly = !viewAppointment.Editable,
                     viewAppointment.Editable,
@@ -233,7 +230,7 @@ namespace Application.Controllers
                     return NotFound(new { message = "Appointment not found" });
                 }
 
-                // Call appointmentService to update appointment
+                // Call appointmentService to check if user was in appointment
                 bool isInAppointment = _appointmentService.CheckUserInAppointment(Guid.Parse(UserId), appointmentToCheck);
                 bool isInitiator = appointmentToCheck.UserId == Guid.Parse(UserId);
 

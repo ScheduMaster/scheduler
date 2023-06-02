@@ -14,4 +14,5 @@
 -   [] Reject request
 -   [x] Push notification to guest
 -   [x] Push notification to inititor
+-   [] Update appointment in calendar -> attendees
 ---

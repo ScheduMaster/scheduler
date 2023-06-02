@@ -11,7 +11,7 @@ namespace Application.Data.Entities
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public DateTime? CanceledAt { get; set; }
-        public string Status { get; set; }
+        public bool Status { get; set; }
         public Guid UserId { get; set; }
         public int CalendarId { get; set; }
         public bool Editable { get; set; }

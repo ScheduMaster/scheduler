@@ -54,8 +54,8 @@ namespace scheduler.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("start");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit")
                         .HasColumnName("status");
 
                     b.Property<Guid>("UserId")
@@ -266,6 +266,8 @@ namespace scheduler.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppointmentId");
+
+                    b.HasIndex("PartnerId");
 
                     b.ToTable("invitations");
                 });
@@ -688,7 +690,15 @@ namespace scheduler.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("Application.Data.Entities.User", "Partner")
+                        .WithMany()
+                        .HasForeignKey("PartnerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Appointment");
+
+                    b.Navigation("Partner");
                 });
 
             modelBuilder.Entity("Application.Data.Entities.Message", b =>
