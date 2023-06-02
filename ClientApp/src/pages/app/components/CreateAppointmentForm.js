@@ -203,15 +203,16 @@ export class CreateAppointmentForm extends Component {
     return (
       <>
         <Toast
-          bg={toast.title === "Fail" ? "danger" : "default"}
+          bg={toast.title === "Fail" ? "warning" : "default"}
           show={toast.show}
           autohide={true}
           onClose={this.handleCloseToast} 
           delay={2000}
           style={{
-            position: 'absolute',
-            top: 0,
-            right: 0
+            position: 'fixed',
+            top: '1rem',
+            right: '1rem',
+            zIndex: 2
           }}
         >
           <Toast.Header>
@@ -226,7 +227,7 @@ export class CreateAppointmentForm extends Component {
               onClosePopup={this.onClosePopup}
               onInviteAttendee={this.onInviteAttendee}
             />
-            <Form className="card" onSubmit={this.handleFormSubmit}>
+            <Form className="card" onSubmit={this.handleFormSubmit} style={{ zIndex: 1 }}>
               <div className="card-body">
                 <h3 className="card-title">Create Appointment</h3>
                 <div className="row row-cards">
