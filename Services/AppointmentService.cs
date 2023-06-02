@@ -61,7 +61,7 @@ namespace Application.Services
                 // Create notification to partner
                 string title = $"{user.FirstName} has invited you";
                 string message = $"{user.GetUsername()} has invited you to the meeting at {DateTime.Now}";
-                _notificationService.CreateNotification(invitation, title, message);
+                _notificationService.CreateNotification(invitation, title, message, attendee);
             }
 
             return createdAppointment;
@@ -147,7 +147,7 @@ namespace Application.Services
                             string title = $"{initiator.FirstName} has invited you";
                             string message = $"{initiator.GetUsername()} has invited you to the meeting at {appointmentToUpdate.Start}";
 
-                            _notificationService.CreateNotification(invitation, title, message);
+                            _notificationService.CreateNotification(invitation, title, message, attendee);
                         }
                     }
                 }

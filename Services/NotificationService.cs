@@ -28,7 +28,7 @@ namespace Application.Services
             return notifications;
         }
 
-        public Notification CreateNotification(Invitation invitation, string title, string message)
+        public Notification CreateNotification(Invitation invitation, string title, string message, Guid userId)
         {
             // Get invitation url
             string invitationURL = _invitationService.GetInvitationUrl(invitation);
@@ -36,7 +36,7 @@ namespace Application.Services
             // Create new notification
             Notification notification = new Notification
             {
-                UserId = invitation.PartnerId,
+                UserId = userId,
                 Title = title,
                 Message = message,
                 Url = invitationURL,

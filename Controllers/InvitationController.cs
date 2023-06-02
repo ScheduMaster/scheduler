@@ -177,7 +177,7 @@ namespace Application.Controllers
                 // Create notification to inititor
                 string title = $"{user.FirstName} has joined";
                 string message = $"{user.GetUsername()} has accepted your meeting invitation at {DateTime.Now}";
-                _notificationService.CreateNotification(invitation, title, message);
+                _notificationService.CreateNotification(invitation, title, message, user.Id);
 
                 return Ok(new { message = "Successfully joined the invitation" });
             }
@@ -213,7 +213,7 @@ namespace Application.Controllers
                 // Create notification to partner
                 string title = $"{user.FirstName} has invited you";
                 string message = $"{user.GetUsername()} has invited you to the meeting at {DateTime.Now}";
-                _notificationService.CreateNotification(invitation, title, message);
+                _notificationService.CreateNotification(invitation, title, message, model.PartnerId);
 
                 return Ok(new 
                 { 
