@@ -64,7 +64,7 @@ namespace Application.Controllers
 
                 if (calendars.Count == 0)
                 {
-                    return NotFound(new { message = "No calendar available" });
+                    return Ok(new List<Calendar>());
                 }
 
                 var result = calendars.Select(calendar => new {
