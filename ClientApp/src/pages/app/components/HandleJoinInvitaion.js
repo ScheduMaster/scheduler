@@ -8,7 +8,7 @@ import { ErrorList } from "../../../components/ErrorList";
 import { InvitationService } from "../../../services/InvitationService";
 import { AppointmentService } from "../../../services/AppointmentService";
 
-class HandleAcceptInvitaion extends Component {
+class HandleJoinInvitaion extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,7 +52,7 @@ class HandleAcceptInvitaion extends Component {
   async checkUserInAppointment(appointmentId) {
     const data = await this.appointment.isInAppointment(appointmentId);
     if (data.isInAppointment || data.isInitiator) {
-      await this.invitation.acceptInvitation(this.invitationId);
+      await this.invitation.joinInvitation(this.invitationId);
       window.location.href = `/app/appointment/view/${appointmentId}`;
     }
   }  
@@ -78,8 +78,8 @@ class HandleAcceptInvitaion extends Component {
     });
   }
 
-  handleAccept = async () => {
-    const data = await this.invitation.acceptInvitation(this.invitationId);
+  handleJoin = async () => {
+    const data = await this.invitation.joinInvitation(this.invitationId);
 
     this.setState({
       message: data.message ?? this.state.message,
@@ -99,7 +99,7 @@ class HandleAcceptInvitaion extends Component {
       <>
         <Modal show={showPopup}>
           <Modal.Header closeButton>
-            <Modal.Title>Accept Invitation</Modal.Title>
+            <Modal.Title>Join Invitation</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {loading ? (
@@ -157,7 +157,7 @@ class HandleAcceptInvitaion extends Component {
               error 
                 ? <ErrorList errors={error}/>
                 : !accept 
-                  ? <Button variant="primary" onClick={this.handleAccept}>
+                  ? <Button variant="primary" onClick={this.handleJoin}>
                       Accept Invitation
                     </Button>
                   : <h6>Waiting for redirect</h6>
@@ -169,4 +169,4 @@ class HandleAcceptInvitaion extends Component {
   }
 }
 
-export default withRouter(HandleAcceptInvitaion);
+export default withRouter(HandleJoinInvitaion);

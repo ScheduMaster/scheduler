@@ -22,7 +22,7 @@ namespace Application.Services
             _config = config;
         }
 
-        public async Task<Invitation> CreateInvitation(Appointment appointment, CreateInvitationModel model, Guid userId)
+        public async Task<Invitation> CreateInvitation(Appointment appointment, CreateInvitationModel model)
         {
             // Default expire time
             DateTime expiresAt = appointment.Start;
@@ -35,8 +35,7 @@ namespace Application.Services
             Invitation invitation = new Invitation 
             {  
                 AppointmentId = appointment.Id,
-                PartnerId = model.PartnerId,
-                UserId = userId,
+                UserId = appointment.UserId,
                 ExpiresAt = expiresAt
             };
 
@@ -101,17 +100,34 @@ namespace Application.Services
         {
             // Get invitation data from database
             Invitation invitation = _context.Invitation.SingleOrDefault(a => a.Id == invitationId);
-
-            string host = _config.GetValue<string>("Host");
-            string invitationURL = $"{host}/app/invitation/accept/{invitation.Id}";
+            string invitationURL;
+            
+            // If invitation was used for guest
+            if (invitation.PartnerId == Guid.Empty)
+            {
+                invitationURL = $"/app/invitation/join/{invitation.Id}";
+            }
+            else
+            {
+                invitationURL = $"/app/invitation/accept/{invitation.Id}";
+            }
             
             return invitationURL;
         }
 
         public string GetInvitationUrl(Invitation invitation)
         {
-            string host = _config.GetValue<string>("Host");
-            string invitationURL = $"{host}/app/invitation/accept/{invitation.Id}";
+            string invitationURL;
+            
+            // If invitation was used for guest
+            if (invitation.PartnerId == Guid.Empty)
+            {
+                invitationURL = $"/app/invitation/join/{invitation.Id}";
+            }
+            else
+            {
+                invitationURL = $"/app/invitation/accept/{invitation.Id}";
+            }
             
             return invitationURL;
         }

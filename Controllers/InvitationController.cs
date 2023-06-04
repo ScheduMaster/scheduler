@@ -63,10 +63,10 @@ namespace Application.Controllers
                 // Get current user from request
                 string UserId = (string)HttpContext.Items["UserId"];
 
-                Invitation invitation = await _invitationService.CreateInvitation(appointment, model, Guid.Parse(UserId));
+                Invitation invitation = await _invitationService.CreateInvitation(appointment, model);
                 
                 string host = _config.GetValue<string>("Host");
-                string invitationURL = $"{host}/app/invitation/accept/{invitation.Id}";
+                string invitationURL = $"{host}/app/invitation/join/{invitation.Id}";
                 
                 return Ok(new 
                 {
@@ -99,8 +99,17 @@ namespace Application.Controllers
                     return NotFound(new { message = "Invitation not found" });
                 }
 
-                string host = _config.GetValue<string>("Host");
-                string invitationURL = $"{host}/app/invitation/accept/{invitation.Id}";
+                string invitationURL;
+
+                // If invitation use for guest
+                if (invitation.PartnerId == Guid.Empty)
+                {
+                    invitationURL = $"/app/invitation/join/{invitation.Id}";
+                }
+                else
+                {
+                    invitationURL = $"/app/invitation/accept/{invitation.Id}";
+                }
                 
                 return Ok(new 
                 {
@@ -132,6 +141,7 @@ namespace Application.Controllers
                     AppointmentId = invitation.AppointmentId,
                     Name = invitation.Appointment.Name,
                     Inititor = invitation.Appointment.Initiator.GetUsername(),
+                    Location = invitation.Appointment.Location,
                     Start = invitation.Appointment.Start,
                     End = invitation.Appointment.End
                 });
@@ -142,6 +152,7 @@ namespace Application.Controllers
             }
         }
 
+        // Only work in add directly -> create new api for join by link
         [HttpGet("accept/{id}")]
         public async Task<IActionResult> AcceptInvitation(Guid id)
         {
@@ -158,9 +169,24 @@ namespace Application.Controllers
                 {
                     return NotFound(new { message = "Invitation not found" });
                 }
-                
-                // Update IsRead status of notification
-                await _notificationService.UpdateNotification(invitation, true, Guid.Parse(UserId));
+
+                // Update noftification when user was added directly by initiator
+                if (invitation.PartnerId != Guid.Empty)
+                {
+                    if (user.Id == invitation.UserId)
+                    {
+                        // Update IsRead status of notification
+                        await _notificationService.UpdateNotification(invitation, true, user.Id);
+                    }
+                    else
+                    {
+                        // Update IsRead status of notification
+                        await _notificationService.UpdateNotification(invitation, true, user.Id);
+
+                        // Update status of invitation from pending to accepted
+                        await _invitationService.UpdateStatus(invitation, Status.ACCEPTED);
+                    }
+                }
 
                 // Check if current user is the inititor of appointment
                 if (user.Id == invitation.UserId)
@@ -171,9 +197,6 @@ namespace Application.Controllers
                 // Logic to add current user to appointment attendees list
                 await _appointmentService.AddIntoAppointment(Guid.Parse(UserId), invitation.AppointmentId);
                 
-                // Update status of invitation from pending to accepted
-                await _invitationService.UpdateStatus(invitation, Status.ACCEPTED);
-
                 // Create notification to inititor
                 string title = $"{user.FirstName} has joined";
                 string message = $"{user.GetUsername()} has accepted your meeting invitation at {DateTime.Now}";
@@ -220,6 +243,52 @@ namespace Application.Controllers
                     Message = "Send invitation successfully",
                     AppointmentId = invitation.AppointmentId
                 });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("join/{id}")]
+        public async Task<IActionResult> JoinInvitation(Guid id)
+        {
+            try
+            {
+                // Get current user from request
+                string UserId = (string)HttpContext.Items["UserId"];
+                User user = _userService.GetUserInfo(Guid.Parse(UserId));
+
+                // Get the invitation to be checked
+                Invitation invitation = _invitationService.GetInvitation(id);
+                
+                if (invitation == null)
+                {
+                    return NotFound(new { message = "Invitation not found" });
+                }
+                
+                // Update noftification when user was joined by link
+                if (invitation.PartnerId == Guid.Empty && user.Id == invitation.UserId)
+                {
+                    // Update IsRead status of notification
+                    await _notificationService.UpdateNotification(invitation, true, user.Id);
+                }
+
+                // Check if current user is the inititor of appointment
+                if (user.Id == invitation.UserId)
+                {
+                    return Ok(new { message = "You are already in this appointment." });
+                }
+
+                // Logic to add current user to appointment attendees list
+                await _appointmentService.AddIntoAppointment(Guid.Parse(UserId), invitation.AppointmentId);
+                
+                // Create notification to inititor
+                string title = $"{user.FirstName} has joined";
+                string message = $"{user.GetUsername()} has joined your meeting invitation at {DateTime.Now}";
+                _notificationService.CreateNotification(invitation, title, message, invitation.UserId);
+
+                return Ok(new { message = "Successfully joined the invitation" });
             }
             catch (Exception ex)
             {

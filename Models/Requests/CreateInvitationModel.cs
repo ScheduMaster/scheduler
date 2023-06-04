@@ -7,7 +7,6 @@ namespace Application.Models.Requests
     {
         [Required]
         public int AppointmentId { get; set; }
-        public Guid PartnerId { get; set; }
         public DateTime? ExpiresAt { get; set; }
     }
 }

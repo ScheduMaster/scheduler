@@ -31,6 +31,7 @@ import { ViewAppointment } from './pages/app/pages/appointment/ViewAppointment';
 import { UpdateAppointment } from './pages/app/pages/appointment/UpdateAppointment';
 import { ManageAppointment } from './pages/app/pages/appointment/ManageAppointment';
 import { AcceptInvitation } from './pages/app/pages/appointment/AcceptInvitation';
+import { JoinInvitation } from './pages/app/pages/appointment/JoinInvitation';
 
 export default class App extends Component {
 
@@ -59,6 +60,7 @@ export default class App extends Component {
               <AppRoute exact path="/app/appointment/update/:id" component={UpdateAppointment} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/appointment/list" component={ManageAppointment} layout={Application} type="authenticated" />
               <AppRoute exact path="/app/invitation/accept/:id" component={AcceptInvitation} layout={Application} type="authenticated" />
+              <AppRoute exact path="/app/invitation/join/:id" component={JoinInvitation} layout={Application} type="authenticated" />
             </Switch>
         </Router>
       </AuthContextProvider>
