@@ -22,7 +22,8 @@ namespace Application.Services
         public async Task<List<Notification>> GetNotifications(Guid userId)
         {
             List<Notification> notifications = await _context.Notification
-                .Where(notification => notification.UserId == userId)
+                .Where(n => n.UserId == userId && n.IsRead == false)
+                .Take(6)
                 .ToListAsync();
             
             return notifications;
