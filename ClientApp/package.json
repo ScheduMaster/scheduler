@@ -41,7 +41,7 @@
   },
   "scripts": {
     "start": "rimraf ./build && craco start",
-    "build": "CI=false NODE_ENV=production craco build",
+    "build": "cross-env CI=false NODE_ENV=production craco build",
     "test": "cross-env CI=true craco test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint ./src/"
