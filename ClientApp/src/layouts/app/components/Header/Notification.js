@@ -4,7 +4,8 @@ import bell from "../../static/Header/bell.svg";
 
 export class Notification extends Component {
   render () {
-    const { notifications } = this.props
+    const { notifications } = this.props;
+
     return (
       <div className="nav-item dropdown d-none d-md-flex me-3">
         <a className="nav-link px-0" data-bs-toggle="dropdown" tabIndex={-1} aria-label="Show notifications" aria-expanded="false">
