@@ -197,7 +197,7 @@ export class CreateAppointmentForm extends Component {
     }
 
     if (redirectToReferrer) {
-      return <Redirect to="/app" />;
+      return <Redirect to="/app/appointment/list" />;
     }
 
     return (
