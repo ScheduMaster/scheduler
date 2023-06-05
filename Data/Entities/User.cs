@@ -15,14 +15,9 @@ namespace Application.Data.Entities
         public bool IsActive { get; set; }
 
         public virtual List<Appointment> Appointments { get; set; }
-        public virtual List<Exchange> ExchangesRequested { get; set; }
-        public virtual List<Exchange> ExchangesRequestor { get; set; }
         public virtual List<Notification> Notifications { get; set; }
-        public virtual List<Message> Messages { get; set; }
-        public virtual List<Customer> Customers { get; set; }
         public virtual List<WorkProvider> WorkProviders { get; set; }
         public virtual List<AuthToken> Tokens { get; set; }
-        public virtual List<Connection> Connections { get; set; }
 
         public string GetUsername()
         {

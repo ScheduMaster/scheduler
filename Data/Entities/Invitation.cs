@@ -4,6 +4,14 @@ using System;
 
 namespace Application.Data.Entities
 {
+    public enum Status
+    {
+        PENDING,
+        ACCEPTED,
+        REJECTED,
+        TERMINATED
+    }
+    
     public class Invitation
     {
         public Guid Id { get; set; }

@@ -18,24 +18,17 @@ namespace Application.Data
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new TokenConfiguration());
             modelBuilder.ApplyConfiguration(new AppointmentConfiguration());
-            modelBuilder.ApplyConfiguration(new ExchangeConfiguration());
-            modelBuilder.ApplyConfiguration(new MessageConfiguration());
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
             modelBuilder.ApplyConfiguration(new WorksProviderConfiguration());
             modelBuilder.ApplyConfiguration(new CalendarConfiguration());
             modelBuilder.ApplyConfiguration(new InvitationConfiguration());
-            modelBuilder.ApplyConfiguration(new ConnectionConfiguration());
         }
 
         public DbSet<AuthToken> AuthToken { get; set; }
         public DbSet<Appointment> Appointment { get; set; }
-        public DbSet<Customer> Customer { get; set; }
-        public DbSet<Exchange> Exchange { get; set; }
-        public DbSet<Message> Message { get; set; }
         public DbSet<Notification> Notification { get; set; }
         public DbSet<WorkProvider> WorkProvider { get; set; }
         public DbSet<Calendar> Calendar { get; set; }
         public DbSet<Invitation> Invitation { get; set; }
-        public DbSet<Connection> Connection { get; set; }
     }
 }

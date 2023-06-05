@@ -328,7 +328,7 @@ export class CreateAppointmentForm extends Component {
                 </div>
               </div>
               <div className="card-footer text-end">
-                {/* {error ? <ErrorList errors={error}/> : ''} */}
+                {error ? <ErrorList errors={error}/> : ''}
                 <Button variant="primary" type="submit">Create new appointment</Button>
               </div>
             </Form>

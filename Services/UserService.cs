@@ -184,34 +184,6 @@ namespace Application.Services
             return users;
         }
 
-        public async Task<Connection> CreateRequestConnection(User user, CreateConnectionModel model)
-        {
-            // Check if it exits any pending request connections
-            Connection previousConnection = _context.Connection
-                .SingleOrDefault(c => (c.FisrtUserId == user.Id && c.SecondUserId == model.PatnerId) || 
-                    (c.FisrtUserId == model.PatnerId && c.SecondUserId == user.Id));
-
-
-            if (previousConnection != null)
-            {
-                return previousConnection;
-            }
-
-            // Create new request connection
-            Connection connection = new Connection
-            {
-                FisrtUserId = user.Id,
-                SecondUserId = model.PatnerId,
-                Status = Status.PENDING,
-                Message = model.Message
-            };
-            
-            _context.Connection.Add(connection);
-            await _context.SaveChangesAsync();
-
-            return connection;
-        }
-
         public async Task<List<User>> SearchUsers(string queryString, int recordsPerPage, int pageNumber)
         {
             IQueryable<User> query = _context.Users.AsQueryable();
