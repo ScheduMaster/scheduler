@@ -15,4 +15,6 @@
 -   [x] Push notification to guest
 -   [x] Push notification to inititor
 -   [] Update appointment in calendar -> attendees
+-   [] Display email infomation when invite user + reset state attendees when remove attendance from tag
+-   [] Update from accept to join in invitation url after invite directly
 ---
