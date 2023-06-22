@@ -6,15 +6,24 @@ RUN apt-get install -y libpng-dev libjpeg-dev curl libxi6 build-essential libgl1
 RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
 RUN apt-get install -y nodejs
 
-WORKDIR /src
-COPY src/*.csproj .
+WORKDIR /app/src
+
+# Copy the rest of the backend source code
+COPY . .
+
+# Install all .NET dependencies
 RUN dotnet restore
-COPY src .
-RUN dotnet publish -c Release -o /publish
+
+# Run publish project
+RUN dotnet publish -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 as runtime
-WORKDIR /publish
-COPY --from=build-env /publish .
+
+WORKDIR /app/publish
+COPY --from=build-env /app/publish .
+
+# Expose all ports
 EXPOSE 80
 EXPOSE 443
+
 ENTRYPOINT ["dotnet", "scheduler.dll"]
