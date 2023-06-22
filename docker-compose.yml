@@ -4,8 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - 3000:80
     depends_on:
       - backend
   backend:
@@ -16,11 +14,6 @@ services:
       - 5000-5002:5000-5002
     depends_on:
       - database
-    command: >
-      bash -c "
-      sleep 10 &&
-      dotnet ef database update --project scheduler.csproj --no-build --context YourDbContext &&
-      dotnet scheduler.dll"
   database:
     image: mcr.microsoft.com/mssql/server
     environment:
