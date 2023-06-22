@@ -1,27 +1,21 @@
 version: "3.9"
 services:
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    depends_on:
-      - backend
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  app:
+    image: callmedavid/scheduler
     ports:
-      - 5000-5002:5000-5002
+      - 5001:80
+      - 443:443
     depends_on:
       - database
+    command: ["dotnet", "ef", "database update"]
   database:
     image: mcr.microsoft.com/mssql/server
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=thisisasecret
+      SA_PASSWORD: "Thisisasecret6969"
+      ACCEPT_EULA: "Y"
     ports:
       - 1433:1433
     volumes:
-      - database-data:/var/opt/mssql/data
+      - data:/var/opt/mssql
 volumes:
-  database-data:
+  data:
