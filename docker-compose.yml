@@ -1,7 +1,8 @@
 version: "3.9"
 services:
   app:
-    image: callmedavid/scheduler
+    build: 
+      context: .
     ports:
       - 5001:80
       - 443:443
@@ -13,9 +14,10 @@ services:
     environment:
       SA_PASSWORD: "Thisisasecret6969"
       ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
     ports:
-      - 1433:1433
+      - 5004:1433
     volumes:
-      - data:/var/opt/mssql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 volumes:
   data:
