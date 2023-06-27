@@ -1,12 +1,24 @@
 version: "3.9"
 services:
-  app:
-    image: callmedavid/scheduler
+  runtime:
+    build:
+      context: .
+      dockerfile: Dockerfile.runtime
     ports:
-      - 5001:80
+      - 5003:80
       - 443:443
     depends_on:
       - database
+
+  sdk:
+    build:
+      context: .
+      dockerfile: Dockerfile.sdk
+    ports:
+      - 5005:5000
+    depends_on:
+      - database
+
   database:
     image: mcr.microsoft.com/mssql/server
     environment:
@@ -15,6 +27,4 @@ services:
     ports:
       - 5004:1433
     volumes:
-      - database-data:/var/opt/mssql/data
-volumes:
-  data:
+      - ./mssql/data:/var/opt/mssql/data
