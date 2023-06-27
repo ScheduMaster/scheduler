@@ -9,8 +9,6 @@ RUN apt-get install -y libpng-dev libjpeg-dev curl libxi6 build-essential libgl1
 RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
 RUN apt-get install -y nodejs
 
-WORKDIR /app/src
-
 # Copy the rest of the backend source code
 COPY . /app/src/
 
@@ -29,7 +27,7 @@ ENV PATH="${PATH}:/root/.dotnet/tools"
 # WORKDIR /app/src/publish
 # COPY --from=build-env /app/src/publish .
 
-# WORKDIR /app/src
+WORKDIR /app/src
 
 # Expose all ports
 EXPOSE 5000
