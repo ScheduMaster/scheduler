@@ -20,6 +20,9 @@ RUN dotnet publish -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 as runtime
 
 # Prepare Dotnet Entity Framework
+RUN apt-get update
+RUN apt-get install -y dotnet-sdk-5.0
+
 RUN dotnet tool install --global dotnet-ef --version 5.0.17
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
