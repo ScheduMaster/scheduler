@@ -27,4 +27,4 @@ services:
     ports:
       - 5004:1433
     volumes:
-      - ./mssql/data:/var/opt/mssql/data
+      - ./data:/var/opt/mssql/data
