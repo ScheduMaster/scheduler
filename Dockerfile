@@ -18,7 +18,7 @@ COPY . /app/src/
 RUN dotnet restore
 
 # Run publish project
-RUN dotnet publish -c Release -o /app/src/publish
+# RUN dotnet publish -c Release -o /app/src/publish
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 as runtime
 
@@ -26,10 +26,10 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 as runtime
 RUN dotnet tool install --global dotnet-ef --version 5.0.17
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
-WORKDIR /app/src/publish
-COPY --from=build-env /app/src/publish .
+# WORKDIR /app/src/publish
+# COPY --from=build-env /app/src/publish .
 
-WORKDIR /app/src
+# WORKDIR /app/src
 
 # Expose all ports
 EXPOSE 5000
