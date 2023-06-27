@@ -1,56 +1,29 @@
-# Stage 1: Build the React.js frontend
-FROM node:18.140-alpine as build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 as build-env
 
-WORKDIR /app/ClientApp
+RUN apt-get update
+RUN apt-get install -y curl
+RUN apt-get install -y libpng-dev libjpeg-dev curl libxi6 build-essential libgl1-mesa-glx
+RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
+RUN apt-get install -y nodejs
 
-# Copy package.json and package-lock.json
-COPY ClientApp/package*.json ./
-
-# Install dependencies
-RUN npm ci
-
-# Copy the rest of the frontend source code
-COPY ClientApp .
-
-# Build the frontend
-RUN npm run build
-
-# Stage 2: Build the .NET backend
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS publish
-
-WORKDIR /src
-
-# Copy the .NET project file
-COPY MyProject.csproj .
-
-# Restore dependencies
-RUN dotnet restore
-
-# Install EF packages
-RUN dotnet tool install --global dotnet-ef
+WORKDIR /app/src
 
 # Copy the rest of the backend source code
 COPY . .
 
-# Run database migrations
-RUN dotnet ef database update --project scheduler.csproj --no-build --context YourDbContext
+# Install all .NET dependencies
+RUN dotnet restore
 
-# Publish the backend
-RUN dotnet publish -c Release -o /app
+# Run publish project
+RUN dotnet publish -c Release -o /app/publish
 
-# Stage 3: Create the final image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 as runtime
 
-WORKDIR /app
+WORKDIR /app/publish
+COPY --from=build-env /app/publish .
 
-# Copy the published .NET backend
-COPY --from=publish /app .
-
-# Set environment variables (replace with your own values if needed)
-ENV ConnectionStrings__DefaultConnection="Server=database;Database=MyDatabase;User=sa;Password=thisisasecret;"
-
-# Expose the desired port (replace with your own port if needed)
+# Expose all ports
 EXPOSE 80
+EXPOSE 443
 
-# Start the .NET application
 ENTRYPOINT ["dotnet", "scheduler.dll"]

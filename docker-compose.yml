@@ -1,34 +1,21 @@
 version: "3.9"
 services:
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  app:
+    image: callmedavid/scheduler
     ports:
-      - 3000:80
-    depends_on:
-      - backend
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 5000-5002:5000-5002
+      - 5001:80
+      - 443:443
     depends_on:
       - database
-    command: >
-      bash -c "
-      sleep 10 &&
-      dotnet ef database update --project scheduler.csproj --no-build --context YourDbContext &&
-      dotnet scheduler.dll"
+    command: ["dotnet", "ef", "database update"]
   database:
     image: mcr.microsoft.com/mssql/server
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=thisisasecret
+      SA_PASSWORD: "Thisisasecret6969"
+      ACCEPT_EULA: "Y"
     ports:
       - 1433:1433
     volumes:
-      - database-data:/var/opt/mssql/data
+      - data:/var/opt/mssql
 volumes:
-  database-data:
+  data:
