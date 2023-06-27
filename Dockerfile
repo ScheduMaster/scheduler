@@ -10,7 +10,7 @@ RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
 RUN apt-get install -y nodejs
 
 # Copy the rest of the backend source code
-COPY . /app/src/
+COPY . /app/src
 
 WORKDIR /app/src
 
