@@ -27,7 +27,6 @@ WORKDIR /app/publish
 COPY --from=build-env /app/publish .
 
 # Expose all ports
-EXPOSE 80
-EXPOSE 443
+EXPOSE 5000
 
 ENTRYPOINT ["dotnet", "scheduler.dll"]
