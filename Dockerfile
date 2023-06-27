@@ -9,6 +9,10 @@ RUN apt-get install -y libpng-dev libjpeg-dev curl libxi6 build-essential libgl1
 RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
 RUN apt-get install -y nodejs
 
+# Prepare Dotnet Entity Framework
+RUN dotnet tool install --global dotnet-ef --version 5.0.17
+ENV PATH="${PATH}:/root/.dotnet/tools"
+
 # Copy the rest of the backend source code
 COPY . /app/src
 
@@ -20,16 +24,12 @@ RUN dotnet restore
 # Run publish project
 # RUN dotnet publish -c Release -o /app/src/publish
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 as runtime
-
-# Prepare Dotnet Entity Framework
-RUN dotnet tool install --global dotnet-ef --version 5.0.17
-ENV PATH="${PATH}:/root/.dotnet/tools"
+# FROM mcr.microsoft.com/dotnet/sdk:5.0 as runtime
 
 # WORKDIR /app/src/publish
 # COPY --from=build-env /app/src/publish .
 
-
+WORKDIR /app/src
 
 # Expose all ports
 EXPOSE 5000
