@@ -14,14 +14,14 @@ COPY . .
 # Install all .NET dependencies
 RUN dotnet restore
 
-# Prepare Dotnet Entity Framework
-RUN dotnet tool install -g dotnet-ef --version 5.0.17
-ENV PATH="${PATH}:/root/.dotnet/tools"
-
 # Run publish project
 RUN dotnet publish -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 as runtime
+
+# Prepare Dotnet Entity Framework
+RUN dotnet tool install --global dotnet-ef --version 5.0.17
+ENV PATH="${PATH}:/root/.dotnet/tools"
 
 WORKDIR /app/publish
 COPY --from=build-env /app/publish .
