@@ -1,10 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 as build-env
 
-ARG BUILD_CONFIGURATION=Debug
-ENV ASPNETCORE_ENVIRONMENT=Development
-ENV DOTNET_USE_POLLING_FILE_WATCHER=true  
-ENV ASPNETCORE_URLS=http://+:80  
-ENV DOTNET_URLS=http://+:80
+# Ensure we listen on any IP Address 
+ENV DOTNET_URLS=http://+:5000
 
 RUN apt-get update
 RUN apt-get install -y curl
@@ -33,6 +30,6 @@ WORKDIR /app/publish
 COPY --from=build-env /app/publish .
 
 # Expose all ports
-EXPOSE 80
+EXPOSE 5000
 
 ENTRYPOINT ["dotnet", "scheduler.dll"]
