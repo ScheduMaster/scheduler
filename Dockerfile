@@ -12,7 +12,7 @@ RUN apt-get install -y nodejs
 WORKDIR /app/src
 
 # Copy the rest of the backend source code
-COPY . .
+COPY . /app/src/
 
 # Install all .NET dependencies
 RUN dotnet restore
@@ -29,7 +29,9 @@ ENV PATH="${PATH}:/root/.dotnet/tools"
 WORKDIR /app/publish
 COPY --from=build-env /app/publish .
 
+WORKDIR /app/src
+
 # Expose all ports
 EXPOSE 5000
 
-ENTRYPOINT ["dotnet", "scheduler.dll"]
+ENTRYPOINT ["dotnet", "run"]
