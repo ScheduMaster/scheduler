@@ -18,6 +18,9 @@ RUN dotnet restore
 RUN dotnet tool install -g dotnet-ef --version 5.0.17
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
+# Migrate database
+RUN dotnet ef database update
+
 # Run publish project
 RUN dotnet publish -c Release -o /app/publish
 
