@@ -1,5 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 as build-env
 
+ARG BUILD_CONFIGURATION=Debug
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true  
+ENV ASPNETCORE_URLS=http://+:80  
+
 RUN apt-get update
 RUN apt-get install -y curl
 RUN apt-get install -y libpng-dev libjpeg-dev curl libxi6 build-essential libgl1-mesa-glx
@@ -27,6 +32,6 @@ WORKDIR /app/publish
 COPY --from=build-env /app/publish .
 
 # Expose all ports
-EXPOSE 5000
+EXPOSE 80
 
 ENTRYPOINT ["dotnet", "scheduler.dll"]
