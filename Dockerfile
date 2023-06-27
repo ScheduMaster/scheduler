@@ -26,7 +26,7 @@ ENV PATH="${PATH}:/root/.dotnet/tools"
 WORKDIR /app/publish
 COPY --from=build-env /app/publish .
 
+ENTRYPOINT ["dotnet", "scheduler.dll"]
+
 # Expose all ports
 EXPOSE 5000
-
-ENTRYPOINT ["dotnet", "scheduler.dll"]
