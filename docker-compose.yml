@@ -1,21 +1,12 @@
 version: "3.9"
 services:
-  runtime:
+  app:
     build:
       context: .
-      dockerfile: Dockerfile.runtime
+    container_name: app
     ports:
       - 5003:80
       - 443:443
-    depends_on:
-      - database
-
-  sdk:
-    build:
-      context: .
-      dockerfile: Dockerfile.sdk
-    ports:
-      - 5005:5000
     depends_on:
       - database
 
