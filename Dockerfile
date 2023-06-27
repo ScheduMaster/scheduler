@@ -14,14 +14,9 @@ COPY . .
 # Install all .NET dependencies
 RUN dotnet restore
 
-# Download and install dotnet-ef
-RUN curl -o dotnet-ef.tar.gz -SL https://aka.ms/efcore/global-tools/latest/linux-x64.tar.gz \
-    && mkdir -p /tools/dotnet-ef \
-    && tar -zxf dotnet-ef.tar.gz -C /tools/dotnet-ef \
-    && rm dotnet-ef.tar.gz
-
-# Add the tool to the PATH
-ENV PATH="${PATH}:/tools/dotnet-ef"
+# Prepare Dotnet Entity Framework
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="${PATH}:/root/.dotnet/tools"
 
 # Run publish project
 RUN dotnet publish -c Release -o /app/publish
