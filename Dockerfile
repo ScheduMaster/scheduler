@@ -4,6 +4,7 @@ ARG BUILD_CONFIGURATION=Debug
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true  
 ENV ASPNETCORE_URLS=http://+:80  
+ENV DOTNET_URLS=http://+:80
 
 RUN apt-get update
 RUN apt-get install -y curl
