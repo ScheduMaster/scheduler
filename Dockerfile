@@ -15,7 +15,7 @@ COPY . .
 RUN dotnet restore
 
 # Prepare Dotnet Entity Framework
-RUN dotnet tool install --global dotnet-ef
+RUN dotnet tool install -g dotnet-ef --version 5.0.17
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
 # Run publish project
