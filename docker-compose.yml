@@ -3,6 +3,7 @@ services:
   app:
     build:
       context: .
+      dockerfile: Dockerfile.runtime
     container_name: app
     ports:
       - 5003:80
