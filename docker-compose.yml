@@ -18,6 +18,7 @@ services:
     container_name: sdk
     depends_on:
       - database
+    command: tail -f /dev/null
 
   database:
     image: mcr.microsoft.com/mssql/server
