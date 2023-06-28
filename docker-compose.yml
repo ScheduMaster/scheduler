@@ -10,15 +10,6 @@ services:
       - 443:443
     depends_on:
       - database
-  
-  sdk:
-    build:
-      context: .
-      dockerfile: Dockerfile.sdk
-    container_name: sdk
-    depends_on:
-      - database
-    command: tail -f /dev/null
 
   database:
     image: mcr.microsoft.com/mssql/server
@@ -29,7 +20,4 @@ services:
     ports:
       - 5004:1433
     volumes:
-      - database-data:/var/opt/mssql/data
-
-volumes:
-  database-data:
+      - ./mssql/data:/var/opt/mssql/data
