@@ -15,6 +15,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.sdk
+    container_name: sdk
     depends_on:
       - database
 
