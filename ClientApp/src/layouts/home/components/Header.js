@@ -9,7 +9,7 @@ export class Header extends Component {
                     <div className="row">
                         <div className="col-lg-12">
                             <nav className="navbar navbar-expand-lg">
-                                <a className="navbar-brand" href="index.html">
+                                <a className="navbar-brand" href="/">
                                     <img src={logo} alt="Logo" width={60}/>
                                 </a>
                                 <button className="navbar-toggler">
