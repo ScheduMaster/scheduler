@@ -1,9 +1,7 @@
 version: "3.9"
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: scheduler:docker
     container_name: app
     ports:
       - 5003:80
@@ -12,7 +10,7 @@ services:
       - database
 
   database:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server
     user: root
     environment:
       SA_PASSWORD: "Thisisasecret6969"
@@ -20,4 +18,4 @@ services:
     ports:
       - 5004:1433
     volumes:
-      - ./mssql19/data:/var/opt/mssql/data
+      - ./mssql/data:/var/opt/mssql/data
