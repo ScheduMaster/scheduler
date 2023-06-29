@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.runtime
+      dockerfile: Dockerfile
     container_name: app
     ports:
       - 5003:80
@@ -12,7 +12,7 @@ services:
       - database
 
   database:
-    image: mcr.microsoft.com/mssql/server
+    image: mcr.microsoft.com/mssql/server:2019-latest
     user: root
     environment:
       SA_PASSWORD: "Thisisasecret6969"
@@ -20,4 +20,4 @@ services:
     ports:
       - 5004:1433
     volumes:
-      - ./mssql/data:/var/opt/mssql/data
+      - ./mssql19/data:/var/opt/mssql/data
