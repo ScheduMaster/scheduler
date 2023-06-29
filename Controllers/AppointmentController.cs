@@ -175,7 +175,7 @@ namespace Application.Controllers
                         name = provider.User.GetUsername(),
                         email = provider.User.Email,
                         userId = provider.User.Id
-                    }).ToList();;
+                    }).ToList();
                 
                 // Remove current user from attendees
                 // attendees.RemoveAll(attendee => attendee.userId == Guid.Parse(UserId));
