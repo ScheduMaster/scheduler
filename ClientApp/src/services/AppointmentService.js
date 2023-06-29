@@ -81,7 +81,7 @@ export class AppointmentService {
     calendarId, start, end, editable, attendees) => {
     const data = await this.interceptor.patch(`/api/appointment/update/${appointmentId}`, 
     {
-      title: title,
+      name: title,
       location: location,
       calendarId: calendarId,
       start: start,
