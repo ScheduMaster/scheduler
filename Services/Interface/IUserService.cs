@@ -16,5 +16,6 @@ namespace Application.Services
         Task<User> UpdateUserAsync(User user, UpdateProfileModel model);
         Task<bool> DeleteUserAsync(User user);
         List<User> GetUsers();
+        Task<List<User>> SearchUsers(string queryString, int recordsPerPage, int pageNumber);
     }
 }

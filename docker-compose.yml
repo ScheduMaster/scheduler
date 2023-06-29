@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+      - 5003:80
+      - 443:443
+    depends_on:
+      - database
+
+  database:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    user: root
+    environment:
+      SA_PASSWORD: "Thisisasecret6969"
+      ACCEPT_EULA: "Y"
+    ports:
+      - 5004:1433
+    volumes:
+      - ./mssql19/data:/var/opt/mssql/data

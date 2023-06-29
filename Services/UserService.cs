@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Application.Data;
 using Application.Models.Requests;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Application.Exceptions;
 
 namespace Application.Services 
 {
@@ -12,11 +14,14 @@ namespace Application.Services
     {
         private readonly DBContext _context;
         private readonly IHashService _hashService;
+        private readonly IDetectService _detectService;
 
-        public UserService(DBContext context, IHashService hashService)
+        public UserService(DBContext context, IHashService hashService, IDetectService detectService)
         {
             _context = context;
             _hashService = hashService;
+            _hashService = hashService;
+            _detectService = detectService;
         }
 
         public User GetUserInfo(Guid UserId)
@@ -176,6 +181,51 @@ namespace Application.Services
             // Call the userContext to get the users
             List<User> users = _context.Users.ToList();
             
+            return users;
+        }
+
+        public async Task<List<User>> SearchUsers(string queryString, int recordsPerPage, int pageNumber)
+        {
+            IQueryable<User> query = _context.Users.AsQueryable();
+            
+            // Detect queryString and apply search criteria
+            if (!string.IsNullOrEmpty(queryString))
+            {
+                if (_detectService.IsName(queryString))
+                {
+                    query = query.Where(u => u.FirstName.Contains(queryString) || u.LastName.Contains(queryString));
+                }
+                else if (_detectService.IsPhoneNumber(queryString))
+                {
+                    query = query.Where(u => u.PhoneNumber.Contains(queryString));
+                }
+                else if (_detectService.IsEmail(queryString))
+                {
+                    query = query.Where(u => u.Email.Contains(queryString));
+                }
+                else
+                {
+                    throw new ArgumentException("Unable to detect the type of the input string.");
+                }
+            } 
+            else
+            {
+                throw new ArgumentException("Please input more information.");
+            }
+
+            // Calculate the number of records to skip based on page number and records per page
+            int recordsToSkip = (pageNumber - 1) * recordsPerPage;
+
+            // Apply pagination
+            query = query.OrderBy(u => u.FirstName).Skip(recordsToSkip).Take(recordsPerPage);
+  
+            // Execute the query and retrieve the users
+            List<User> users = await query.ToListAsync();
+            if (users.Count == 0)
+            {
+                throw new NoResultException("Can not found any records.");
+            }
+
             return users;
         }
     }

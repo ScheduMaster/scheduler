@@ -54,8 +54,8 @@ namespace scheduler.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("start");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit")
                         .HasColumnName("status");
 
                     b.Property<Guid>("UserId")
@@ -74,6 +74,166 @@ namespace scheduler.Data.Migrations
                     b.HasIndex("UserId1");
 
                     b.ToTable("appointments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CalendarId = 1,
+                            Editable = false,
+                            End = new DateTime(2023, 6, 25, 11, 0, 0, 0, DateTimeKind.Local),
+                            Location = "Hi Coffee",
+                            Name = "Meeting with John",
+                            Start = new DateTime(2023, 6, 25, 10, 0, 0, 0, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CalendarId = 4,
+                            Editable = true,
+                            End = new DateTime(2023, 6, 26, 13, 0, 0, 0, DateTimeKind.Local),
+                            Location = "Luna restaurant",
+                            Name = "Lunch with Alice",
+                            Start = new DateTime(2023, 6, 26, 12, 0, 0, 0, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CalendarId = 3,
+                            Editable = true,
+                            End = new DateTime(2023, 6, 25, 11, 0, 0, 0, DateTimeKind.Local),
+                            Name = "Meeting with John",
+                            Start = new DateTime(2023, 6, 25, 10, 0, 0, 0, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CalendarId = 4,
+                            Editable = true,
+                            End = new DateTime(2023, 6, 27, 13, 0, 0, 0, DateTimeKind.Local),
+                            Name = "Lunch with Alice",
+                            Start = new DateTime(2023, 6, 27, 12, 0, 0, 0, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CalendarId = 2,
+                            Editable = true,
+                            End = new DateTime(2023, 6, 28, 15, 0, 0, 0, DateTimeKind.Local),
+                            Name = "Conference call",
+                            Start = new DateTime(2023, 6, 28, 14, 0, 0, 0, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CalendarId = 3,
+                            Editable = true,
+                            End = new DateTime(2023, 6, 27, 15, 0, 0, 0, DateTimeKind.Local),
+                            Name = "Doctor's appointment",
+                            Start = new DateTime(2023, 6, 27, 14, 0, 0, 0, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CalendarId = 4,
+                            Editable = true,
+                            End = new DateTime(2023, 6, 29, 14, 0, 0, 0, DateTimeKind.Local),
+                            Name = "Project meeting",
+                            Start = new DateTime(2023, 6, 29, 13, 0, 0, 0, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CalendarId = 2,
+                            Editable = true,
+                            End = new DateTime(2023, 6, 29, 19, 56, 55, 41, DateTimeKind.Local),
+                            Name = "FE Workshop",
+                            Start = new DateTime(2023, 6, 29, 7, 56, 55, 41, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CalendarId = 2,
+                            Editable = true,
+                            End = new DateTime(2023, 6, 21, 8, 56, 55, 41, DateTimeKind.Local),
+                            Name = "Report",
+                            Start = new DateTime(2023, 6, 21, 7, 56, 55, 41, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CalendarId = 3,
+                            Editable = true,
+                            End = new DateTime(2023, 6, 21, 11, 56, 55, 41, DateTimeKind.Local),
+                            Name = "Client Meeting",
+                            Start = new DateTime(2023, 6, 21, 10, 56, 55, 41, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CalendarId = 3,
+                            Editable = true,
+                            End = new DateTime(2023, 6, 21, 14, 56, 55, 41, DateTimeKind.Local),
+                            Name = "Team Lunch",
+                            Start = new DateTime(2023, 6, 21, 13, 56, 55, 41, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CalendarId = 5,
+                            Editable = false,
+                            End = new DateTime(2023, 7, 2, 17, 0, 0, 0, DateTimeKind.Local),
+                            Location = "Dont know",
+                            Name = "Conference Call",
+                            Start = new DateTime(2023, 7, 1, 7, 56, 55, 41, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CalendarId = 5,
+                            Editable = true,
+                            End = new DateTime(2023, 7, 6, 7, 56, 55, 41, DateTimeKind.Local),
+                            Name = "Training Session",
+                            Start = new DateTime(2023, 7, 5, 7, 56, 55, 41, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CalendarId = 7,
+                            Editable = true,
+                            End = new DateTime(2023, 6, 29, 7, 56, 55, 41, DateTimeKind.Local),
+                            Location = "KTX Khu A",
+                            Name = "Vacation",
+                            Start = new DateTime(2023, 6, 28, 7, 56, 55, 41, DateTimeKind.Local),
+                            Status = true,
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        });
                 });
 
             modelBuilder.Entity("Application.Data.Entities.AuthToken", b =>
@@ -143,61 +303,107 @@ namespace scheduler.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("calendars");
-                });
 
-            modelBuilder.Entity("Application.Data.Entities.Customer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("userId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("userId");
-
-                    b.ToTable("Customer");
-                });
-
-            modelBuilder.Entity("Application.Data.Entities.Exchange", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppointmentRequestedId")
-                        .HasColumnType("int")
-                        .HasColumnName("id_appointment_requested");
-
-                    b.Property<int>("AppointmentRequestorId")
-                        .HasColumnType("int")
-                        .HasColumnName("id_appointment_requestor");
-
-                    b.Property<string>("ExchangeStatus")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("exchange_status");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("UserId1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppointmentRequestedId");
-
-                    b.HasIndex("AppointmentRequestorId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("exchanges");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BackgroundColor = "#ffffff",
+                            BorderColor = "#000000",
+                            DragBackgroundColor = "#cccccc",
+                            Name = "Default",
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BackgroundColor = "#9e5fff",
+                            BorderColor = "#65a94c",
+                            DragBackgroundColor = "#839334",
+                            Name = "Private",
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BackgroundColor = "#00a9ff",
+                            BorderColor = "#00a9ff",
+                            DragBackgroundColor = "#00a9ff",
+                            Name = "Company",
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BackgroundColor = "#66cc66",
+                            BorderColor = "#66cc66",
+                            DragBackgroundColor = "#66cc66",
+                            Name = "Vacation",
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BackgroundColor = "#ffa500",
+                            BorderColor = "#ffa500",
+                            DragBackgroundColor = "#ffa500",
+                            Name = "Meetings",
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 6,
+                            BackgroundColor = "#f5f5dc",
+                            BorderColor = "#f5f5dc",
+                            DragBackgroundColor = "#f5f5dc",
+                            Name = "Holidays",
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 7,
+                            BackgroundColor = "#ff69b4",
+                            BorderColor = "#ff69b4",
+                            DragBackgroundColor = "#ff69b4",
+                            Name = "Birthdays",
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 8,
+                            BackgroundColor = "#8b0000",
+                            BorderColor = "#8b0000",
+                            DragBackgroundColor = "#8b0000",
+                            Name = "Deadlines",
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 9,
+                            BackgroundColor = "#00ced1",
+                            BorderColor = "#00ced1",
+                            DragBackgroundColor = "#00ced1",
+                            Name = "Appointments",
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 10,
+                            BackgroundColor = "#ffd700",
+                            BorderColor = "#ffd700",
+                            DragBackgroundColor = "#ffd700",
+                            Name = "Tasks",
+                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
+                        },
+                        new
+                        {
+                            Id = 11,
+                            BackgroundColor = "#c05d5d",
+                            BorderColor = "#ed0c0c",
+                            DragBackgroundColor = "#2c1111",
+                            Name = "Van Lang",
+                            UserId = new Guid("edb42291-18b6-4713-c84b-08db59c30ba6")
+                        });
                 });
 
             modelBuilder.Entity("Application.Data.Entities.Invitation", b =>
@@ -215,48 +421,25 @@ namespace scheduler.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("expires_at");
 
+                    b.Property<Guid>("PartnerId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("partner_id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("status");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppointmentId");
+
+                    b.HasIndex("PartnerId");
 
                     b.ToTable("invitations");
-                });
-
-            modelBuilder.Entity("Application.Data.Entities.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppointmentId")
-                        .HasColumnType("int")
-                        .HasColumnName("id_appointment");
-
-                    b.Property<Guid>("AuthorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id_author");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("message");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppointmentId");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("messages");
                 });
 
             modelBuilder.Entity("Application.Data.Entities.Notification", b =>
@@ -381,6 +564,65 @@ namespace scheduler.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6"),
+                            AccessFailedCount = 0,
+                            Address = "Ho Chi Minh",
+                            ConcurrencyStamp = "bdb211de-f18a-45e2-a4b0-7635cc97366a",
+                            DateOfBirth = new DateTime(2001, 12, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "hoc@scheduler.com",
+                            EmailConfirmed = false,
+                            FirstName = "Hoc",
+                            IsActive = false,
+                            LastName = "Tran Van",
+                            LockoutEnabled = false,
+                            PasswordHash = "$2a$10$nS0qIau3bBBNNPChHLXe.u8g0UG.IrJugUeV1fKQk/LYwmeYGnKny",
+                            PhoneNumber = "01269454343",
+                            PhoneNumberConfirmed = false,
+                            Role = "Admin",
+                            TwoFactorEnabled = false
+                        },
+                        new
+                        {
+                            Id = new Guid("edb42291-18b6-4713-c84b-08db59c30ba6"),
+                            AccessFailedCount = 0,
+                            Address = "123 Main St, Anytown, USA",
+                            ConcurrencyStamp = "a1a73651-898f-4227-9ec7-509bb1e136da",
+                            DateOfBirth = new DateTime(1996, 12, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "cuong@scheduler.com",
+                            EmailConfirmed = false,
+                            FirstName = "Cuong",
+                            IsActive = false,
+                            LastName = "Luu",
+                            LockoutEnabled = false,
+                            PasswordHash = "$2a$10$B73SiD26Hy1n50CaooS99u3v8Si4owVGaGADo0NpzbD9TlfFJdNii",
+                            PhoneNumber = "0979182391",
+                            PhoneNumberConfirmed = false,
+                            Role = "Client",
+                            TwoFactorEnabled = false
+                        },
+                        new
+                        {
+                            Id = new Guid("318c212e-c1cf-444a-7ca3-08db602a105a"),
+                            AccessFailedCount = 0,
+                            Address = "257 Fireweed Ln",
+                            ConcurrencyStamp = "4993d8f0-d015-45da-b263-663a9f0fe5f5",
+                            DateOfBirth = new DateTime(1954, 4, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@scheduler.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            IsActive = false,
+                            LastName = "Demo",
+                            LockoutEnabled = false,
+                            PasswordHash = "$2a$10$klfOiAYvs9WYZTHud22zfe6nJrHH8ZwcXqPD6UytSwuxnmN201/y6",
+                            PhoneNumber = "01269454344",
+                            PhoneNumberConfirmed = false,
+                            Role = "Admin",
+                            TwoFactorEnabled = false
+                        });
                 });
 
             modelBuilder.Entity("Application.Data.Entities.WorkProvider", b =>
@@ -573,44 +815,6 @@ namespace scheduler.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Application.Data.Entities.Customer", b =>
-                {
-                    b.HasOne("Application.Data.Entities.User", "user")
-                        .WithMany("Customers")
-                        .HasForeignKey("userId");
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("Application.Data.Entities.Exchange", b =>
-                {
-                    b.HasOne("Application.Data.Entities.Appointment", "AppointmentRequested")
-                        .WithMany()
-                        .HasForeignKey("AppointmentRequestedId")
-                        .HasConstraintName("FK_exchange_appointment_requested")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Application.Data.Entities.Appointment", "AppointmentRequestor")
-                        .WithMany()
-                        .HasForeignKey("AppointmentRequestorId")
-                        .HasConstraintName("FK_exchange_appointment_requestor")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Application.Data.Entities.User", null)
-                        .WithMany("ExchangesRequested")
-                        .HasForeignKey("UserId");
-
-                    b.HasOne("Application.Data.Entities.User", null)
-                        .WithMany("ExchangesRequestor")
-                        .HasForeignKey("UserId1");
-
-                    b.Navigation("AppointmentRequested");
-
-                    b.Navigation("AppointmentRequestor");
-                });
-
             modelBuilder.Entity("Application.Data.Entities.Invitation", b =>
                 {
                     b.HasOne("Application.Data.Entities.Appointment", "Appointment")
@@ -619,30 +823,15 @@ namespace scheduler.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Appointment");
-                });
-
-            modelBuilder.Entity("Application.Data.Entities.Message", b =>
-                {
-                    b.HasOne("Application.Data.Entities.Appointment", "Appointment")
+                    b.HasOne("Application.Data.Entities.User", "Partner")
                         .WithMany()
-                        .HasForeignKey("AppointmentId")
+                        .HasForeignKey("PartnerId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Application.Data.Entities.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Application.Data.Entities.User", null)
-                        .WithMany("Messages")
-                        .HasForeignKey("UserId");
-
                     b.Navigation("Appointment");
 
-                    b.Navigation("Author");
+                    b.Navigation("Partner");
                 });
 
             modelBuilder.Entity("Application.Data.Entities.Notification", b =>
@@ -734,14 +923,6 @@ namespace scheduler.Data.Migrations
             modelBuilder.Entity("Application.Data.Entities.User", b =>
                 {
                     b.Navigation("Appointments");
-
-                    b.Navigation("Customers");
-
-                    b.Navigation("ExchangesRequested");
-
-                    b.Navigation("ExchangesRequestor");
-
-                    b.Navigation("Messages");
 
                     b.Navigation("Notifications");
 

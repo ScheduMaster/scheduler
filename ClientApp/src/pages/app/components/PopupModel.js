@@ -29,13 +29,15 @@ export class PopupModel extends Component {
 
   fetchInvitation() {
     const appointmentId = this.props.id;
+    const server = process.env.REACT_APP_VARIABLE_SERVER;
     this.setState({ loading: true });
     this.service
       .getInvitation(appointmentId)
       .then((data) => {
         this.setState({
-          invitation: data.invitation ?? this.state.invitation,
+          invitation: `${server}${data.invitation}` ?? this.state.invitation,
           loading: false,
+          error: false,
         });
       })
       .catch((error) => {

@@ -290,6 +290,39 @@ namespace Application.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpPost("search")]
+        public async Task<IActionResult> SearchUser([FromBody] SearchUserModel model)
+        {
+            try
+            {
+                // Validate the model
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // Use user's properties (Name, Email, PhoneNumber) to search for users
+                List<User> users = await _userService.SearchUsers(model.SearchQuery, model.RecordsPerPage, model.PageNumber);
+
+                var result = users.Select(user => new {
+                    user.Id,
+                    user.FirstName,
+                    user.LastName,
+                    user.PhoneNumber,
+                    user.Email,
+                    user.Address
+                }).ToList();
+
+                // Return the search results
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
     }
     
 }

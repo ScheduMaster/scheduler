@@ -9,13 +9,14 @@ namespace Application.Services
     public interface IAppointmentService
     {
         Task<Appointment> CreateAppointment(Guid UserId, CreateAppointmentModel model);
-        Task<Appointment> UpdateAppointmentAsync(Appointment appointment, UpdateAppointmentModel model);
+        Task<Appointment> UpdateAppointmentAsync(Appointment appointment, UpdateAppointmentModel model, Guid userId);
         Task<bool> DeleteAppointmentAsync(Appointment appointment);
         List<Appointment> GetAllAppointments(Guid userId);
         List<Appointment> GetOwnAppointments(Guid userId);
         List<Appointment> GetUpcommingAppointments(Guid userId);
         Appointment GetAppointment(int id);
         Task<bool> AddIntoAppointment(Guid userId, int appointmentId);
+        bool CheckUserInAppointment(Guid userId, Appointment appointment);
     }
 
 }

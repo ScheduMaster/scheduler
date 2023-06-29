@@ -28,22 +28,26 @@ async function sendTelegramMessage(repository, actor, eventName, commitMessage, 
   const options = { timeZone: 'Asia/Ho_Chi_Minh' };
   const formattedTime = now.toLocaleString('en-US', options);
   const message = renderTemplate(repository, actor, eventName, 
-    commitMessage, commitHash, feStatus, beStatus, formattedTime);
+    commitMessage, commitHash, feStatus ?? 'Fail', beStatus ?? 'Fail', formattedTime);
 
-  const requestBody = {
-    chat_id: process.env.TELEGRAM_TO,
-    text: message,
-    parse_mode: 'Markdown',
-  };
+    const recipients = process.env.TELEGRAM_TO.split(',');
 
-  const url = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`;
-
-  try {
-    await axios.post(url, requestBody);
-    console.log('Telegram message sent successfully!');
-  } catch (error) {
-    console.error('Failed to send Telegram message:', error);
-  }
+    const requestBody = {
+      text: message,
+      parse_mode: 'Markdown',
+    };
+    
+    const url = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`;
+    
+    try {
+      for (const chatId of recipients) {
+        const chatRequestBody = { ...requestBody, chat_id: chatId.trim() };
+        await axios.post(url, chatRequestBody);
+      }
+      console.log('Telegram message sent successfully!');
+    } catch (error) {
+      console.error('Failed to send Telegram message:', error);
+    }
 }
 
 sendTelegramMessage(process.argv[2], process.argv[3], process.argv[4],

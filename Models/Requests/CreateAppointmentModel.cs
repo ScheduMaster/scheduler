@@ -29,6 +29,6 @@ namespace Application.Models.Requests
         public bool Editable { get; set; }
 
         [Required]
-        public List<User> Attendees { get; set; }
+        public List<Guid> Attendees { get; set; }
     }
 }

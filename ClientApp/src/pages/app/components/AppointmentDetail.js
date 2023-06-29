@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import { withRouter, Redirect, Link } from 'react-router-dom';
-import { Form, Button, Toast } from 'react-bootstrap';
+import { Form, Button, Toast, InputGroup } from 'react-bootstrap';
 import { Progress } from "../../../components/Progress";
 import { ErrorList } from "../../../components/ErrorList";
+import TagsInput from 'react-tagsinput';
 
 // Services
 import { AppointmentService } from "../../../services/AppointmentService";
 import { CalendarService } from "../../../services/CalendarService";
+
+// Style css
+import "../static/css/react-tagsinput.css"
 
 class AppointmentDetail extends Component {
   constructor(props) {
@@ -15,6 +19,7 @@ class AppointmentDetail extends Component {
       title: '',
       initiator: '',
       calendarId: '',
+      isOwner: false,
       calendarInfo: {
         name: '',
         backgroundColor: ''
@@ -24,6 +29,7 @@ class AppointmentDetail extends Component {
       end: '',
       editable: false,
       attendees: [],
+      pendingResponses: [],
       loading: false,
       error: '',
       showToast: false,
@@ -34,23 +40,22 @@ class AppointmentDetail extends Component {
     this.calendar = new CalendarService();
   }
   
-  componentDidMount() {
-    // Call getProfileData to fetch data
-    this.getAppoingmentData(this.appointmentId)
-      .then(() => {
-        // Set loading state to false after data is fetched or async operations are completed
-        this.setState({ loading: false });
-      })
-      .catch((error) => {
-        this.setState({ error: error.message });
-        // Set loading state to false if an error occurs
-        this.setState({ loading: false });
-      });
+  async componentDidMount() {
+    try {
+      await this.getAppoingmentData(this.appointmentId);
+      await this.checkOwnerOfAppointment(this.appointmentId);
+      this.setState({ loading: false });
+    } catch (error) {
+      this.setState({ error: error.message, loading: false });
+    }
   }
 
   async getAppoingmentData(appointmentId) {
     try {
       const appointment = await this.appointment.getAppointment(appointmentId);
+      const attendees = appointment.attendees.map(attendee => attendee.name);
+      const pendingResponses = appointment.pendingResponses.map(pendingResponse => pendingResponse.name);
+
       this.setState({
         title: appointment.title ?? this.state.title,
         initiator: appointment.initiator ?? this.state.initiator,
@@ -58,13 +63,22 @@ class AppointmentDetail extends Component {
         calendarId: appointment.calendarId ?? this.state.calendarId,
         editable: appointment.editable ?? this.state.editable,
         start: appointment.start ?? this.state.start,
-        end: appointment.end ?? this.state.end
+        end: appointment.end ?? this.state.end,
+        attendees: attendees ?? this.state.attendees,
+        pendingResponses: pendingResponses ?? this.state.pendingResponses
       });
   
       const calendar = await this.calendar.getCalendar(appointment.calendarId);
       this.setState({ calendarInfo: calendar });
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async checkOwnerOfAppointment(appointmentId) {
+    const data = await this.appointment.isInAppointment(appointmentId);
+    if (data.isInitiator) {
+      this.setState({ isOwner: true });
     }
   }
 
@@ -86,8 +100,8 @@ class AppointmentDetail extends Component {
   };
 
   render () {
-    const { title, location, start, end, editable, calendarInfo,
-      error, loading, showToast, redirectToReferrer, initiator } = this.state;
+    const { title, location, start, end, editable, calendarInfo, attendees, isOwner,
+      pendingResponses, error, loading, showToast, redirectToReferrer, initiator } = this.state;
 
     // Display the progress component while loading
     if (loading) {
@@ -198,15 +212,46 @@ class AppointmentDetail extends Component {
                   />
                 </Form.Group>
               </div>
+              <div className="col-md-12">
+                <Form.Group className="mb-3">
+                  <Form.Label>Attendees</Form.Label>
+                  <InputGroup>
+                    <TagsInput
+                      className="form-control attendees"
+                      value={attendees}
+                    />
+                  </InputGroup>
+                </Form.Group>
+              </div>
+              {
+                pendingResponses.length > 0
+                 ? <div className="col-md-12">
+                      <Form.Group className="mb-3">
+                        <Form.Label>Pending responses</Form.Label>
+                        <InputGroup>
+                          <TagsInput
+                            className="form-control pendings"
+                            value={pendingResponses}
+                          />
+                        </InputGroup>
+                      </Form.Group>
+                    </div>
+                  : <></>
+              }
             </div>
           </div>
-          <div className="card-footer d-flex justify-content-between">
-            {error ? <ErrorList errors={error}/> : ''}
-            <Button className="mx-2" variant="primary" type="submit">Delete appointment</Button>
-            <Link to={`/app/appointment/update/${this.appointmentId}`}>
-              <Button className="mx-2" variant="primary">Update appointment</Button>
-            </Link>
-          </div>
+          {
+            isOwner 
+            ?
+              <div className="card-footer d-flex justify-content-between">
+                {error ? <ErrorList errors={error}/> : ''}
+                <Button className="mx-2" variant="primary" type="submit">Delete appointment</Button>
+                <Link to={`/app/appointment/update/${this.appointmentId}`}>
+                  <Button className="mx-2" variant="primary">Update appointment</Button>
+                </Link>
+              </div>
+            : <></>
+          }
         </Form>
         )}
       </>
