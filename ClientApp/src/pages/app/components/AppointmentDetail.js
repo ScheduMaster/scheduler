@@ -19,6 +19,7 @@ class AppointmentDetail extends Component {
       title: '',
       initiator: '',
       calendarId: '',
+      isOwner: false,
       calendarInfo: {
         name: '',
         backgroundColor: ''
@@ -39,18 +40,14 @@ class AppointmentDetail extends Component {
     this.calendar = new CalendarService();
   }
   
-  componentDidMount() {
-    // Call getProfileData to fetch data
-    this.getAppoingmentData(this.appointmentId)
-      .then(() => {
-        // Set loading state to false after data is fetched or async operations are completed
-        this.setState({ loading: false });
-      })
-      .catch((error) => {
-        this.setState({ error: error.message });
-        // Set loading state to false if an error occurs
-        this.setState({ loading: false });
-      });
+  async componentDidMount() {
+    try {
+      await this.getAppoingmentData(this.appointmentId);
+      await this.checkOwnerOfAppointment(this.appointmentId);
+      this.setState({ loading: false });
+    } catch (error) {
+      this.setState({ error: error.message, loading: false });
+    }
   }
 
   async getAppoingmentData(appointmentId) {
@@ -78,6 +75,13 @@ class AppointmentDetail extends Component {
     }
   }
 
+  async checkOwnerOfAppointment(appointmentId) {
+    const data = await this.appointment.isInAppointment(appointmentId);
+    if (data.isInitiator) {
+      this.setState({ isOwner: true });
+    }
+  }
+
   handleFormSubmit = async (event) => {
     // Make API call to update calendar data
     event.preventDefault();
@@ -96,7 +100,7 @@ class AppointmentDetail extends Component {
   };
 
   render () {
-    const { title, location, start, end, editable, calendarInfo, attendees,
+    const { title, location, start, end, editable, calendarInfo, attendees, isOwner,
       pendingResponses, error, loading, showToast, redirectToReferrer, initiator } = this.state;
 
     // Display the progress component while loading
@@ -236,13 +240,18 @@ class AppointmentDetail extends Component {
               }
             </div>
           </div>
-          <div className="card-footer d-flex justify-content-between">
-            {error ? <ErrorList errors={error}/> : ''}
-            <Button className="mx-2" variant="primary" type="submit">Delete appointment</Button>
-            <Link to={`/app/appointment/update/${this.appointmentId}`}>
-              <Button className="mx-2" variant="primary">Update appointment</Button>
-            </Link>
-          </div>
+          {
+            isOwner 
+            ?
+              <div className="card-footer d-flex justify-content-between">
+                {error ? <ErrorList errors={error}/> : ''}
+                <Button className="mx-2" variant="primary" type="submit">Delete appointment</Button>
+                <Link to={`/app/appointment/update/${this.appointmentId}`}>
+                  <Button className="mx-2" variant="primary">Update appointment</Button>
+                </Link>
+              </div>
+            : <></>
+          }
         </Form>
         )}
       </>
