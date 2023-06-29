@@ -19,12 +19,7 @@ export class AppointmentService {
       end: end,
       editable: editable,
       attendees: attendees
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    }, {});
 
     return data;
   }
@@ -39,24 +34,12 @@ export class AppointmentService {
       options.own = true;
     }
 
-    const data = await this.interceptor.post('/api/appointment/list', options,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-
+    const data = await this.interceptor.post('/api/appointment/list', options, {});
     return data;
   }
 
   getUpcommingAppointments = async () => {
-    const data = await this.interceptor.get('/api/appointment/upcomming', {},
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-
+    const data = await this.interceptor.get('/api/appointment/upcomming', {}, {});
     return data;
   }
 
@@ -83,43 +66,35 @@ export class AppointmentService {
       updateData.calendarId = changes.calendarId;
     }
 
-    const data = await this.interceptor.patch(`/api/appointment/update/${appointmentId}`, updateData,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    const data = await this.interceptor.patch(`/api/appointment/update/${appointmentId}`, updateData, {});
 
     return data;
   }
 
   getAppointment = async (appointmentId) => {
-    const data = await this.interceptor.get(`/api/appointment/view/${appointmentId}`, {},
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    const data = await this.interceptor.get(`/api/appointment/view/${appointmentId}`, {}, {});
 
     return data;
   }
 
-  updateAppointmentByFrom = async (appointmentId, title, location, calendarId, start, end, editable) => {
+  updateAppointmentByFrom = async (appointmentId, title, location,
+    calendarId, start, end, editable, attendees) => {
     const data = await this.interceptor.patch(`/api/appointment/update/${appointmentId}`, 
     {
-      title: title,
+      name: title,
       location: location,
       calendarId: calendarId,
       start: start,
       end: end,
-      editable: editable
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+      editable: editable,
+      attendees: attendees
+    }, {});
 
+    return data;
+  }
+
+  isInAppointment = async (appointmentId) => {
+    const data = await this.interceptor.get(`/api/appointment/check/${appointmentId}`, {}, {});
     return data;
   }
 }
