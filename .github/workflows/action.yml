@@ -90,12 +90,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Build Docker runtime image
-      run: docker build -f Dockerfile.runtime -t scheduler:runtime .
-
     - name: Build Docker SDK image
-      run: docker build -f Dockerfile.sdk -t scheduler:sdk .
-
+      run: docker build -t scheduler:latest .
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v1
@@ -105,10 +101,8 @@ jobs:
 
     - name: Push Docker image to Docker Hub
       run: |
-        docker tag scheduler:runtime callmedavid/scheduler:runtime
-        docker push callmedavid/scheduler:runtime
-        docker tag scheduler:sdk callmedavid/scheduler:sdk
-        docker push callmedavid/scheduler:sdk
+        docker tag scheduler:latest callmedavid/scheduler:latest
+        docker push callmedavid/scheduler:latest
 
   # telegram-notification:
   #   runs-on: ubuntu-latest
