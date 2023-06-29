@@ -16,8 +16,7 @@ export class FQAList extends Component {
                                 <span>FAQ</span>
                                 <h2>Any Questions? Answered</h2>
                                 <p>
-                                    There are many variations of passages of Lorem Ipsum available but
-                                    the majority have suffered alteration in some form.
+                                    These are common questions regarding meeting management systems
                                 </p>
                             </div>
                         </div>
