@@ -74,166 +74,6 @@ namespace scheduler.Data.Migrations
                     b.HasIndex("UserId1");
 
                     b.ToTable("appointments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CalendarId = 1,
-                            Editable = false,
-                            End = new DateTime(2023, 6, 25, 11, 0, 0, 0, DateTimeKind.Local),
-                            Location = "Hi Coffee",
-                            Name = "Meeting with John",
-                            Start = new DateTime(2023, 6, 25, 10, 0, 0, 0, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CalendarId = 4,
-                            Editable = true,
-                            End = new DateTime(2023, 6, 26, 13, 0, 0, 0, DateTimeKind.Local),
-                            Location = "Luna restaurant",
-                            Name = "Lunch with Alice",
-                            Start = new DateTime(2023, 6, 26, 12, 0, 0, 0, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CalendarId = 3,
-                            Editable = true,
-                            End = new DateTime(2023, 6, 25, 11, 0, 0, 0, DateTimeKind.Local),
-                            Name = "Meeting with John",
-                            Start = new DateTime(2023, 6, 25, 10, 0, 0, 0, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CalendarId = 4,
-                            Editable = true,
-                            End = new DateTime(2023, 6, 27, 13, 0, 0, 0, DateTimeKind.Local),
-                            Name = "Lunch with Alice",
-                            Start = new DateTime(2023, 6, 27, 12, 0, 0, 0, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CalendarId = 2,
-                            Editable = true,
-                            End = new DateTime(2023, 6, 28, 15, 0, 0, 0, DateTimeKind.Local),
-                            Name = "Conference call",
-                            Start = new DateTime(2023, 6, 28, 14, 0, 0, 0, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CalendarId = 3,
-                            Editable = true,
-                            End = new DateTime(2023, 6, 27, 15, 0, 0, 0, DateTimeKind.Local),
-                            Name = "Doctor's appointment",
-                            Start = new DateTime(2023, 6, 27, 14, 0, 0, 0, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CalendarId = 4,
-                            Editable = true,
-                            End = new DateTime(2023, 6, 29, 14, 0, 0, 0, DateTimeKind.Local),
-                            Name = "Project meeting",
-                            Start = new DateTime(2023, 6, 29, 13, 0, 0, 0, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CalendarId = 2,
-                            Editable = true,
-                            End = new DateTime(2023, 6, 29, 19, 56, 55, 41, DateTimeKind.Local),
-                            Name = "FE Workshop",
-                            Start = new DateTime(2023, 6, 29, 7, 56, 55, 41, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CalendarId = 2,
-                            Editable = true,
-                            End = new DateTime(2023, 6, 21, 8, 56, 55, 41, DateTimeKind.Local),
-                            Name = "Report",
-                            Start = new DateTime(2023, 6, 21, 7, 56, 55, 41, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CalendarId = 3,
-                            Editable = true,
-                            End = new DateTime(2023, 6, 21, 11, 56, 55, 41, DateTimeKind.Local),
-                            Name = "Client Meeting",
-                            Start = new DateTime(2023, 6, 21, 10, 56, 55, 41, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CalendarId = 3,
-                            Editable = true,
-                            End = new DateTime(2023, 6, 21, 14, 56, 55, 41, DateTimeKind.Local),
-                            Name = "Team Lunch",
-                            Start = new DateTime(2023, 6, 21, 13, 56, 55, 41, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CalendarId = 5,
-                            Editable = false,
-                            End = new DateTime(2023, 7, 2, 17, 0, 0, 0, DateTimeKind.Local),
-                            Location = "Dont know",
-                            Name = "Conference Call",
-                            Start = new DateTime(2023, 7, 1, 7, 56, 55, 41, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CalendarId = 5,
-                            Editable = true,
-                            End = new DateTime(2023, 7, 6, 7, 56, 55, 41, DateTimeKind.Local),
-                            Name = "Training Session",
-                            Start = new DateTime(2023, 7, 5, 7, 56, 55, 41, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CalendarId = 7,
-                            Editable = true,
-                            End = new DateTime(2023, 6, 29, 7, 56, 55, 41, DateTimeKind.Local),
-                            Location = "KTX Khu A",
-                            Name = "Vacation",
-                            Start = new DateTime(2023, 6, 28, 7, 56, 55, 41, DateTimeKind.Local),
-                            Status = true,
-                            UserId = new Guid("39f84ed2-41d7-4f50-c84a-08db59c30ba6")
-                        });
                 });
 
             modelBuilder.Entity("Application.Data.Entities.AuthToken", b =>
@@ -579,7 +419,7 @@ namespace scheduler.Data.Migrations
                             IsActive = false,
                             LastName = "Tran Van",
                             LockoutEnabled = false,
-                            PasswordHash = "$2a$10$nS0qIau3bBBNNPChHLXe.u8g0UG.IrJugUeV1fKQk/LYwmeYGnKny",
+                            PasswordHash = "$2a$10$SFj9fotNhmDP48wztIk8DOnzCUxDFKDvG7XCqKNXLpfu22JG1Op6y",
                             PhoneNumber = "01269454343",
                             PhoneNumberConfirmed = false,
                             Role = "Admin",
@@ -598,7 +438,7 @@ namespace scheduler.Data.Migrations
                             IsActive = false,
                             LastName = "Luu",
                             LockoutEnabled = false,
-                            PasswordHash = "$2a$10$B73SiD26Hy1n50CaooS99u3v8Si4owVGaGADo0NpzbD9TlfFJdNii",
+                            PasswordHash = "$2a$10$8AdOnBG5wGiCdyQbzRnQ5e3ULlillR2i6Z1bq.fuF8adASx9da.5S",
                             PhoneNumber = "0979182391",
                             PhoneNumberConfirmed = false,
                             Role = "Client",
@@ -617,7 +457,7 @@ namespace scheduler.Data.Migrations
                             IsActive = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
-                            PasswordHash = "$2a$10$klfOiAYvs9WYZTHud22zfe6nJrHH8ZwcXqPD6UytSwuxnmN201/y6",
+                            PasswordHash = "$2a$10$JEcaPhrFMbvgFgeWCppT1.x3eF72wAmg8VPIqH3w28m9pjKY1aFOm",
                             PhoneNumber = "01269454344",
                             PhoneNumberConfirmed = false,
                             Role = "Admin",
