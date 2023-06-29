@@ -26,7 +26,7 @@ export class Hero extends Component {
                                         <a href="/auth/login" rel="nofollow noopener" className="ud-main-btn ud-white-btn">Trial Now</a>
                                     </li>
                                     <li>
-                                        <a href="https://github.com/Blue-Pheasant/scheduler" rel="nofollow noopener" className="ud-main-btn ud-link-btn">
+                                        <a href="https://www.vlu.edu.vn/vi/academics/faculty/khoa-cong-nghe-thong-tin" rel="nofollow noopener" className="ud-main-btn ud-link-btn">
                                             Learn More<i className="lni lni-arrow-right"></i>
                                         </a>
                                     </li>
