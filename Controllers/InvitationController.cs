@@ -99,18 +99,9 @@ namespace Application.Controllers
                     return NotFound(new { message = "Invitation not found" });
                 }
 
-                string invitationURL;
+                // Link to join directly
+                string invitationURL = $"/app/invitation/join/{invitation.Id}";
 
-                // If invitation use for guest
-                if (invitation.PartnerId == Guid.Empty)
-                {
-                    invitationURL = $"/app/invitation/join/{invitation.Id}";
-                }
-                else
-                {
-                    invitationURL = $"/app/invitation/accept/{invitation.Id}";
-                }
-                
                 return Ok(new 
                 {
                     invitation = invitationURL
@@ -219,8 +210,11 @@ namespace Application.Controllers
                 string UserId = (string)HttpContext.Items["UserId"];
                 User user = _userService.GetUserInfo(Guid.Parse(UserId));
 
-                // Check if it contains a pending invitation request
-                Invitation previousInvitation = _invitationService.GetInvitation(model.AppointmentId); 
+                // Check if it contains a pending invitation request 
+                Invitation previousInvitation = _context.Invitation
+                    .SingleOrDefault(i => i.AppointmentId == model.AppointmentId
+                        && i.PartnerId == model.PartnerId);
+
                 if (previousInvitation != null)
                 {
                     return Ok(new 
